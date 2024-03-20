@@ -11,3 +11,4 @@
 ### ToDo
 - News feed
 - Favorite games
+- Only show game which count against game completion rate
