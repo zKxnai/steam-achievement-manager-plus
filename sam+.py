@@ -7,6 +7,10 @@ import requests
 from tkinter import ttk
 from PIL import Image, ImageTk
 from io import BytesIO
+from concurrent.futures import ThreadPoolExecutor
+
+# Define ThreadPoolExecutor with 10 threads
+executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
@@ -69,7 +73,6 @@ if response.status_code == 200:
         for game in owned_games:
             appid = game.get("appid", "")
             name = game.get("name", "")
-            #img_icon_url = f"http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{game.get('img_icon_url', '')}.jpg"
             img_icon_url = f"https://cdn.cloudflare.steamstatic.com/steam/apps/{appid}/header.jpg"
 
             writer.writerow({"appid": appid, "name": name, "img_icon_url": img_icon_url})
@@ -103,6 +106,19 @@ def download_image(url):
 def on_mousewheel(event, canvas):
     canvas.yview_scroll(int(-1*(event.delta/120)), "units")
 
+def on_image_loaded(result, name, row, col, frame, img_list):
+    img = result
+    if img:
+        img = resize_image(img, (212, 100))
+        img_tk = ImageTk.PhotoImage(img)
+        img_list.append(img_tk)
+        icon_label = tk.Label(frame, image=img_tk)
+        icon_label.grid(row=row * 2, column=col, padx=10, pady=8)
+        name_label = tk.Label(frame, text=name)
+        name_label.grid(row=row * 2 + 1, column=col, padx=10, pady=5)
+    else:
+        print(f"Skipping game '{name}' due to missing or invalid image.")
+
 def display_games():
     # Load games from CSV
     games = load_games_from_csv("owned_games.csv")
@@ -130,30 +146,21 @@ def display_games():
     canvas.bind_all("<MouseWheel>", lambda event: on_mousewheel(event, canvas))
 
     # Create game widgets
+    img_list = []  # List to store image objects
     cols = 3
     for i, game in enumerate(sorted_games):
         row = i // cols
         col = i % cols
 
         name = game["name"]
-        img_url = game["img_icon_url"]  # No need to append base URL
+        img_url = game["img_icon_url"]
 
-        # Download and resize game icon
-        img = download_image(img_url)
-        if img:
-            img = resize_image(img, (212, 100))
-            img = ImageTk.PhotoImage(img)
-
-            # Create label with game icon
-            icon_label = tk.Label(scrollable_frame, image=img)
-            icon_label.image = img
-            icon_label.grid(row=row*2, column=col, padx=10, pady=8)
-
-            # Create label with game name
-            name_label = tk.Label(scrollable_frame, text=name)
-            name_label.grid(row=row*2 + 1, column=col, padx=10, pady=5)
-        else:
-            print(f"Skipping game '{name}' (ID: {game['appid']}) due to missing or invalid image.")
+        # Download images asynchronously
+        img_future = executor.submit(download_image, img_url)
+        img_future.add_done_callback(
+            lambda f, name=name, row=row, col=col, frame=scrollable_frame, img_list=img_list:
+            on_image_loaded(f.result(), name, row, col, frame, img_list)
+        )
 
     main.mainloop()
 
