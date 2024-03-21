@@ -15,3 +15,5 @@
 - Load icons in background
 - Sort by name
 - Resize grid by window size
+- Play and pause button to just farm playtime
+- Change grid view to list view?
