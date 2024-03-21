@@ -18,3 +18,4 @@
 - Play and pause button to just farm playtime
 - Change grid view to list view?
 - Tidy up code: Remove old icon download
+- Small adjustments: qop4, shapez should appear ad Q and S
