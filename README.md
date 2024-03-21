@@ -12,3 +12,6 @@
 - News feed
 - Favorite games
 - Only show game which count against game completion rate
+- Load icons in background
+- Sort by name
+- Resize grid by window size
