@@ -106,6 +106,7 @@ def on_mousewheel(event, canvas):
 def display_games():
     # Load games from CSV
     games = load_games_from_csv("owned_games.csv")
+    sorted_games = sorted(games, key=lambda x: x["name"])
 
     # Create scrollable frame
     canvas = tk.Canvas(main)
@@ -126,11 +127,11 @@ def display_games():
     scrollbar.pack(side="right", fill="y")
 
     # Enable mouse scroll
-    canvas.bind("<MouseWheel>", lambda event: on_mousewheel(event, canvas))
+    canvas.bind_all("<MouseWheel>", lambda event: on_mousewheel(event, canvas))
 
     # Create game widgets
     cols = 3
-    for i, game in enumerate(games):
+    for i, game in enumerate(sorted_games):
         row = i // cols
         col = i % cols
 
@@ -140,7 +141,7 @@ def display_games():
         # Download and resize game icon
         img = download_image(img_url)
         if img:
-            img = resize_image(img, (230, 107))
+            img = resize_image(img, (212, 100))
             img = ImageTk.PhotoImage(img)
 
             # Create label with game icon
