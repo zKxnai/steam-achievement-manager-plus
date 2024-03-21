@@ -13,7 +13,6 @@
 - Favorite games
 - Only show game which count against game completion rate
 - Load icons in background
-- Sort by name
 - Resize grid by window size
 - Play and pause button to just farm playtime
 - Change grid view to list view?
