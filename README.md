@@ -17,3 +17,4 @@
 - Resize grid by window size
 - Play and pause button to just farm playtime
 - Change grid view to list view?
+- Tidy up code: Remove old icon download
