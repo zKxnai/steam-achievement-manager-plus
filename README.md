@@ -12,8 +12,8 @@
 - News feed
 - Favorite games
 - Only show game which count against game completion rate
-- Load icons in background
-- ##Resize grid by window size
+- ## Load icons in background
+- Resize grid by window size
 - Play and pause button to just farm playtime
 - Change grid view to list view?
 - Small adjustments: qop4, shapez should appear ad Q and S
