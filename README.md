@@ -5,13 +5,14 @@
 
 ### (New) Key features
 - View and edit Steam achievement for every owned game
+- Gain playtime without starting the game
 - Updated UI and look
 - News feed for favorite games
 
 ### ToDo (listed by prio)
 - ~~Load icons in background~~
 - Play and pause button to just farm playtime
-- Change grid view to list view?
+- Change grid view to list view? + Change Images to Icons
 - Resize grid by window size
 - News feed
 - Favorite games
