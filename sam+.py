@@ -14,8 +14,8 @@ executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.1")
-main.geometry("750x550")
+main.title("Steam Achievement Manager+ 0.1.1")
+main.geometry("800x550")
 
 # Change app icon
 icon_image = tk.PhotoImage(file="Resources/SAM+ Logo.png")
@@ -24,13 +24,15 @@ main.iconphoto(True, icon_image)
 # Change theme
 sv_ttk.set_theme("dark")
 
-# Create frame for darkmode switch
-darkmode_frame = ttk.Frame(main)
-darkmode_frame.pack(side="bottom")
-
-# Darkmode Switch
-darkmode_switch = ttk.Checkbutton(darkmode_frame, text="Lightmode", style="Switch.TCheckbutton", command=sv_ttk.toggle_theme)
-darkmode_switch.pack(side="bottom")
+# Create frame for view buttons + darkmode switch
+view_buttons_frame = ttk.Frame(main)
+view_buttons_frame.pack(side="top")
+grid_button = ttk.Button(view_buttons_frame, text="Grid View")
+grid_button.pack(side="right", padx=10, pady=10)
+list_button = ttk.Button(view_buttons_frame, text="List View")
+list_button.pack(side="right", padx=10, pady=10)
+darkmode_switch = ttk.Checkbutton(view_buttons_frame, text="Lightmode", style="Switch.TCheckbutton", command=sv_ttk.toggle_theme)
+darkmode_switch.pack(side="left", padx=10, pady=10)
 
 # Get Steam user ID
 def get_steam_id():
@@ -126,8 +128,8 @@ def display_games():
 
     # Create scrollable frame
     canvas = tk.Canvas(main)
-    scrollbar = ttk.Scrollbar(main, orient="vertical", command=canvas.yview)
     scrollable_frame = ttk.Frame(canvas)
+    scrollbar = ttk.Scrollbar(canvas, orient="vertical", command=canvas.yview)
 
     scrollable_frame.bind(
         "<Configure>",
@@ -139,6 +141,7 @@ def display_games():
     canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
     canvas.configure(yscrollcommand=scrollbar.set)
 
+    # Configure grid layout
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
 
