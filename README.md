@@ -8,14 +8,14 @@
 - Updated UI and look
 - News feed for favorite games
 
-### ToDo
-- News feed
-- Favorite games
-- Only show game which count against game completion rate
+### ToDo (listed by prio)
 - ~~Load icons in background~~
-- Resize grid by window size
 - Play and pause button to just farm playtime
 - Change grid view to list view?
+- Resize grid by window size
+- News feed
+- Favorite games
 - ~~Tide up code~~
 - ~~Make list scrollable~~
 - ~~Small adjustments: qop4, shapez should appear ad Q and S~~
+- Only show game which count against game completion rate
