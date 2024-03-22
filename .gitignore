@@ -1,4 +1,5 @@
-owned_game.csv
+.git
+owned_games.csv
 *.psd
 Steam_icon_logo.svg.png
 test.py

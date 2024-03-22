@@ -15,7 +15,7 @@ executor = ThreadPoolExecutor(max_workers=10)
 # Main window
 main = tk.Tk()
 main.title("Steam Achievement Manager+ 0.1")
-main.geometry("800x550")
+main.geometry("750x550")
 
 # Change app icon
 icon_image = tk.PhotoImage(file="Resources/SAM+ Logo.png")
@@ -122,7 +122,7 @@ def on_image_loaded(result, name, row, col, frame, img_list):
 def display_games():
     # Load games from CSV
     games = load_games_from_csv("owned_games.csv")
-    sorted_games = sorted(games, key=lambda x: x["name"])
+    sorted_games = sorted(games, key=lambda x: x["name"].lower())
 
     # Create scrollable frame
     canvas = tk.Canvas(main)
