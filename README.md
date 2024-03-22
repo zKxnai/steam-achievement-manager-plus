@@ -1,7 +1,7 @@
 # Steam Achievement Manager Plus (SAM+)
 - New version of SAM
 - Source of C# Code: https://github.com/gibbed/SteamAchievementManager
-- Current State: Alpha 0.1.1
+- Current State: Alpha 0.1.4
 
 ### (New) Key features
 - View and edit Steam achievement for every owned game
@@ -21,4 +21,4 @@
 - ~~Make list scrollable~~
 - ~~Small adjustments: qop4, shapez should appear ad Q and S~~
 - Only show game which count against game completion rate
-- Get evrey game listed (Mods counted as Games etc.)
+- Get every game listed (Mods counted as Games etc.)
