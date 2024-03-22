@@ -18,4 +18,4 @@
 - Change grid view to list view?
 - ~~Tide up code~~
 - ~~Make list scrollable~~
-- Small adjustments: qop4, shapez should appear ad Q and S
+- ~~Small adjustments: qop4, shapez should appear ad Q and S~~
