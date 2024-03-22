@@ -11,6 +11,7 @@
 
 ### ToDo (listed by prio)
 - ~~Load icons in background~~
+- Add info at bottom, how many games are displayed
 - Play and pause button to just farm playtime
 - Change grid view to list view? + Change Images to Icons
 - Resize grid by window size
