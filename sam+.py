@@ -14,7 +14,7 @@ executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.2.1")
+main.title("Steam Achievement Manager+ 0.2.2")
 main.geometry("640x530")
 
 # Change app icon
@@ -29,7 +29,7 @@ container_frame = ttk.Frame(main)
 container_frame.pack(side="top", fill="both")
 
 # Create frame for darkmode switch
-darkmode_frame = ttk.Frame(container_frame, width=50, height=50, relief="raised")
+darkmode_frame = ttk.Frame(container_frame)
 darkmode_frame.pack(side="left")
 
 darkmode_switch = ttk.Checkbutton(darkmode_frame, text="Lightmode", style="Switch.TCheckbutton", command=sv_ttk.toggle_theme)
@@ -136,6 +136,16 @@ def on_image_loaded(result, name, row, col, frame, img_list):
     else:
         print(f"Skipping game '{name}' due to missing or invalid image.")
 
+# Create widget for info
+info_frame = tk.Frame(container_frame)
+info_frame.pack(side="right")
+info_label = ttk.Label(info_frame, text="Loading game icons...")
+info_label.pack(side="right", padx=10)
+
+def update_info_label(total_games):
+    info_label.config(text=f"Total games: {total_games}")
+
+
 def display_games():
     # Load games from CSV
     games = load_games_from_csv("owned_games.csv")
@@ -172,8 +182,8 @@ def display_games():
         # Download images asynchronously
         img_future = executor.submit(download_image, img_url)
         img_future.add_done_callback(
-            lambda f, name=name, row=i, frame=scrollable_frame, img_list=img_list:
-            on_image_loaded(f.result(), name, row, 0, frame, img_list)
+            lambda f, name=name, row=i, frame=scrollable_frame, img_list=img_list, total=len(sorted_games):
+            on_image_loaded(f.result(), name, row, 0, frame, img_list) or (update_info_label(total) if len(img_list) == total else None)
         )
 
     main.mainloop()
