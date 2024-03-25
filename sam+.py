@@ -35,16 +35,6 @@ darkmode_frame.pack(side="left")
 darkmode_switch = ttk.Checkbutton(darkmode_frame, text="Lightmode", style="Switch.TCheckbutton", command=sv_ttk.toggle_theme)
 darkmode_switch.pack(side="left", padx=10, pady=10)
 
-# Create frame for view buttons
-view_buttons_frame = ttk.Frame(container_frame, width=50, height=50, relief="raised")
-view_buttons_frame.pack(side="right")
-
-grid_button = ttk.Button(view_buttons_frame, text="Grid View")
-grid_button.pack(side="left", padx=10, pady=10)
-
-list_button = ttk.Button(view_buttons_frame, text="List View")
-list_button.pack(side="right", padx=10, pady=10)
-
 # Get Steam user ID
 def get_steam_id():
     steam_config_path = os.path.join(os.getenv("ProgramFiles(x86)"), "Steam", "config", "loginusers.vdf")
@@ -86,7 +76,7 @@ if response.status_code == 200:
         for game in owned_games:
             appid = game.get("appid", "")
             name = game.get("name", "")
-            img_icon_url = f"https://cdn.cloudflare.steamstatic.com/steam/apps/{appid}/header.jpg"
+            img_icon_url = f"http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{game['img_icon_url']}.jpg"
 
             writer.writerow({"appid": appid, "name": name, "img_icon_url": img_icon_url})
 
@@ -122,13 +112,27 @@ def on_mousewheel(event, canvas):
 def on_image_loaded(result, name, row, col, frame, img_list):
     img = result
     if img:
-        img = resize_image(img, (212, 100))
+        #img = resize_image(img, (212, 100))
+        img = resize_image(img, (50, 50))
         img_tk = ImageTk.PhotoImage(img)
         img_list.append(img_tk)
         icon_label = tk.Label(frame, image=img_tk)
-        icon_label.grid(row=row * 2, column=col, padx=10, pady=8)
+        icon_label.grid(row=row, column=0, padx=10, pady=5, sticky="w")
         name_label = tk.Label(frame, text=name)
-        name_label.grid(row=row * 2 + 1, column=col, padx=10, pady=5)
+        name_label.grid(row=row, column=1, padx=10, pady=5, sticky="w")
+        
+        # Add buttons
+        play_button_img = tk.PhotoImage(file="Resources/play.png")
+        play_button = ttk.Button(frame, text="Play", image=play_button_img)
+        play_button.grid(row=row, column=2, padx=10, pady=5, sticky="e")
+        
+        pause_button_img = tk.PhotoImage(file="Resources/pause.png")
+        pause_button = ttk.Button(frame, text="Pause", image=pause_button_img)
+        pause_button.grid(row=row, column=3, padx=10, pady=5, sticky="e")
+        
+        achievement_button_img = tk.PhotoImage(file="Resources/trophy.png")
+        achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img)
+        achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
     else:
         print(f"Skipping game '{name}' due to missing or invalid image.")
 
@@ -161,19 +165,15 @@ def display_games():
 
     # Create game widgets
     img_list = []  # List to store image objects
-    cols = 3
     for i, game in enumerate(sorted_games):
-        row = i // cols
-        col = i % cols
-
         name = game["name"]
         img_url = game["img_icon_url"]
 
         # Download images asynchronously
         img_future = executor.submit(download_image, img_url)
         img_future.add_done_callback(
-            lambda f, name=name, row=row, col=col, frame=scrollable_frame, img_list=img_list:
-            on_image_loaded(f.result(), name, row, col, frame, img_list)
+            lambda f, name=name, row=i, frame=scrollable_frame, img_list=img_list:
+            on_image_loaded(f.result(), name, row, 0, frame, img_list)
         )
 
     main.mainloop()
