@@ -24,4 +24,4 @@
 - ~~Change grid view to list view? + Change Images to Icons~~
 - ~~Play and pause button to just farm playtime~~
 - ~~Resize grid by window size~~
-- Add info at top right, how many games are displayed
+- ~~Add info at top right, how many games are displayed~~

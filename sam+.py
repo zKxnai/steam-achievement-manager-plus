@@ -76,7 +76,8 @@ if response.status_code == 200:
         for game in owned_games:
             appid = game.get("appid", "")
             name = game.get("name", "")
-            img_icon_url = f"http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{game['img_icon_url']}.jpg"
+            #img_icon_url = f"http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{game['img_icon_url']}.jpg"
+            img_icon_url = f"http://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/{appid}/{game['img_icon_url']}.jpg"
 
             writer.writerow({"appid": appid, "name": name, "img_icon_url": img_icon_url})
 
