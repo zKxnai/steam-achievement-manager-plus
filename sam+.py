@@ -14,8 +14,8 @@ executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.2")
-main.geometry("800x550")
+main.title("Steam Achievement Manager+ 0.2.1")
+main.geometry("640x530")
 
 # Change app icon
 icon_image = tk.PhotoImage(file="Resources/SAM+ Logo.png")
