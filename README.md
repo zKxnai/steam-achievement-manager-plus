@@ -10,17 +10,18 @@
 - News feed for favorite games
 
 ### ToDo (listed by prio)
-- ~~Load icons in background~~
 - Add info at top right, how many games are displayed
-- ~~Play and pause button to just farm playtime~~
-- ~~Change grid view to list view? + Change Images to Icons~~
-- ~~Resize grid by window size~~
 - Add button functionality
 - Show when game is played
 - News feed
 - Favorite games
+- Only show game which count against game completion rate
+- Get every game listed (Mods counted as Games etc.)
+
+- ~~Load icons in background~~
+- ~~Play and pause button to just farm playtime~~
+- ~~Change grid view to list view? + Change Images to Icons~~
+- ~~Resize grid by window size~~
 - ~~Tide up code~~
 - ~~Make list scrollable~~
 - ~~Small adjustments: qop4, shapez should appear ad Q and S~~
-- Only show game which count against game completion rate
-- Get every game listed (Mods counted as Games etc.)
