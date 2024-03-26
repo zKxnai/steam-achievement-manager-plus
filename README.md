@@ -1,4 +1,7 @@
 # Steam Achievement Manager Plus (SAM+)
+
+<span style="color:red">!!!Deprecated due to problems with changing achievements state!!!</span>
+
 - New version of SAM
 - Source of C# Code: https://github.com/gibbed/SteamAchievementManager
 - Current State: Alpha 0.2.2
