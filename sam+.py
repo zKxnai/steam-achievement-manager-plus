@@ -15,7 +15,7 @@ executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.2.3")
+main.title("Steam Achievement Manager+ 0.3")
 main.geometry("725x550")
 
 # Change app icon
@@ -113,7 +113,7 @@ def download_image(url):
 def on_mousewheel(event, canvas):
     canvas.yview_scroll(int(-1*(event.delta/120)), "units")
 
-def on_image_loaded(result, name, row, col, frame, img_list):
+def on_image_loaded(result, name, appid, row, col, frame, img_list):
     img = result
     if img:
         img = resize_image(img, (50, 50))
@@ -126,17 +126,17 @@ def on_image_loaded(result, name, row, col, frame, img_list):
         
         # Add buttons
         play_button_img = tk.PhotoImage(file="Resources/play_g.png")
-        play_button = ttk.Button(frame, text="Play", image=play_button_img, compound="left", command=lambda: open_hidden(appid))
+        play_button = ttk.Button(frame, text="Play", image=play_button_img, compound="left", command=lambda appid=appid: open_hidden(appid))
         play_button.image = play_button_img
         play_button.grid(row=row, column=2, padx=10, pady=5, sticky="e")
         
         pause_button_img = tk.PhotoImage(file="Resources/pause_g.png")
-        pause_button = ttk.Button(frame, text="Pause", image=pause_button_img, compound="left", command=lambda: close_hidden(appid))
+        pause_button = ttk.Button(frame, text="Pause", image=pause_button_img, compound="left", command=lambda name=name: close_hidden(name))
         pause_button.image = pause_button_img
         pause_button.grid(row=row, column=3, padx=10, pady=5, sticky="e")
         
         achievement_button_img = tk.PhotoImage(file="Resources/trophy_g.png")
-        achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda: open_visible(name))
+        achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda appid=appid: open_visible(appid))
         achievement_button.image = achievement_button_img
         achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
     else:
@@ -189,8 +189,8 @@ def display_games():
         # Download images asynchronously
         img_future = executor.submit(download_image, img_url)
         img_future.add_done_callback(
-            lambda f, name=name, row=i, frame=scrollable_frame, img_list=img_list, total=len(sorted_games):
-            on_image_loaded(f.result(), name, row, 0, frame, img_list) or (update_info_label(total) if len(img_list) == total else None)
+            lambda f, name=name, appid=appid, row=i, frame=scrollable_frame, img_list=img_list, total=len(sorted_games):
+            on_image_loaded(f.result(), name, appid, row, 0, frame, img_list) or (update_info_label(total) if len(img_list) == total else None)
         )
 
     main.mainloop()
@@ -204,7 +204,7 @@ def open_visible(appid):
     subprocess.Popen(f"start /MIN cmd /c Resources\\SAM.Game.exe {appid}", shell=True)
 
 # Function to close the hidden window opened by open_hidden
-def close_hidden(appid):
+def close_hidden(name):
     subprocess.Popen(f"start /MIN cmd /c taskkill /F /FI \"WindowTitle eq Steam Achievement Manager 7.0 | {name}\"", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
 
 # Display games

@@ -1,7 +1,7 @@
 # Steam Achievement Manager Plus (SAM+)
 - New version of SAM
 - Source of C# Code: https://github.com/gibbed/SteamAchievementManager
-- Current State: Alpha 0.2.3
+- Current State: Alpha 0.3
 
 ### (New) Key features
 - View and edit Steam achievement for every owned game
@@ -10,7 +10,6 @@
 - News feed for favorite games
 
 ### ToDo (listed by prio)
-- Add button functionality
 - Search for/Jump to game via name/AppID
 - Show when game is played
 - News feed
@@ -26,3 +25,4 @@
 - ~~Play and pause button to just farm playtime~~
 - ~~Resize grid by window size~~
 - ~~Add info at top right, how many games are displayed~~
+- ~~Add button functionality~~
