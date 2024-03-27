@@ -122,17 +122,17 @@ def on_image_loaded(result, name, row, col, frame, img_list):
         name_label.grid(row=row, column=1, padx=10, pady=5, sticky="w")
         
         # Add buttons
-        play_button_img = tk.PhotoImage(file="Resources/play_b.png")
+        play_button_img = tk.PhotoImage(file="Resources/play_g.png")
         play_button = ttk.Button(frame, text="Play", image=play_button_img, compound="left")
         play_button.image = play_button_img
         play_button.grid(row=row, column=2, padx=10, pady=5, sticky="e")
         
-        pause_button_img = tk.PhotoImage(file="Resources/pause_b.png")
+        pause_button_img = tk.PhotoImage(file="Resources/pause_g.png")
         pause_button = ttk.Button(frame, text="Pause", image=pause_button_img, compound="left")
         pause_button.image = pause_button_img
         pause_button.grid(row=row, column=3, padx=10, pady=5, sticky="e")
         
-        achievement_button_img = tk.PhotoImage(file="Resources/trophy_b.png")
+        achievement_button_img = tk.PhotoImage(file="Resources/trophy_g.png")
         achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left")
         achievement_button.image = achievement_button_img
         achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
