@@ -1,27 +1,32 @@
 # Steam Achievement Manager Plus (SAM+)
 - New version of SAM
-- Source of C# Code: https://github.com/gibbed/SteamAchievementManager
+- Rewritten in Python
+- Source Code in C#: https://github.com/gibbed/SteamAchievementManager
 - Current State: Alpha 0.3
 
-### (New) Key features
+## (New) Key features
 - View and edit Steam achievement for every owned game
 - Gain playtime without starting the game
 - Updated UI and look
-- News feed for favorite games
+- News feed
+- Favorite games to keep track
+- Tabs (Gameslist, News, Observation)
+- Show achievement count
 
-### ToDo (listed by prio)
-
+## ToDo
+### Unfinished (listed by prio)
 - Search for/Jump to game via name/AppID
 - Show when game is played
 - Add Tab function:
     - News feed
     - Observe game achievements (For games that gradually add more achievements)
 - Optimize performance (Eliminate glitches while scrolling, etc.)
+- Show achievementcount of game (XX of XX)
 - Favorite games
 - Only show game which count against game completion rate
 - Get every game listed (Mods counted as Games etc.)
 
-### Finished ToDos
+### Finished
 - ~~Load icons in background~~
 - ~~Tide up code~~
 - ~~Make list scrollable~~
