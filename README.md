@@ -21,6 +21,7 @@
 - Only show game which count against game completion rate
 - Get every game listed (Mods counted as Games etc.)
 
+### Finished ToDos
 - ~~Load icons in background~~
 - ~~Tide up code~~
 - ~~Make list scrollable~~
