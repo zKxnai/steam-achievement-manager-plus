@@ -10,6 +10,7 @@
 - News feed for favorite games
 
 ### ToDo (listed by prio)
+- Optimize performance (Eliminate glitches while scrolling, etc.)
 - Search for/Jump to game via name/AppID
 - Show when game is played
 - News feed
