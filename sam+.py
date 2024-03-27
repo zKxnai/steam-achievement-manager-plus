@@ -71,10 +71,12 @@ if response.status_code == 200:
     with open("owned_games.csv", "w", newline="", encoding="utf-8") as csvfile:
         fieldnames = ["appid", "name", "img_icon_url"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        
         writer.writeheader()
 
-        for game in owned_games:
+        # Sort games alphabetically by name
+        sorted_owned_games = sorted(owned_games, key=lambda x: x["name"].lower())
+
+        for game in sorted_owned_games:
             appid = game.get("appid", "")
             name = game.get("name", "")
             #img_icon_url = f"http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{game['img_icon_url']}.jpg"
@@ -124,17 +126,17 @@ def on_image_loaded(result, name, row, col, frame, img_list):
         
         # Add buttons
         play_button_img = tk.PhotoImage(file="Resources/play_g.png")
-        play_button = ttk.Button(frame, text="Play", image=play_button_img, compound="left")
+        play_button = ttk.Button(frame, text="Play", image=play_button_img, compound="left", command=lambda: open_hidden(appid))
         play_button.image = play_button_img
         play_button.grid(row=row, column=2, padx=10, pady=5, sticky="e")
         
         pause_button_img = tk.PhotoImage(file="Resources/pause_g.png")
-        pause_button = ttk.Button(frame, text="Pause", image=pause_button_img, compound="left")
+        pause_button = ttk.Button(frame, text="Pause", image=pause_button_img, compound="left", command=lambda: close_hidden(appid))
         pause_button.image = pause_button_img
         pause_button.grid(row=row, column=3, padx=10, pady=5, sticky="e")
         
         achievement_button_img = tk.PhotoImage(file="Resources/trophy_g.png")
-        achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left")
+        achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda: open_visible(name))
         achievement_button.image = achievement_button_img
         achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
     else:
@@ -181,6 +183,7 @@ def display_games():
     img_list = []  # List to store image objects
     for i, game in enumerate(sorted_games):
         name = game["name"]
+        appid = game["appid"]
         img_url = game["img_icon_url"]
 
         # Download images asynchronously
@@ -191,6 +194,18 @@ def display_games():
         )
 
     main.mainloop()
+
+# Function to open the executable in a hidden window
+def open_hidden(appid):
+    subprocess.Popen(f"start /MIN cmd /c start /MIN /B Resources\\SAM.Game.exe {appid}", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
+
+# Function to open the executable in a visible window
+def open_visible(appid):
+    subprocess.Popen(f"start /MIN cmd /c Resources\\SAM.Game.exe {appid}", shell=True)
+
+# Function to close the hidden window opened by open_hidden
+def close_hidden(appid):
+    subprocess.Popen(f"start /MIN cmd /c taskkill /F /FI \"WindowTitle eq Steam Achievement Manager 7.0 | {name}\"", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
 
 # Display games
 display_games()
