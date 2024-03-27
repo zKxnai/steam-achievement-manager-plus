@@ -14,8 +14,8 @@ executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.2.2")
-main.geometry("640x530")
+main.title("Steam Achievement Manager+ 0.2.3")
+main.geometry("725x550")
 
 # Change app icon
 icon_image = tk.PhotoImage(file="Resources/SAM+ Logo.png")
@@ -113,7 +113,6 @@ def on_mousewheel(event, canvas):
 def on_image_loaded(result, name, row, col, frame, img_list):
     img = result
     if img:
-        #img = resize_image(img, (212, 100))
         img = resize_image(img, (50, 50))
         img_tk = ImageTk.PhotoImage(img)
         img_list.append(img_tk)
@@ -123,16 +122,19 @@ def on_image_loaded(result, name, row, col, frame, img_list):
         name_label.grid(row=row, column=1, padx=10, pady=5, sticky="w")
         
         # Add buttons
-        play_button_img = tk.PhotoImage(file="Resources/play.png")
-        play_button = ttk.Button(frame, text="Play", image=play_button_img)
+        play_button_img = tk.PhotoImage(file="Resources/play_b.png")
+        play_button = ttk.Button(frame, text="Play", image=play_button_img, compound="left")
+        play_button.image = play_button_img
         play_button.grid(row=row, column=2, padx=10, pady=5, sticky="e")
         
-        pause_button_img = tk.PhotoImage(file="Resources/pause.png")
-        pause_button = ttk.Button(frame, text="Pause", image=pause_button_img)
+        pause_button_img = tk.PhotoImage(file="Resources/pause_b.png")
+        pause_button = ttk.Button(frame, text="Pause", image=pause_button_img, compound="left")
+        pause_button.image = pause_button_img
         pause_button.grid(row=row, column=3, padx=10, pady=5, sticky="e")
         
-        achievement_button_img = tk.PhotoImage(file="Resources/trophy.png")
-        achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img)
+        achievement_button_img = tk.PhotoImage(file="Resources/trophy_b.png")
+        achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left")
+        achievement_button.image = achievement_button_img
         achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
     else:
         print(f"Skipping game '{name}' due to missing or invalid image.")

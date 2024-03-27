@@ -1,7 +1,7 @@
 # Steam Achievement Manager Plus (SAM+)
 - New version of SAM
 - Source of C# Code: https://github.com/gibbed/SteamAchievementManager
-- Current State: Alpha 0.2.2
+- Current State: Alpha 0.2.3
 
 ### (New) Key features
 - View and edit Steam achievement for every owned game
