@@ -11,6 +11,7 @@
 
 ### ToDo (listed by prio)
 - Add button functionality
+- Search for/Jump to game via name/AppID
 - Show when game is played
 - News feed
 - Favorite games

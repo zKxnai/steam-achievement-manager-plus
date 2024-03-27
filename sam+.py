@@ -4,6 +4,7 @@ import sv_ttk
 import os
 import re
 import requests
+import subprocess
 from tkinter import ttk
 from PIL import Image, ImageTk
 from io import BytesIO
