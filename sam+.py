@@ -15,7 +15,7 @@ executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.3")
+main.title("Steam Achievement Manager+ 0.3.1")
 main.geometry("725x550")
 
 # Change app icon
@@ -35,6 +35,27 @@ darkmode_frame.pack(side="left")
 
 darkmode_switch = ttk.Checkbutton(darkmode_frame, text="Lightmode", style="Switch.TCheckbutton", command=sv_ttk.toggle_theme)
 darkmode_switch.pack(side="left", padx=10, pady=10)
+
+#Placeholder function
+def clear_placeholder(event=None):
+    if search_var.get() == placeholder:
+        searchbar.delete(0, tk.END)
+
+def restore_placeholder(event=None):
+    if search_var.get() == "":
+        searchbar.insert(0, placeholder)
+
+# Create frame for search bar
+searchbar_frame = ttk.Frame(container_frame)
+searchbar_frame.pack(side="left")
+search_var = tk.StringVar()
+placeholder = "Enter AppID or Name..."
+
+searchbar = ttk.Entry(searchbar_frame, textvariable=search_var, width=40)
+searchbar.insert(0, placeholder)
+searchbar.bind("<FocusIn>", clear_placeholder)
+searchbar.bind("<FocusOut>", restore_placeholder)
+searchbar.pack(side=tk.LEFT)
 
 # Get Steam user ID
 def get_steam_id():
@@ -192,6 +213,19 @@ def display_games():
             lambda f, name=name, appid=appid, row=i, frame=scrollable_frame, img_list=img_list, total=len(sorted_games):
             on_image_loaded(f.result(), name, appid, row, 0, frame, img_list) or (update_info_label(total) if len(img_list) == total else None)
         )
+
+        # Define a function to scroll to the entry matching the search term
+        def scroll_to_entry(event=None):
+            search_term = search_var.get().lower()
+
+            # Find the index of the first entry that matches the search term
+            for i, game in enumerate(sorted_games):
+                if search_term in game["name"].lower() or search_term == str(game["appid"]):
+                    canvas.yview_moveto(i / len(sorted_games))
+                    break
+
+        # Bind the function to the search bar
+        searchbar.bind("<Return>", scroll_to_entry)
 
     main.mainloop()
 
