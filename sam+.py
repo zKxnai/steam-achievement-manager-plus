@@ -29,17 +29,6 @@ sv_ttk.set_theme("dark")
 main_style = ttk.Style()
 main_style.configure("Highlighted.TFrame", background="lightblue")
 
-class HighlightFrame(ttk.Frame):
-    def __init__(self, master=None, **kwargs):
-        super().__init__(master, **kwargs)
-        self.default_bg = self["style"]['background']  # Assuming the default background color is set through the style
-
-    def highlight(self):
-        self.configure(style="Highlighted.TFrame")
-
-    def reset_highlight(self):
-        self.configure(style="TFrame")
-
 # Create "main"frame for buttons
 container_frame = ttk.Frame(main)
 container_frame.pack(side="top", fill="both")
@@ -193,18 +182,6 @@ def display_games():
     games = load_games_from_csv("owned_games.csv")
     sorted_games = sorted(games, key=lambda x: x["name"].lower())
 
-    # Function to highlight the matching entry
-    def highlight_entry(index):
-        # Remove previous highlights
-        for widget in scrollable_frame.winfo_children():
-            if isinstance(widget, HighlightFrame):
-                widget.reset_highlight()
-
-        # Highlight the matching entry
-        widget = scrollable_frame.winfo_children()[index]
-        if isinstance(widget, HighlightFrame):
-            widget.highlight()
-
     # Create scrollable frame
     canvas = tk.Canvas(main)
     scrollable_frame = ttk.Frame(canvas)
@@ -249,7 +226,6 @@ def display_games():
         for i, game in enumerate(sorted_games):
             if search_term in game["name"].lower() or search_term == str(game["appid"]):
                 canvas.yview_moveto(i / len(sorted_games))
-                highlight_entry(i)
                 break
 
     # Bind the function to the search bar
