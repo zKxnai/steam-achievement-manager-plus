@@ -15,7 +15,7 @@
 
 ## ToDo
 ### Unfinished (listed by prio)
-- Search for/Jump to game via name/AppID with highlight
+- ~~Search for/Jump to game via name/AppID~~ with highlight
 - Open achievements in custom window
 - Show when game is played
 - Add Tab function:
