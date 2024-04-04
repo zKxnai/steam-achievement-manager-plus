@@ -16,14 +16,18 @@
 ## ToDo
 ### Unfinished (listed by prio)
 - Open achievements in custom window
-- ~~Add Tab function:~~
-    - News feed
-    - Observe game achievements (For games that gradually add more achievements)
+- News feed
+- Observe game achievements (For games that gradually add more achievements)
+    - Button right of Favorite button
+    - Adds game to Observed games tab
+    - Shows count of earned achievements, missing achievements and percentage of completion
 - Optimize performance (Eliminate glitches while scrolling, etc.) (In separate file)
     - Increase FPS
     - Limit resource usage
 - Show achievementcount of game (XX of XX)
 - Favorite games
+    - Heart/Star button right of achievement button
+    - Shown at the top of games list
 - Only show game which count against game completion rate
 - Get every game listed (Mods counted as Games etc.)
 - ~~Search for/Jump to game via name/AppID~~ with highlight
@@ -40,3 +44,5 @@
 - ~~Add button functionality~~
 - ~~Show when game is played~~
 - ~~Show how many games are played~~
+- ~~Add Tab function:~~
+- ~~API Key fix~~

@@ -15,7 +15,7 @@ executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.4")
+main.title("Steam Achievement Manager+ 0.4.1")
 main.geometry("725x550")
 
 # Create a Notebook (tabbed layout)
@@ -104,9 +104,16 @@ def get_steam_id():
     except Exception as e:
         print(f"Error reading Steam configuration file: {e}")
         return None
-    
+
+# Function to get API key from environment variable
+def get_api_key():
+    api_key = os.environ.get('STEAM_API_KEY')
+    if not api_key:
+        raise ValueError("API key not found. Set the STEAM_API_KEY environment variable.")
+    return api_key
+
 steam_id = get_steam_id()
-API_key= "9326C492E1DF557C1EC8E9DC717E3C3D"
+API_key= get_api_key()
 
 # Get owned games
 url_owned_games = f"http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={API_key}&steamid={steam_id}&format=json&include_appinfo&include_appinfo=true&include_played_free_games=true"
