@@ -15,7 +15,7 @@ executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.3.1")
+main.title("Steam Achievement Manager+ 0.3.2")
 main.geometry("725x550")
 
 # Change app icon
@@ -189,7 +189,6 @@ info_label.pack(side="right", padx=10)
 
 def update_info_label(total_games):
     info_label.config(text=f"Total games: {total_games}")
-
 
 def display_games():
     # Load games from CSV
