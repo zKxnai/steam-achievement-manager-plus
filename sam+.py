@@ -15,8 +15,22 @@ executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.3.2")
+main.title("Steam Achievement Manager+ 0.4")
 main.geometry("725x550")
+
+# Create a Notebook (tabbed layout)
+notebook = ttk.Notebook(main)
+notebook.pack(fill="both", expand=True)
+
+# Create frames for each tab
+achievements_tab = ttk.Frame(notebook)
+news_tab = ttk.Frame(notebook)
+observed_games_tab = ttk.Frame(notebook)
+
+# Add tabs to the notebook
+notebook.add(achievements_tab, text='Achievements')
+notebook.add(news_tab, text='News')
+notebook.add(observed_games_tab, text='Observed Games')
 
 # Change app icon
 icon_image = tk.PhotoImage(file="Resources/SAM+ Logo.png")
@@ -30,7 +44,7 @@ main_style = ttk.Style()
 main_style.configure("Green.TButton", foreground="green")
 
 # Create "main"frame for buttons
-container_frame = ttk.Frame(main)
+container_frame = ttk.Frame(achievements_tab)
 container_frame.pack(side="top", fill="both")
 
 # Create frame for darkmode switch
@@ -39,6 +53,15 @@ darkmode_frame.pack(side="left")
 
 darkmode_switch = ttk.Checkbutton(darkmode_frame, text="Lightmode", style="Switch.TCheckbutton", command=sv_ttk.toggle_theme)
 darkmode_switch.pack(side="left", padx=10, pady=10)
+
+#Create game count frame
+played_games_frame = ttk.Frame(achievements_tab)
+played_games_frame.pack()
+
+#Create game count
+played_games_count = 0
+played_games_label = ttk.Label(played_games_frame, text=f"Played Games: {played_games_count}")
+played_games_label.pack(side="bottom")
 
 #Placeholder function
 def clear_placeholder(event=None):
@@ -196,7 +219,7 @@ def display_games():
     sorted_games = sorted(games, key=lambda x: x["name"].lower())
 
     # Create scrollable frame
-    canvas = tk.Canvas(main)
+    canvas = tk.Canvas(achievements_tab)
     scrollable_frame = ttk.Frame(canvas)
     scrollbar = ttk.Scrollbar(canvas, orient="vertical", command=canvas.yview)
 
@@ -248,6 +271,9 @@ def display_games():
 
 # Function to open the executable in a hidden window
 def open_hidden(appid):
+    global played_games_count
+    played_games_count += 1
+    played_games_label.config(text=f"Played Games: {played_games_count}")
     subprocess.Popen(f"start /MIN cmd /c start /MIN /B Resources\\SAM.Game.exe {appid}", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
 
 # Function to open the executable in a visible window
@@ -256,6 +282,9 @@ def open_visible(appid):
 
 # Function to close the hidden window opened by open_hidden
 def close_hidden(name):
+    global played_games_count
+    played_games_count -= 1
+    played_games_label.config(text=f"Played Games: {played_games_count}")
     subprocess.Popen(f"start /MIN cmd /c taskkill /F /FI \"WindowTitle eq Steam Achievement Manager 7.0 | {name}\"", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
 
 # Display games
