@@ -25,9 +25,9 @@ main.iconphoto(True, icon_image)
 # Change theme
 sv_ttk.set_theme("dark")
 
-# Create a custom style for the highlighted frame
+# Define a custom style for the green color
 main_style = ttk.Style()
-main_style.configure("Highlighted.TFrame", background="lightblue")
+main_style.configure("Green.TButton", foreground="green")
 
 # Create "main"frame for buttons
 container_frame = ttk.Frame(main)
@@ -164,8 +164,22 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda appid=appid: open_visible(appid))
         achievement_button.image = achievement_button_img
         achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
+
+        # Update button states when clicked
+        play_button.config(command=lambda appid=appid, button=play_button: play_button_clicked(appid, button))
+        pause_button.config(command=lambda name=name, button=play_button: pause_button_clicked(name, button))
     else:
         print(f"Skipping game '{name}' due to missing or invalid image.")
+
+def play_button_clicked(appid, button):
+    # Change the button text to "Playing..." and color to green
+    button.config(text="Playing...", style="Green.TButton")
+    open_hidden(appid)
+
+def pause_button_clicked(name, button):
+    # Change the button text back to "Play" and revert to the default style
+    button.config(text="Play", style="TButton")
+    close_hidden(name)
 
 # Create widget for info
 info_frame = tk.Frame(container_frame)
