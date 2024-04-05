@@ -17,7 +17,7 @@ executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.5")
+main.title("Steam Achievement Manager+ 0.5.1")
 main.geometry("725x550")
 
 # Create a Notebook (tabbed layout)
@@ -346,20 +346,6 @@ def display_news_callback(news, news_tab, game):
             empty_line_label.pack(anchor="w", padx=10, pady=5)
     else:
         print(f"No news found for appid {appid}")
-
-# Function to refresh news
-def refresh_news_async():
-    # Delete existing news frames
-    for widget in news_tab.winfo_children():
-        widget.destroy()
-
-    # Reload and display news
-    games = load_games_from_csv("owned_games.csv")
-    display_news_async(news_tab, games)
-
-# Manual refresh button for news
-refresh_button = ttk.Button(news_tab, text="Refresh", command=refresh_news_async)
-refresh_button.pack(side="top", anchor="ne", padx=10, pady=10)
 
 # Display news
 games = load_games_from_csv("owned_games.csv")

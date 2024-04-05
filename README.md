@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.5
+- Current State: Beta 0.5.1
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -19,7 +19,7 @@
 - Scrolling only works in active tab
 - News feed
     - Make scrollable with mouse scroll
-    - Fix Refresh button
+    - ~~Fix Refresh button~~
     - ~~Show date/convert timestamp~~
     - ~~Place Refresh button top right corner~~
     - Better UI
