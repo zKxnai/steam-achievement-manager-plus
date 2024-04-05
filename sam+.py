@@ -5,17 +5,19 @@ import os
 import re
 import requests
 import subprocess
+import datetime
 from tkinter import ttk
 from PIL import Image, ImageTk
 from io import BytesIO
 from concurrent.futures import ThreadPoolExecutor
+from datetime import timezone
 
 # Define ThreadPoolExecutor with 10 threads
 executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.4.1")
+main.title("Steam Achievement Manager+ 0.5")
 main.geometry("725x550")
 
 # Create a Notebook (tabbed layout)
@@ -293,6 +295,75 @@ def close_hidden(name):
     played_games_count -= 1
     played_games_label.config(text=f"Played Games: {played_games_count}")
     subprocess.Popen(f"start /MIN cmd /c taskkill /F /FI \"WindowTitle eq Steam Achievement Manager 7.0 | {name}\"", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
+
+# Function to fetch news for each game
+def fetch_game_news(appid):
+    url = f"http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid={appid}&count=1&maxlength=500&format=json"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        news = data.get("appnews", {}).get("newsitems", [])
+        
+        # Convert Unix timestamp to human-readable format for each news item
+        for item in news:
+            item_date = datetime.datetime.fromtimestamp(item.get("date", 0), tz=datetime.timezone.utc)
+            item["date"] = item_date.strftime("%Y-%m-%d %H:%M:%S")  # Format the date
+            
+        return news
+    else:
+        print(f"Failed to fetch news for appid {appid}")
+
+def fetch_news_async(appid):
+    return executor.submit(fetch_game_news, appid)
+
+# Function to display news in the news tab
+def display_news_async(news_tab, games):
+    for game in games:
+        appid = game["appid"]
+        future_news = fetch_news_async(appid)
+        future_news.add_done_callback(
+            lambda f, game=game: display_news_callback(f.result(), news_tab, game)
+        )
+
+def display_news_callback(news, news_tab, game):
+    appid = game["appid"]
+    if news:
+        # Create a frame to hold all the news entries
+        all_news_frame = ttk.Frame(news_tab)
+        all_news_frame.pack(padx=10, pady=10, fill="both", expand=True)
+
+        # Display news items in a list
+        for item in news:
+            game_name_label = ttk.Label(all_news_frame, text=game["name"], font=("Arial", 12, "bold"))
+            game_name_label.pack()
+            news_title_label = ttk.Label(all_news_frame, text=item["title"], font=("Arial", 10, "bold"))
+            news_title_label.pack(anchor="w", padx=10, pady=5)
+            news_date_label = ttk.Label(all_news_frame, text=item["date"])
+            news_date_label.pack(anchor="w", padx=10, pady=2)
+            news_content_label = ttk.Label(all_news_frame, text=item["contents"], wraplength=600, justify="left")
+            news_content_label.pack(anchor="w", padx=10, pady=5)
+            empty_line_label = ttk.Label(all_news_frame, text="")
+            empty_line_label.pack(anchor="w", padx=10, pady=5)
+    else:
+        print(f"No news found for appid {appid}")
+
+# Function to refresh news
+def refresh_news_async():
+    # Delete existing news frames
+    for widget in news_tab.winfo_children():
+        widget.destroy()
+
+    # Reload and display news
+    games = load_games_from_csv("owned_games.csv")
+    display_news_async(news_tab, games)
+
+# Manual refresh button for news
+refresh_button = ttk.Button(news_tab, text="Refresh", command=refresh_news_async)
+refresh_button.pack(side="top", anchor="ne", padx=10, pady=10)
+
+# Display news
+games = load_games_from_csv("owned_games.csv")
+display_news_async(news_tab, games)
 
 # Display games
 display_games()
