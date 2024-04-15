@@ -16,7 +16,7 @@ executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.5.2")
+main.title("Steam Achievement Manager+ 0.5.5")
 main.geometry("725x550")
 
 # Create a Notebook (tabbed layout)
@@ -27,11 +27,13 @@ notebook.pack(fill="both", expand=True)
 achievements_tab = ttk.Frame(notebook)
 news_tab = ttk.Frame(notebook)
 observed_games_tab = ttk.Frame(notebook)
+appearance_tab = ttk.Frame(notebook)
 
 # Add tabs to the notebook
 notebook.add(achievements_tab, text='Achievements')
 notebook.add(news_tab, text='News')
 notebook.add(observed_games_tab, text='Observed Games')
+notebook.add(appearance_tab, text='Appearance')
 
 # Change app icon
 icon_image = tk.PhotoImage(file="Resources/SAM+ Logo.png")
@@ -40,6 +42,14 @@ main.iconphoto(True, icon_image)
 # Change theme
 sv_ttk.set_theme("dark")
 
+# Create frame for lightmode switch in the main window
+lightmode_frame = ttk.Frame(appearance_tab)
+lightmode_frame.pack(side="top", anchor="nw", padx=10, pady=10)
+
+# Create lightmode switch in the main window
+lightmode_switch = ttk.Checkbutton(lightmode_frame, text="Lightmode", style="Switch.TCheckbutton", command=sv_ttk.toggle_theme)
+lightmode_switch.pack(side="left")
+
 # Define a custom style for the green color
 main_style = ttk.Style()
 main_style.configure("Green.TButton", foreground="green")
@@ -47,13 +57,6 @@ main_style.configure("Green.TButton", foreground="green")
 # Create "main"frame for buttons
 container_frame = ttk.Frame(achievements_tab)
 container_frame.pack(side="top", fill="both")
-
-# Create frame for darkmode switch
-darkmode_frame = ttk.Frame(container_frame)
-darkmode_frame.pack(side="left")
-
-darkmode_switch = ttk.Checkbutton(darkmode_frame, text="Lightmode", style="Switch.TCheckbutton", command=sv_ttk.toggle_theme)
-darkmode_switch.pack(side="left", padx=10, pady=10)
 
 #Create game count frame
 played_games_frame = ttk.Frame(achievements_tab)
@@ -83,7 +86,7 @@ searchbar = ttk.Entry(searchbar_frame, textvariable=search_var, width=40)
 searchbar.insert(0, placeholder)
 searchbar.bind("<FocusIn>", clear_placeholder)
 searchbar.bind("<FocusOut>", restore_placeholder)
-searchbar.pack(side=tk.LEFT)
+searchbar.pack(side=tk.LEFT, padx=10, pady=10)
 
 # Get Steam user ID
 def get_steam_id():
@@ -166,8 +169,8 @@ def download_image(url):
     except Exception as e:
         print(f"Error downloading image from {url}: {e}")
 
-def on_mousewheel(event, canvas):
-    canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+def on_mousewheel(event, achievements_canvas):
+    achievements_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
 
 def on_image_loaded(result, name, appid, row, col, frame, img_list):
     img = result
@@ -227,26 +230,26 @@ def display_games():
     sorted_games = sorted(games, key=lambda x: x["name"].lower())
 
     # Create scrollable frame
-    canvas = tk.Canvas(achievements_tab)
-    scrollable_frame = ttk.Frame(canvas)
-    scrollbar = ttk.Scrollbar(canvas, orient="vertical", command=canvas.yview)
+    achievements_canvas = tk.Canvas(achievements_tab)
+    scrollable_frame = ttk.Frame(achievements_canvas)
+    scrollbar = ttk.Scrollbar(achievements_canvas, orient="vertical", command=achievements_canvas.yview)
 
     scrollable_frame.bind(
         "<Configure>",
-        lambda e: canvas.configure(
-            scrollregion=canvas.bbox("all")
+        lambda e: achievements_canvas.configure(
+            scrollregion=achievements_canvas.bbox("all")
         )
     )
 
-    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-    canvas.configure(yscrollcommand=scrollbar.set)
+    achievements_canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+    achievements_canvas.configure(yscrollcommand=scrollbar.set)
 
-    # Configure grid layout
-    canvas.pack(side="left", fill="both", expand=True)
+    # Configure list layout
+    achievements_canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
 
     # Enable mouse scroll
-    canvas.bind_all("<MouseWheel>", lambda event: on_mousewheel(event, canvas))
+    achievements_canvas.bind_all("<MouseWheel>", lambda event: on_mousewheel(event, achievements_canvas))
 
     # Create game widgets
     img_list = []  # List to store image objects
@@ -269,7 +272,7 @@ def display_games():
         # Find the index of the first entry that matches the search term
         for i, game in enumerate(sorted_games):
             if search_term in game["name"].lower() or search_term == str(game["appid"]):
-                canvas.yview_moveto(i / len(sorted_games))
+                achievements_canvas.yview_moveto(i / len(sorted_games))
                 break
 
     # Bind the function to the search bar
@@ -316,13 +319,6 @@ def fetch_game_news(appid):
 news_search_frame = ttk.Frame(news_tab)
 news_search_frame.pack(side="top", fill="x")
 
-# Create lightmode switch in the news tab
-news_darkmode_frame = ttk.Frame(news_search_frame)
-news_darkmode_frame.pack(side="left")
-
-news_darkmode_switch = ttk.Checkbutton(news_darkmode_frame, text="Lightmode", style="Switch.TCheckbutton", command=sv_ttk.toggle_theme)
-news_darkmode_switch.pack(side="left", padx=10, pady=10)
-
 # Create search bar in the news tab
 news_searchbar_frame = ttk.Frame(news_search_frame)
 news_searchbar_frame.pack(side="left")
@@ -342,10 +338,30 @@ news_searchbar = ttk.Entry(news_searchbar_frame, textvariable=news_search_var, w
 news_searchbar.insert(0, news_placeholder)
 news_searchbar.bind("<FocusIn>", clear_news_placeholder)
 news_searchbar.bind("<FocusOut>", restore_news_placeholder)
-news_searchbar.pack(side=tk.LEFT)
+news_searchbar.pack(side=tk.LEFT, padx=10, pady=10)
 
 def fetch_news_async(appid):
     return executor.submit(fetch_game_news, appid)
+
+# Create a frame to hold all the news entries
+all_news_frame = ttk.Frame(news_tab)
+all_news_frame.pack(padx=10, pady=10, fill="both", expand=True)
+
+# Create a canvas to add a scrollbar to the news frame
+news_canvas = tk.Canvas(all_news_frame)
+news_canvas.pack(side="left", fill="both", expand=True)
+
+# Add a scrollbar to the canvas
+news_scrollbar = ttk.Scrollbar(all_news_frame, orient="vertical", command=news_canvas.yview)
+news_scrollbar.pack(side="right", fill="y")
+news_canvas.configure(yscrollcommand=news_scrollbar.set)
+
+# Bind mouse wheel event to news canvas for scrolling
+news_canvas.bind_all("<MouseWheel>", lambda event: news_canvas.yview_scroll(int(-1*(event.delta/120)), "units"))
+
+# Create a frame to contain the news items
+inner_frame = ttk.Frame(news_canvas)
+news_canvas.create_window((0, 0), window=inner_frame, anchor="nw")
 
 # Function to display news in the news tab
 def display_news_async(news_tab, games):
@@ -356,27 +372,52 @@ def display_news_async(news_tab, games):
             lambda f, game=game: display_news_callback(f.result(), news_tab, game)
         )
 
+        # Bind mouse wheel event to news canvas for scrolling
+        news_canvas.bind_all("<MouseWheel>", lambda event: news_canvas.yview_scroll(int(-1*(event.delta/120)), "units"))
+
 def display_news_callback(news, news_tab, game):
     appid = game["appid"]
     if news:
-        # Create a frame to hold all the news entries
-        all_news_frame = ttk.Frame(news_tab)
-        all_news_frame.pack(padx=10, pady=10, fill="both", expand=True)
+        game_frame = ttk.Frame(inner_frame)
+        game_frame.pack(side="top", anchor="w", padx=10, pady=10, fill="x")
+
+        # Display game name
+        game_name_label = ttk.Label(game_frame, text=game["name"], font=("Arial", 12, "bold"))
+        game_name_label.pack(anchor="w", padx=10, pady=(0, 5))
+
+        # Create a subframe for news items
+        news_frame = ttk.Frame(game_frame)
+        news_frame.pack(anchor="w", padx=10)
 
         # Display news items in a list
         for item in news:
-            game_name_label = ttk.Label(all_news_frame, text=game["name"], font=("Arial", 12, "bold"))
-            game_name_label.pack()
-            news_title_label = ttk.Label(all_news_frame, text=item["title"], font=("Arial", 10, "bold"))
+            news_title_label = ttk.Label(news_frame, text=item["title"], font=("Arial", 10, "bold"), wraplength=600, justify="left")
             news_title_label.pack(anchor="w", padx=10, pady=5)
-            news_date_label = ttk.Label(all_news_frame, text=item["date"])
+            news_date_label = ttk.Label(news_frame, text=item["date"])
             news_date_label.pack(anchor="w", padx=10, pady=2)
-            news_content_label = ttk.Label(all_news_frame, text=item["contents"], wraplength=600, justify="left")
+            news_content_label = ttk.Label(news_frame, text=item["contents"], wraplength=600, justify="left")
             news_content_label.pack(anchor="w", padx=10, pady=5)
-            empty_line_label = ttk.Label(all_news_frame, text="")
+            empty_line_label = ttk.Label(news_frame, text="")
             empty_line_label.pack(anchor="w", padx=10, pady=5)
+        
+        # Update the scroll region of the canvas
+        inner_frame.update_idletasks()
+        news_canvas.config(scrollregion=news_canvas.bbox("all"))
+
     else:
         print(f"No news found for appid {appid}")
+
+def scroll_to_news_entry(event=None):
+    search_term = news_search_var.get().lower()
+
+    # Find the index of the first entry that matches the search term
+    for i, game in enumerate(games):
+        if search_term in game["name"].lower():
+            news_canvas.yview_moveto((i + 1) / len(games))
+            break
+
+# Bind the function to the search bar
+news_searchbar.bind("<Return>", scroll_to_news_entry)
 
 # Display news
 games = load_games_from_csv("owned_games.csv")

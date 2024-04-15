@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.5.1
+- Current State: Beta 0.5.5
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -14,14 +14,20 @@
 - Show achievement count
 
 ## ToDo
-### Unfinished (listed by prio)
+### Unfinished
 - Open achievements in custom window
 - Scrolling only works in active tab
-- Optimize Lightmode switch to transfer state to different tab
+- Separate code for better overview(?)
+- ~~Add "Lightmode" tab~~
+    - ~~Change to Lightmode~~
+    - Change background color
+    - Change other things (font, etc.)
+    - Tab placement rightside
+- Prevent Cursor from automatically tapping in searchbar
 - News feed
     - Make scrollable with mouse scroll
-    - Better UI
-    - Optimize searchbar (Jump to ~~and text inside disappears when typing~~)
+    - Better UI (fix HTML tags)
+    - ~~Optimize searchbar (Jump to and text inside disappears when typing~~)
     - ~~Add searchbar and lightmode toggle~~
     - ~~Fix Refresh button~~
     - ~~Show date/convert timestamp~~
