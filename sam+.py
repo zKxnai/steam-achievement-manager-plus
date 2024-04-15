@@ -12,11 +12,12 @@ from io import BytesIO
 from concurrent.futures import ThreadPoolExecutor
 
 # Define ThreadPoolExecutor with 10 threads
-executor = ThreadPoolExecutor(max_workers=10)
+achievements_executor = ThreadPoolExecutor(max_workers=10)
+news_executor = ThreadPoolExecutor(max_workers=5)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.5.5")
+main.title("Steam Achievement Manager+ 0.5.6")
 main.geometry("725x550")
 
 # Create a Notebook (tabbed layout)
@@ -60,7 +61,7 @@ container_frame.pack(side="top", fill="both")
 
 #Create game count frame
 played_games_frame = ttk.Frame(achievements_tab)
-played_games_frame.pack()
+played_games_frame.pack(padx=10, pady=10)
 
 #Create game count
 played_games_count = 0
@@ -224,62 +225,6 @@ info_label.pack(side="right", padx=10)
 def update_info_label(total_games):
     info_label.config(text=f"Total games: {total_games}")
 
-def display_games():
-    # Load games from CSV
-    games = load_games_from_csv("owned_games.csv")
-    sorted_games = sorted(games, key=lambda x: x["name"].lower())
-
-    # Create scrollable frame
-    achievements_canvas = tk.Canvas(achievements_tab)
-    scrollable_frame = ttk.Frame(achievements_canvas)
-    scrollbar = ttk.Scrollbar(achievements_canvas, orient="vertical", command=achievements_canvas.yview)
-
-    scrollable_frame.bind(
-        "<Configure>",
-        lambda e: achievements_canvas.configure(
-            scrollregion=achievements_canvas.bbox("all")
-        )
-    )
-
-    achievements_canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-    achievements_canvas.configure(yscrollcommand=scrollbar.set)
-
-    # Configure list layout
-    achievements_canvas.pack(side="left", fill="both", expand=True)
-    scrollbar.pack(side="right", fill="y")
-
-    # Enable mouse scroll
-    achievements_canvas.bind_all("<MouseWheel>", lambda event: on_mousewheel(event, achievements_canvas))
-
-    # Create game widgets
-    img_list = []  # List to store image objects
-    for i, game in enumerate(sorted_games):
-        name = game["name"]
-        appid = game["appid"]
-        img_url = game["img_icon_url"]
-
-        # Download images asynchronously
-        img_future = executor.submit(download_image, img_url)
-        img_future.add_done_callback(
-            lambda f, name=name, appid=appid, row=i, frame=scrollable_frame, img_list=img_list, total=len(sorted_games):
-            on_image_loaded(f.result(), name, appid, row, 0, frame, img_list) or (update_info_label(total) if len(img_list) == total else None)
-        )
-
-    # Define a function to scroll to the entry matching the search term
-    def scroll_to_entry(event=None):
-        search_term = search_var.get().lower()
-
-        # Find the index of the first entry that matches the search term
-        for i, game in enumerate(sorted_games):
-            if search_term in game["name"].lower() or search_term == str(game["appid"]):
-                achievements_canvas.yview_moveto(i / len(sorted_games))
-                break
-
-    # Bind the function to the search bar
-    searchbar.bind("<Return>", scroll_to_entry)
-
-    main.mainloop()
-
 # Function to open the executable in a hidden window
 def open_hidden(appid):
     global played_games_count
@@ -315,6 +260,9 @@ def fetch_game_news(appid):
     else:
         print(f"Failed to fetch news for appid {appid}")
 
+def fetch_news_async(appid):
+    return news_executor.submit(fetch_game_news, appid)
+
 # Create frame for lightmode switch and search bar in the news tab
 news_search_frame = ttk.Frame(news_tab)
 news_search_frame.pack(side="top", fill="x")
@@ -340,9 +288,6 @@ news_searchbar.bind("<FocusIn>", clear_news_placeholder)
 news_searchbar.bind("<FocusOut>", restore_news_placeholder)
 news_searchbar.pack(side=tk.LEFT, padx=10, pady=10)
 
-def fetch_news_async(appid):
-    return executor.submit(fetch_game_news, appid)
-
 # Create a frame to hold all the news entries
 all_news_frame = ttk.Frame(news_tab)
 all_news_frame.pack(padx=10, pady=10, fill="both", expand=True)
@@ -355,9 +300,6 @@ news_canvas.pack(side="left", fill="both", expand=True)
 news_scrollbar = ttk.Scrollbar(all_news_frame, orient="vertical", command=news_canvas.yview)
 news_scrollbar.pack(side="right", fill="y")
 news_canvas.configure(yscrollcommand=news_scrollbar.set)
-
-# Bind mouse wheel event to news canvas for scrolling
-news_canvas.bind_all("<MouseWheel>", lambda event: news_canvas.yview_scroll(int(-1*(event.delta/120)), "units"))
 
 # Create a frame to contain the news items
 inner_frame = ttk.Frame(news_canvas)
@@ -372,8 +314,8 @@ def display_news_async(news_tab, games):
             lambda f, game=game: display_news_callback(f.result(), news_tab, game)
         )
 
-        # Bind mouse wheel event to news canvas for scrolling
-        news_canvas.bind_all("<MouseWheel>", lambda event: news_canvas.yview_scroll(int(-1*(event.delta/120)), "units"))
+    # Bind mouse wheel event to news canvas for scrolling
+    news_canvas.bind_all("<MouseWheel>", lambda event: news_canvas.yview_scroll(int(-1*(event.delta/120)), "units"))
 
 def display_news_callback(news, news_tab, game):
     appid = game["appid"]
@@ -407,21 +349,84 @@ def display_news_callback(news, news_tab, game):
     else:
         print(f"No news found for appid {appid}")
 
+# Display news
+games = load_games_from_csv("owned_games.csv")
+display_news_async(news_tab, games)
+
 def scroll_to_news_entry(event=None):
     search_term = news_search_var.get().lower()
 
-    # Find the index of the first entry that matches the search term
-    for i, game in enumerate(games):
-        if search_term in game["name"].lower():
-            news_canvas.yview_moveto((i + 1) / len(games))
+    # Iterate over the news items to find a match for the search term
+    for game_frame in inner_frame.winfo_children():
+        game_name_label = game_frame.winfo_children()[0]  # First child is the game name label
+        game_name = game_name_label.cget("text").lower()
+
+        # Check if the search term matches the game name
+        if search_term in game_name:
+            # Get the position of the game frame relative to the canvas height
+            relative_y = game_frame.winfo_y() / news_canvas.winfo_height()
+            # Scroll to the position of the game frame
+            news_canvas.yview_moveto(relative_y)
             break
 
 # Bind the function to the search bar
 news_searchbar.bind("<Return>", scroll_to_news_entry)
 
-# Display news
-games = load_games_from_csv("owned_games.csv")
-display_news_async(news_tab, games)
+def display_games():
+    # Load games from CSV
+    games = load_games_from_csv("owned_games.csv")
+    sorted_games = sorted(games, key=lambda x: x["name"].lower())
+
+    # Create scrollable frame
+    achievements_canvas = tk.Canvas(achievements_tab)
+    scrollable_frame = ttk.Frame(achievements_canvas)
+    scrollbar = ttk.Scrollbar(achievements_canvas, orient="vertical", command=achievements_canvas.yview)
+
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: achievements_canvas.configure(
+            scrollregion=achievements_canvas.bbox("all")
+        )
+    )
+
+    achievements_canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+    achievements_canvas.configure(yscrollcommand=scrollbar.set)
+
+    # Configure list layout
+    achievements_canvas.pack(side="left", fill="both", expand=True)
+    scrollbar.pack(side="right", fill="y")
+
+    # Enable mouse scroll
+    achievements_canvas.bind_all("<MouseWheel>", lambda event: on_mousewheel(event, achievements_canvas))
+
+    # Create game widgets
+    img_list = []  # List to store image objects
+    for i, game in enumerate(sorted_games):
+        name = game["name"]
+        appid = game["appid"]
+        img_url = game["img_icon_url"]
+
+        # Download images asynchronously
+        img_future = achievements_executor.submit(download_image, img_url)
+        img_future.add_done_callback(
+            lambda f, name=name, appid=appid, row=i, frame=scrollable_frame, img_list=img_list, total=len(sorted_games):
+            on_image_loaded(f.result(), name, appid, row, 0, frame, img_list) or (update_info_label(total) if len(img_list) == total else None)
+        )
+
+    # Define a function to scroll to the entry matching the search term
+    def scroll_to_entry(event=None):
+        search_term = search_var.get().lower()
+
+        # Find the index of the first entry that matches the search term
+        for i, game in enumerate(sorted_games):
+            if search_term in game["name"].lower() or search_term == str(game["appid"]):
+                achievements_canvas.yview_moveto(i / len(sorted_games))
+                break
+
+    # Bind the function to the search bar
+    searchbar.bind("<Return>", scroll_to_entry)
+
+    main.mainloop()
 
 # Display games
 display_games()
