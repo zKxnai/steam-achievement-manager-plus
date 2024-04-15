@@ -17,17 +17,21 @@
 ### Unfinished (listed by prio)
 - Open achievements in custom window
 - Scrolling only works in active tab
+- Optimize Lightmode switch to transfer state to different tab
 - News feed
     - Make scrollable with mouse scroll
+    - Better UI
+    - Optimize searchbar (Jump to ~~and text inside disappears when typing~~)
+    - ~~Add searchbar and lightmode toggle~~
     - ~~Fix Refresh button~~
     - ~~Show date/convert timestamp~~
     - ~~Place Refresh button top right corner~~
-    - Better UI
     - ~~Load asynchronously~~
 - Observe game achievements (For games that gradually add more achievements)
     - Button right of Favorite button
     - Adds game to Observed games tab
     - Shows count of earned achievements, missing achievements and percentage of completion
+    - Add lightmode toggle
 - Optimize performance (Eliminate glitches while scrolling, etc.) (In separate file)
     - Increase FPS
     - Limit resource usage

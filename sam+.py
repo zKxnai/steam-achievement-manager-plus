@@ -10,14 +10,13 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from io import BytesIO
 from concurrent.futures import ThreadPoolExecutor
-from datetime import timezone
 
 # Define ThreadPoolExecutor with 10 threads
 executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.5.1")
+main.title("Steam Achievement Manager+ 0.5.2")
 main.geometry("725x550")
 
 # Create a Notebook (tabbed layout)
@@ -312,6 +311,38 @@ def fetch_game_news(appid):
         return news
     else:
         print(f"Failed to fetch news for appid {appid}")
+
+# Create frame for lightmode switch and search bar in the news tab
+news_search_frame = ttk.Frame(news_tab)
+news_search_frame.pack(side="top", fill="x")
+
+# Create lightmode switch in the news tab
+news_darkmode_frame = ttk.Frame(news_search_frame)
+news_darkmode_frame.pack(side="left")
+
+news_darkmode_switch = ttk.Checkbutton(news_darkmode_frame, text="Lightmode", style="Switch.TCheckbutton", command=sv_ttk.toggle_theme)
+news_darkmode_switch.pack(side="left", padx=10, pady=10)
+
+# Create search bar in the news tab
+news_searchbar_frame = ttk.Frame(news_search_frame)
+news_searchbar_frame.pack(side="left")
+news_search_var = tk.StringVar()
+news_placeholder = "Search News..."
+
+#Placeholder function
+def clear_news_placeholder(event=None):
+    if news_search_var.get() == news_placeholder:
+        news_searchbar.delete(0, tk.END)
+
+def restore_news_placeholder(event=None):
+    if news_search_var.get() == "":
+        news_searchbar.insert(0, news_placeholder)
+
+news_searchbar = ttk.Entry(news_searchbar_frame, textvariable=news_search_var, width=40)
+news_searchbar.insert(0, news_placeholder)
+news_searchbar.bind("<FocusIn>", clear_news_placeholder)
+news_searchbar.bind("<FocusOut>", restore_news_placeholder)
+news_searchbar.pack(side=tk.LEFT)
 
 def fetch_news_async(appid):
     return executor.submit(fetch_game_news, appid)
