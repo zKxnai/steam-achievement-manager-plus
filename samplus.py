@@ -4,6 +4,7 @@ import sv_ttk
 import appearance
 import news
 import achievements
+import api
 from tkinter import ttk
 
 # Main window
@@ -34,17 +35,20 @@ main.iconphoto(True, icon_image)
 # Change theme
 sv_ttk.set_theme("dark")
 
+# Pass .csv file
+games = api.load_games_from_csv("owned_games.csv")
+
 # Pass to appearance
 appearance.lightmode_switch(appearance_tab)
 
 # Pass to news
 news.news_search_frame(news_tab)
 news.all_news_frame(news_tab)
-news.display_news_async(news_tab)
+news.display_news_async(news_tab, games)
 news.exe_display_news(news_tab)
 
 # Pass to achievements
-achievements.container_frame(achievements_tab)
+achievements.containerframe(achievements_tab)
 achievements.played_games_frame(achievements_tab)
 achievements.display_games(achievements_tab)
 

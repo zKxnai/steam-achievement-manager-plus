@@ -78,16 +78,12 @@ def all_news_frame(news_tab):
 
 # Function to display news in the news tab
 def display_news_async(news_tab, games):
-    news_canvas = all_news_frame
     for game in games:
         appid = game["appid"]
         future_news = fetch_news_async(appid)
         future_news.add_done_callback(
             lambda f, game=game: display_news_callback(f.result(), news_tab, game)
         )
-
-    # Bind mouse wheel event to news canvas for scrolling
-    news_canvas.bind_all("<MouseWheel>", lambda event: news_canvas.yview_scroll(int(-1*(event.delta/120)), "units"))
 
 def display_news_callback(news, news_tab, game):
     inner_frame = all_news_frame
@@ -126,10 +122,10 @@ def display_news_callback(news, news_tab, game):
 # Display news
 games = api.load_games_from_csv("owned_games.csv")
 def exe_display_news(news_tab):
-    display_news_async(news_tab)
+    display_news_async(news_tab, games)
 
-# Scroll to news entry
 """
+# Scroll to news entry
 def scroll_to_news_entry(event=None):
     inner_frame = all_news_frame
     news_canvas = all_news_frame

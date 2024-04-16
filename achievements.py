@@ -10,8 +10,9 @@ from concurrent.futures import ThreadPoolExecutor
 # Define ThreadPoolExecutor with 10 threads
 achievements_executor = ThreadPoolExecutor(max_workers=10)
 
-def container_frame(achievements_tab):
+def containerframe(achievements_tab):
     # Create "main"frame for buttons
+    global container_frame
     container_frame = ttk.Frame(achievements_tab)
     container_frame.pack(side="top", fill="both")
 
@@ -27,14 +28,14 @@ def played_games_frame(achievements_tab):
     played_games_label = ttk.Label(played_games_frame, text=f"Played Games: {played_games_count}")
     played_games_label.pack(side="bottom")
 
-def searchbar_frame():
+def searchbar_frame(container_frame):
     # Create frame for search bar
-    searchbar_frame = ttk.Frame(container_frame)
-    searchbar_frame.pack(side="left")
+    searchbar_frame_widget = ttk.Frame(container_frame)
+    searchbar_frame_widget.pack(side="left")
     search_var = tk.StringVar()
     placeholder = "Enter AppID or Name..."
 
-    searchbar = ttk.Entry(searchbar_frame, textvariable=search_var, width=40)
+    searchbar = ttk.Entry(searchbar_frame_widget, textvariable=search_var, width=40)
     searchbar.insert(0, placeholder)
     searchbar.bind("<FocusIn>", clear_placeholder)
     searchbar.bind("<FocusOut>", restore_placeholder)
@@ -118,6 +119,7 @@ def pause_button_clicked(name, button):
 
 def info_frame():
     # Create widget for info
+    container_frame = containerframe
     info_frame = tk.Frame(container_frame)
     info_frame.pack(side="right")
     info_label = ttk.Label(info_frame, text="Loading game icons...")
@@ -126,8 +128,8 @@ def info_frame():
     return info_label
 
 def update_info_label(total_games):
-    info_label = info_frame
-    info_label.config(text=f"Total games: {total_games}")
+    info_label_widget = info_frame
+    info_label_widget.config(text=f"Total games: {total_games}")
 
 # Function to open the executable in a hidden window
 def open_hidden(appid):
@@ -200,5 +202,5 @@ def display_games(achievements_tab):
                 break
 
     # Bind the function to the search bar
-    searchbar = searchbar_frame
+    search_var, searchbar, placeholder = searchbar_frame(container_frame)
     searchbar.bind("<Return>", scroll_to_entry)
