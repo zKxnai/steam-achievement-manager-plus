@@ -1,5 +1,5 @@
 import tkinter as tk
-import samplus
+import achievements
 import requests
 import datetime
 from tkinter import ttk
@@ -124,7 +124,7 @@ def display_news_callback(news, news_tab, game):
         print(f"No news found for appid {appid}")
 
 # Display news
-games = samplus.load_games_from_csv("owned_games.csv")
+games = achievements.load_games_from_csv("owned_games.csv")
 def exe_display_news(news_tab):
     display_news_async(news_tab, games)
 
