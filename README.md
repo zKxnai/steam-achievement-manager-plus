@@ -26,7 +26,8 @@
 - News feed
     - Make scrollable with mouse scroll
     - Better UI (fix HTML tags)
-    - ~~Optimize searchbar (Jump to and text inside disappears when typing~~)
+    - Fix end  of list != end of scrollbar
+    - Optimize searchbar (Jump to ~~and text inside disappears when typing~~)
     - ~~Add searchbar and lightmode toggle~~
     - ~~Fix Refresh button~~
     - ~~Show date/convert timestamp~~

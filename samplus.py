@@ -6,6 +6,7 @@ import re
 import requests
 import subprocess
 import datetime
+import news
 from tkinter import ttk
 from PIL import Image, ImageTk
 from io import BytesIO
