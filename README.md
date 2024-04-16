@@ -15,7 +15,6 @@
 
 ## ToDo
 ### Unfinished
-- Scrolling only works in active tab
 - Separate code for better overview(?)
 - ~~Add "Lightmode" tab~~
     - ~~Change to Lightmode~~
@@ -23,6 +22,7 @@
     - Change other things (font, etc.)
     - Tab placement rightside
 - Prevent Cursor from automatically tapping in searchbar
+- Scrolling only works in active tab
 - News feed
     - Make scrollable with mouse scroll
     - Better UI (fix HTML tags)
