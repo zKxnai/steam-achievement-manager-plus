@@ -15,7 +15,6 @@
 
 ## ToDo
 ### Unfinished
-- Separate code for better overview(?)
 - ~~Add "Lightmode" tab~~
     - ~~Change to Lightmode~~
     - Change background color
@@ -65,3 +64,4 @@
 - ~~Show how many games are played~~
 - ~~Add Tab function:~~
 - ~~API Key fix~~
+- ~~Separate code for better overview~~
