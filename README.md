@@ -48,6 +48,7 @@
 - Only show game which count against game completion rate
 - Get every game listed (Mods counted as Games etc.)
 - Open achievements in custom window
+- Separate code for better overview
 - ~~Search for/Jump to game via name/AppID~~ with highlight
 
 ### Finished
@@ -64,4 +65,3 @@
 - ~~Show how many games are played~~
 - ~~Add Tab function:~~
 - ~~API Key fix~~
-- ~~Separate code for better overview~~
