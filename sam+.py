@@ -6,6 +6,7 @@ import re
 import requests
 import subprocess
 import datetime
+import appearance
 from tkinter import ttk
 from PIL import Image, ImageTk
 from io import BytesIO
@@ -17,7 +18,7 @@ news_executor = ThreadPoolExecutor(max_workers=5)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.5.6")
+main.title("Steam Achievement Manager+ 0.5.7")
 main.geometry("725x550")
 
 # Create a Notebook (tabbed layout)
@@ -26,13 +27,13 @@ notebook.pack(fill="both", expand=True)
 
 # Create frames for each tab
 achievements_tab = ttk.Frame(notebook)
-news_tab = ttk.Frame(notebook)
+#news_tab = ttk.Frame(notebook)
 observed_games_tab = ttk.Frame(notebook)
 appearance_tab = ttk.Frame(notebook)
 
 # Add tabs to the notebook
 notebook.add(achievements_tab, text='Achievements')
-notebook.add(news_tab, text='News')
+#notebook.add(news_tab, text='News')
 notebook.add(observed_games_tab, text='Observed Games')
 notebook.add(appearance_tab, text='Appearance')
 
@@ -43,13 +44,8 @@ main.iconphoto(True, icon_image)
 # Change theme
 sv_ttk.set_theme("dark")
 
-# Create frame for lightmode switch in the main window
-lightmode_frame = ttk.Frame(appearance_tab)
-lightmode_frame.pack(side="top", anchor="nw", padx=10, pady=10)
-
-# Create lightmode switch in the main window
-lightmode_switch = ttk.Checkbutton(lightmode_frame, text="Lightmode", style="Switch.TCheckbutton", command=sv_ttk.toggle_theme)
-lightmode_switch.pack(side="left")
+# Pass to appearance
+appearance.lightmode_switch(appearance_tab)
 
 # Define a custom style for the green color
 main_style = ttk.Style()
@@ -243,6 +239,8 @@ def close_hidden(name):
     played_games_label.config(text=f"Played Games: {played_games_count}")
     subprocess.Popen(f"start /MIN cmd /c taskkill /F /FI \"WindowTitle eq Steam Achievement Manager 7.0 | {name}\"", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
 
+# Temporarily deprecated
+"""
 # Function to fetch news for each game
 def fetch_game_news(appid):
     url = f"http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid={appid}&count=1&maxlength=500&format=json"
@@ -314,9 +312,6 @@ def display_news_async(news_tab, games):
             lambda f, game=game: display_news_callback(f.result(), news_tab, game)
         )
 
-    # Bind mouse wheel event to news canvas for scrolling
-    news_canvas.bind_all("<MouseWheel>", lambda event: news_canvas.yview_scroll(int(-1*(event.delta/120)), "units"))
-
 def display_news_callback(news, news_tab, game):
     appid = game["appid"]
     if news:
@@ -371,6 +366,7 @@ def scroll_to_news_entry(event=None):
 
 # Bind the function to the search bar
 news_searchbar.bind("<Return>", scroll_to_news_entry)
+"""
 
 def display_games():
     # Load games from CSV
