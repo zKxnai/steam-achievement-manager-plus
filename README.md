@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.5.6
+- Current State: Beta 0.5.8
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -15,6 +15,23 @@
 
 ## ToDo
 ### Unfinished
+- Observe game achievements (For games that gradually add more achievements)
+    - Button right of Favorite button
+    - Adds game to Observed games tab
+    - Shows count of earned achievements, missing achievements and percentage of completion
+    - Add lightmode toggle
+- Optimize performance (Eliminate glitches while scrolling, etc.) (In separate file)
+    - Increase FPS
+    - Limit resource usage
+- Show achievementcount of game (XX of XX)
+- Favorite games
+    - Heart/Star button right of achievement button
+    - Shown at the top of games list
+- Only show game which count against game completion rate
+- Get every game listed (Mods counted as Games etc.)
+- Open achievements in custom window
+- Separate code for better overview
+- ~~Search for/Jump to game via name/AppID~~ with highlight
 - ~~Add "Lightmode" tab~~
     - ~~Change to Lightmode~~
     - Change background color
@@ -33,23 +50,6 @@
     - ~~Show date/convert timestamp~~
     - ~~Place Refresh button top right corner~~
     - ~~Load asynchronously~~
-- Observe game achievements (For games that gradually add more achievements)
-    - Button right of Favorite button
-    - Adds game to Observed games tab
-    - Shows count of earned achievements, missing achievements and percentage of completion
-    - Add lightmode toggle
-- Optimize performance (Eliminate glitches while scrolling, etc.) (In separate file)
-    - Increase FPS
-    - Limit resource usage
-- Show achievementcount of game (XX of XX)
-- Favorite games
-    - Heart/Star button right of achievement button
-    - Shown at the top of games list
-- Only show game which count against game completion rate
-- Get every game listed (Mods counted as Games etc.)
-- Open achievements in custom window
-- Separate code for better overview
-- ~~Search for/Jump to game via name/AppID~~ with highlight
 
 ### Finished
 - ~~Load icons in background~~
