@@ -44,7 +44,6 @@
     - Better UI (fix HTML tags)
     - Fix end  of list != end of scrollbar
     - Optimize searchbar (Jump to ~~and text inside disappears when typing~~)
-    - Fix line 53 in test.py
     - ~~Add searchbar and lightmode toggle~~
     - ~~Fix Refresh button~~
     - ~~Show date/convert timestamp~~

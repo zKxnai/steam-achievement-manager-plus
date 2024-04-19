@@ -12,7 +12,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 # Define ThreadPoolExecutor with 10 threads
 achievements_executor = ThreadPoolExecutor(max_workers=10)
-news_executor = ThreadPoolExecutor(max_workers=5)
+#news_executor = ThreadPoolExecutor(max_workers=5)
 
 # Main window
 main = tk.Tk()

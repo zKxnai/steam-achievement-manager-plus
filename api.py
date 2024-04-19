@@ -2,6 +2,11 @@ import os
 import re
 import csv
 import requests
+import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor
+
+# Define ThreadPoolExecutor with 5 threads
+achievementcount_executor = ThreadPoolExecutor(max_workers=5)
 
 # Get Steam user ID
 def get_steam_id():
@@ -9,7 +14,6 @@ def get_steam_id():
     if not os.path.isfile(steam_config_path):
         print("Steam user config not found.")
         return None
-    
     try:
         with open(steam_config_path, 'r') as f:
             config_data = f.read()
@@ -59,5 +63,66 @@ if response.status_code == 200:
             writer.writerow({"appid": appid, "name": name, "img_icon_url": img_icon_url})
 
     print("Owned games data exported to 'owned_games.csv' successfully.")
+
 else:
     print("Failed to fetch data.")
+
+"""
+# Get achievements
+def get_achievement_count(appid, API_key, steam_id):
+    url = f"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={appid}&key={API_key}&steamid={steam_id}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        if 'playerstats' in data:
+            achievements = data['playerstats'].get('achievements', [])
+            if achievements:
+                unlocked_count = sum(1 for achievement in achievements if achievement.get('achieved', 0) == 1)
+                total_count = len(achievements)
+                return unlocked_count, total_count
+            else:
+                print(f"No achievements found for appid {appid}")
+                return 0, 0  # Return 0 for both unlocked and total count when no achievements found
+        else:
+            print(f"No player stats found for appid {appid}")
+            return None, None
+    else:
+        print(f"Failed to fetch player achievements for appid {appid}")
+        return None, None
+
+def get_achievement_counts_from_csv(csv_filename, API_key, steam_id):
+    with open(csv_filename, "r", newline="", encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+        achievement_counts = []
+        for row in reader:
+            appid = row["appid"]
+            name = row["name"]
+            unlocked_count, total_count = get_achievement_count(appid, API_key, steam_id)
+            if unlocked_count is not None and total_count is not None:
+                achievement_counts.append({"appid": appid, "name": name, "unlocked_count": unlocked_count, "total_count": total_count})
+            else:
+                print(f"Failed to fetch achievement counts for {name} (appid: {appid})")
+        return achievement_counts
+
+def get_achievement_counts_from_csv_background(csv_filename, API_key, steam_id):
+    with open(csv_filename, "r", newline="", encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+        achievement_counts = []
+        with ThreadPoolExecutor() as executor:
+            futures = {executor.submit(get_achievement_count, row["appid"], API_key, steam_id): row for row in reader}
+            for future in concurrent.futures.as_completed(futures):
+                row = futures[future]
+                appid = row["appid"]
+                name = row["name"]
+                try:
+                    unlocked_count, total_count = future.result()
+                    if unlocked_count is not None and total_count is not None:
+                        achievement_counts.append({"appid": appid, "name": name, "unlocked_count": unlocked_count, "total_count": total_count})
+                    else:
+                        print(f"Failed to fetch achievement counts for {name} (appid: {appid})")
+                except Exception as e:
+                    print(f"Error fetching achievement counts for {name} (appid: {appid}): {e}")
+        return achievement_counts
+
+achievement_counts = get_achievement_counts_from_csv_background("owned_games.csv", API_key, steam_id)
+"""
