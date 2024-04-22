@@ -17,7 +17,7 @@ achievements_executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.5.11")
+main.title("Steam Achievement Manager+ 0.6")
 main.geometry("954x582")
 
 # Create a Notebook (tabbed layout)
@@ -53,17 +53,11 @@ appearance.lightmode_switch(appearance_tab)
 # Pass to news
 news.newsinfolabel(news_tab)
 
-# Pass to observed
-
-
-# Pass to achievements
-
-
 # Define a custom style for the green color
 main_style = ttk.Style()
 main_style.configure("Green.TButton", foreground="green")
 
-############################################################
+##############################achievements.py(?)##############################
 
 # Create "main"frame for buttons
 container_frame = ttk.Frame(achievements_tab)
@@ -152,7 +146,7 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
 
         observe_button_img = tk.PhotoImage(file="Resources/eye_g.png")
-        observe_button = ttk.Button(frame, text="Observe", image=observe_button_img, compound="left")
+        observe_button = ttk.Button(frame, text="Observe", image=observe_button_img, compound="left", command=lambda name_label=name: observed.add_observed_game(name_label, observed_games_tab))
         observe_button.image = observe_button_img
         observe_button.grid(row=row, column=5, padx=10, pady=5, sticky="e")
 

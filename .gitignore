@@ -1,6 +1,7 @@
 .git
 *.csv
 *.psd
+*.txt
 Steam_icon_logo.svg.png
 test.py
 trophy.png
