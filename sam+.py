@@ -6,6 +6,7 @@ import subprocess
 import appearance
 import api
 import news
+import observed
 from tkinter import ttk
 from PIL import Image, ImageTk
 from io import BytesIO
@@ -16,8 +17,8 @@ achievements_executor = ThreadPoolExecutor(max_workers=10)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.5.10")
-main.geometry("725x550")
+main.title("Steam Achievement Manager+ 0.5.11")
+main.geometry("954x582")
 
 # Create a Notebook (tabbed layout)
 notebook = ttk.Notebook(main)
@@ -51,6 +52,12 @@ appearance.lightmode_switch(appearance_tab)
 
 # Pass to news
 news.newsinfolabel(news_tab)
+
+# Pass to observed
+
+
+# Pass to achievements
+
 
 # Define a custom style for the green color
 main_style = ttk.Style()
@@ -143,6 +150,16 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda appid=appid: open_visible(appid))
         achievement_button.image = achievement_button_img
         achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
+
+        observe_button_img = tk.PhotoImage(file="Resources/eye_g.png")
+        observe_button = ttk.Button(frame, text="Observe", image=observe_button_img, compound="left")
+        observe_button.image = observe_button_img
+        observe_button.grid(row=row, column=5, padx=10, pady=5, sticky="e")
+
+        favorite_button_img = tk.PhotoImage(file="Resources/star_g.png")
+        favorite_button = ttk.Button(frame, text="Favorite", image = favorite_button_img, compound="left")
+        favorite_button.image = favorite_button_img
+        favorite_button.grid(row=row, column=6, padx=10, pady=5, sticky="e")
 
         # Update button states when clicked
         play_button.config(command=lambda appid=appid, button=play_button: play_button_clicked(appid, button))
