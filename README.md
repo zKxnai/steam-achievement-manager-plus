@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.5.9
+- Current State: Beta 0.5.10
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -24,6 +24,7 @@
     - Increase FPS
     - Limit resource usage
 - Show achievementcount of game (XX of XX)
+    - Placeholder (Loading achievements...) for background loading, update when fetched
 - Favorite games
     - Heart/Star button right of achievement button
     - Shown at the top of games list

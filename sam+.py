@@ -5,6 +5,7 @@ import requests
 import subprocess
 import appearance
 import api
+import news
 from tkinter import ttk
 from PIL import Image, ImageTk
 from io import BytesIO
@@ -12,11 +13,10 @@ from concurrent.futures import ThreadPoolExecutor
 
 # Define ThreadPoolExecutor with 10 threads
 achievements_executor = ThreadPoolExecutor(max_workers=10)
-#news_executor = ThreadPoolExecutor(max_workers=5)
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.5.9")
+main.title("Steam Achievement Manager+ 0.5.10")
 main.geometry("725x550")
 
 # Create a Notebook (tabbed layout)
@@ -39,11 +39,18 @@ notebook.add(appearance_tab, text='Appearance')
 icon_image = tk.PhotoImage(file="Resources/SAM+ Logo.png")
 main.iconphoto(True, icon_image)
 
+# Create "main"frame for buttons
+container_frame = ttk.Frame(achievements_tab)
+container_frame.pack(side="top", fill="both")
+
 # Change theme
 sv_ttk.set_theme("dark")
 
 # Pass to appearance
 appearance.lightmode_switch(appearance_tab)
+
+# Pass to news
+news.newsinfolabel(news_tab)
 
 # Define a custom style for the green color
 main_style = ttk.Style()
@@ -179,18 +186,6 @@ def close_hidden(name):
     played_games_count -= 1
     played_games_label.config(text=f"Played Games: {played_games_count}")
     subprocess.Popen(f"start /MIN cmd /c taskkill /F /FI \"WindowTitle eq Steam Achievement Manager 7.0 | {name}\"", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
-
-############################################################
-
-# Temporarily deprecated
-news_info = ttk.Label(news_tab, text="Development temporarily paused")
-news_info.pack(side="top")
-
-"""
-news.py
-"""
-
-############################################################
 
 def display_games():
     # Load games from CSV
