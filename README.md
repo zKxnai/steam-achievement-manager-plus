@@ -9,8 +9,7 @@
 - Gain playtime without starting the game
 - Updated UI and look
 - News feed
-- Favorite games to keep track
-- Tabs (Gameslist, News, Observation)
+- Tabs (Achievements, News, Observed Games)
 - Show achievement count
 
 ## ToDo

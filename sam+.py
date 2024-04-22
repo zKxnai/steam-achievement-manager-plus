@@ -150,11 +150,6 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         observe_button.image = observe_button_img
         observe_button.grid(row=row, column=5, padx=10, pady=5, sticky="e")
 
-        favorite_button_img = tk.PhotoImage(file="Resources/star_g.png")
-        favorite_button = ttk.Button(frame, text="Favorite", image = favorite_button_img, compound="left")
-        favorite_button.image = favorite_button_img
-        favorite_button.grid(row=row, column=6, padx=10, pady=5, sticky="e")
-
         # Update button states when clicked
         play_button.config(command=lambda appid=appid, button=play_button: play_button_clicked(appid, button))
         pause_button.config(command=lambda name=name, button=play_button: pause_button_clicked(name, button))
