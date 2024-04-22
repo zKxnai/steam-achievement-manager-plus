@@ -20,6 +20,11 @@
     - Load icons
     - Saves observed games
     - Shows count of earned achievements, missing achievements and percentage of completion
+- ~~Add "Lightmode" tab~~
+    - ~~Change to Lightmode~~
+    - Change background color
+    - Change other things (font, etc.)
+    - Tab placement rightside
 - Optimize performance (Eliminate glitches while scrolling, etc.) (In separate file)
     - Increase FPS
     - Limit resource usage
@@ -32,14 +37,9 @@
 - Get every game listed (Mods counted as Games etc.)
 - Open achievements in custom window
 - Separate code for better overview
-- ~~Search for/Jump to game via name/AppID~~ with highlight
-- ~~Add "Lightmode" tab~~
-    - ~~Change to Lightmode~~
-    - Change background color
-    - Change other things (font, etc.)
-    - Tab placement rightside
 - Prevent Cursor from automatically tapping in searchbar
 - Scrolling only works in active tab
+- ~~Search for/Jump to game via name/AppID~~ with highlight
 - News feed
     - Make scrollable with mouse scroll
     - Better UI (fix HTML tags)
