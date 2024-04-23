@@ -18,7 +18,7 @@ achievements_executor = ThreadPoolExecutor(max_workers=10)
 # Main window
 main = tk.Tk()
 main.title("Steam Achievement Manager+ 0.6")
-main.geometry("954x582")
+main.geometry("843x600")
 
 # Create a Notebook (tabbed layout)
 notebook = ttk.Notebook(main)
