@@ -20,16 +20,10 @@
     - Load icons
     - Saves observed games
     - Shows count of earned achievements, missing achievements and percentage of completion
-- ~~Add "Lightmode" tab~~
-    - ~~Change to Lightmode~~
-    - Change background color
-    - Change other things (font, etc.)
-    - Tab placement rightside
+    - Placeholder (Loading achievements...) for background loading, update when fetched
 - Optimize performance (Eliminate glitches while scrolling, etc.) (In separate file)
     - Increase FPS
     - Limit resource usage
-- Show achievementcount of game (XX of XX)
-    - Placeholder (Loading achievements...) for background loading, update when fetched
 - Favorite games
     - Heart/Star button right of achievement button
     - Shown at the top of games list
@@ -65,3 +59,8 @@
 - ~~Show how many games are played~~
 - ~~Add Tab function:~~
 - ~~API Key fix~~
+- ~~Add "Lightmode" tab~~(Impossible due to selected theme)
+    - ~~Change to Lightmode~~
+    - ~~Change background color~~
+    - ~~Change other things (font, etc.)~~
+    - ~~Tab placement rightside~~
