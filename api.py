@@ -2,7 +2,6 @@ import os
 import re
 import csv
 import requests
-import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor
 
 # Define ThreadPoolExecutor with 5 threads
