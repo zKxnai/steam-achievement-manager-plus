@@ -1,13 +1,13 @@
 .git
+__pycache__
 *.csv
 *.psd
 *.txt
 Steam_icon_logo.svg.png
-test.py
 trophy.png
 play.png
 pause.png
 eye.png
 star.png
-__pycache__
 sam+.py
+test.py
