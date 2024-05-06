@@ -9,4 +9,4 @@ def lightmode_switch(appearance_tab):
 
     # Create lightmode switch in the main window
     lightmode_switch = ttk.Checkbutton(lightmode_frame, text="Lightmode", style="Switch.TCheckbutton", command=sv_ttk.toggle_theme)
-    lightmode_switch.pack(side="left")
+    lightmode_switch.pack(side="left", padx=10, pady=10)
