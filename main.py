@@ -1,10 +1,10 @@
 import tkinter as tk
 import sv_ttk
-import news
-import appearance
-import api
-import observed
 import achievements
+import api
+import appearance
+import news
+import observed
 from tkinter import ttk
 
 # Main window
@@ -37,10 +37,6 @@ main.iconphoto(True, icon_image)
 # Change theme
 sv_ttk.set_theme("dark")
 
-# Create a custom style
-main.style = ttk.Style()
-main.style.configure("Title.TLabel", font=("Helvetica", 15, "bold underline"))
-
 # Pass to news
 news.newsinfolabel(news_tab)
 
@@ -50,11 +46,12 @@ appearance.lightmode_switch(appearance_tab)
 # Pass to observed
 observed.obserevedinfolabel(observed_games_tab)
 
-##### Landing page ########
+# Creating landing page
 landing_page_frame = ttk.Frame(landing_tab)
 landing_page_frame.grid(row=0, column=0, sticky="w", padx=10, pady=10)
 
-landing_page_label = ttk.Label(landing_page_frame, text="Welcome to SAM+!", style="Title.TLabel")
+landing_page_label = ttk.Label(landing_page_frame, text="Welcome to SAM+!")
+landing_page_label.configure(font=("Helvetica", 15, "bold underline"))
 landing_page_label.grid(row=0, column=0, sticky="w", padx=10, pady=10)
 
 landing_page_text = ttk.Label(landing_page_frame, text="Choose one of the tabs above to continue.")
