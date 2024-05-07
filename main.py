@@ -46,6 +46,10 @@ appearance.lightmode_switch(appearance_tab)
 # Pass to observed
 observed.obserevedinfolabel(observed_games_tab)
 
+# Pass to achievements
+achievements.mainframe(achievements_tab)
+
+
 # Creating landing page
 landing_page_frame = ttk.Frame(landing_tab)
 landing_page_frame.grid(row=0, column=0, sticky="w", padx=10, pady=10)
