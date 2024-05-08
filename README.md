@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.6.2
+- Current State: Beta 0.6.3
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -15,8 +15,10 @@
 ## ToDo
 ### Unfinished
 
-**!!!Create Landing Page!!!**
+**~~!!!Create Landing Page!!!~~**
 - Fix implementation of achievements tab etc.
+    - Fix Icon loading
+    - Fix "Playing..." in green
 
 - Observe game achievements (For games that gradually add more achievements)
     - ~~Button left of Favorite button~~
