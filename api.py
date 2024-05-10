@@ -66,6 +66,33 @@ if response.status_code == 200:
 else:
     print("Failed to fetch data.")
 
+def get_latest_news(appid):
+    url = f"https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid={appid}&count=1&maxlength=300&format=json"
+    response = requests.get(url)
+    if response.status_code == 200:
+        news = response.json().get("appnews", {}).get("newsitems", [])
+        if news:
+            latest_news = news[0]
+            return latest_news
+    return None
+
+def get_news_for_all_games(csv_file):
+    games_news = []
+    with open(csv_file, "r", newline="", encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            appid = row["appid"]
+            latest_news = get_latest_news(appid)
+            if latest_news:
+                game_news = {
+                    "appid": appid,
+                    "title": latest_news.get("title", ""),
+                    "date": latest_news.get("date", ""),
+                    "contents": latest_news.get("contents", "")
+                }
+                games_news.append(game_news)
+    return games_news
+
 """
 # Get achievements
 url = f"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={appid}&key={API_key}&steamid={steam_id}"

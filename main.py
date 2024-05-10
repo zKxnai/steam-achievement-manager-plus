@@ -9,7 +9,7 @@ from tkinter import ttk
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.6.3")
+main.title("Steam Achievement Manager+ 0.6.4")
 main.geometry("843x600")
 
 # Create a Notebook (tabbed layout)
@@ -69,7 +69,7 @@ achievements.mainframe(achievements_tab)
 achievements.display_games(achievements_tab)
 
 # Pass to news
-news.newsinfolabel(news_tab)
+news.display_news(news_tab)
 
 # Pass to observed
 observed.obserevedinfolabel(observed_games_tab)
