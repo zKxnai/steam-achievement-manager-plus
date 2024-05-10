@@ -16,9 +16,9 @@
 ### Unfinished
 
 **~~!!!Create Landing Page!!!~~**
-- Fix implementation of achievements tab etc.
-    - Fix Icon loading
-    - Fix "Playing..." in green
+- ~~Fix implementation of achievements tab~~
+    - ~~Fix Icon loading~~
+    - ~~Fix "Playing..." in green~~
 
 - Observe game achievements (For games that gradually add more achievements)
     - ~~Button left of Favorite button~~

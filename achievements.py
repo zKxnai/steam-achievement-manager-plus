@@ -89,6 +89,7 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         img_tk = ImageTk.PhotoImage(img)
         img_list.append(img_tk)
         icon_label = tk.Label(frame, image=img_tk)
+        icon_label.image = img_tk  # Keep a reference to the image
         icon_label.grid(row=row, column=0, padx=10, pady=5, sticky="w")
         name_label = tk.Label(frame, text=name)
         name_label.grid(row=row, column=1, padx=10, pady=5, sticky="w")
