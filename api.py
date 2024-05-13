@@ -2,10 +2,15 @@ import os
 import re
 import csv
 import requests
-from concurrent.futures import ThreadPoolExecutor
 
-# Define ThreadPoolExecutor with 5 threads
-achievementcount_executor = ThreadPoolExecutor(max_workers=5)
+# Display games in frame
+def load_games_from_csv(csv_file):
+    games = []
+    with open(csv_file, "r", newline="", encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            games.append(row)
+    return games
 
 # Get Steam user ID
 def get_steam_id():
@@ -67,7 +72,7 @@ else:
     print("Failed to fetch data.")
 
 def get_latest_news(appid):
-    url = f"https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid={appid}&count=1&maxlength=300&format=json"
+    url = f"https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid={appid}&count=1&maxlength=750&format=json"
     response = requests.get(url)
     if response.status_code == 200:
         news = response.json().get("appnews", {}).get("newsitems", [])

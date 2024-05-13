@@ -1,5 +1,4 @@
 import tkinter as tk
-import sv_ttk
 import achievements
 import api
 import appearance
@@ -9,7 +8,7 @@ from tkinter import ttk
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.6.4")
+main.title("Steam Achievement Manager+ 0.6.4.1")
 main.geometry("843x600")
 
 # Create a Notebook (tabbed layout)
@@ -35,7 +34,7 @@ icon_image = tk.PhotoImage(file="Resources/SAM+ Logo.png")
 main.iconphoto(True, icon_image)
 
 # Change theme
-sv_ttk.set_theme("dark")
+appearance.set_default_theme()
 
 # Define a custom style for the green "Playing..." button
 button_style = ttk.Style()
@@ -58,7 +57,7 @@ landing_page_text_achievements.grid(row=2, column=0, sticky="w", padx=10, pady=1
 landing_page_text_news = ttk.Label(landing_page_frame, text="- News: Shows you the latest news released for every owned game.")
 landing_page_text_news.grid(row=3, column=0, sticky="w", padx=10, pady=10)
 
-landing_page_text_observed = ttk.Label(landing_page_frame, text="- Observed Games: Let's you view your observed games.")
+landing_page_text_observed = ttk.Label(landing_page_frame, text="- Observed Games: Lets you view your observed games.")
 landing_page_text_observed.grid(row=4, column=0, sticky="w", padx=10, pady=10)
 
 landing_page_text_appearance = ttk.Label(landing_page_frame, text="- Appearance: Change the appearance of SAM+.")

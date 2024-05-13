@@ -4,7 +4,7 @@ import csv
 from tkinter import ttk
 from concurrent.futures import ThreadPoolExecutor
 from api import get_latest_news
-from achievements import load_games_from_csv
+from api import load_games_from_csv
 
 # Define ThreadPoolExecutor with 5 threads
 news_executor = ThreadPoolExecutor(max_workers=5)

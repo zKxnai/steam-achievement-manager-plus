@@ -2,6 +2,9 @@ import tkinter as tk
 import sv_ttk
 from tkinter import ttk
 
+def set_default_theme():
+    sv_ttk.set_theme("dark")
+
 def lightmode_switch(appearance_tab):
     # Create frame for lightmode switch in the main window
     lightmode_frame = ttk.Frame(appearance_tab)

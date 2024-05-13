@@ -6,6 +6,7 @@ from tkinter import ttk
 from io import BytesIO
 from PIL import Image, ImageTk
 from concurrent.futures import ThreadPoolExecutor
+from api import load_games_from_csv
 
 # Define ThreadPoolExecutor with 10 threads
 achievements_executor = ThreadPoolExecutor(max_workers=10)
@@ -57,15 +58,6 @@ def mainframe(achievements_tab):
     info_label = ttk.Label(info_frame, text="Loading game icons...")
     info_label.pack(side="right", padx=10)
 
-# Display games in frame
-def load_games_from_csv(csv_file):
-    games = []
-    with open(csv_file, "r", newline="", encoding="utf-8") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            games.append(row)
-    return games
-
 def resize_image(image, size):
     return image.resize(size)
 
@@ -109,15 +101,11 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda appid=appid: open_visible(appid))
         achievement_button.image = achievement_button_img
         achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
-        """
-        observe_button_img = tk.PhotoImage(file="Resources/eye_g.png")
-        observe_button = ttk.Button(frame, text="Observe", image=observe_button_img, compound="left", command=lambda name_label=name: observed.add_observed_game(name_label, observed_games_tab))
-        observe_button.image = observe_button_img
-        observe_button.grid(row=row, column=5, padx=10, pady=5, sticky="e")
-        """
+
         # Update button states when clicked
         play_button.config(command=lambda appid=appid, button=play_button: play_button_clicked(appid, button))
         pause_button.config(command=lambda name=name, button=play_button: pause_button_clicked(name, button))
+
     else:
         print(f"Skipping game '{name}' due to missing or invalid image.")
 
