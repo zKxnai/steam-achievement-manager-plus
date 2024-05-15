@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.6.4.1
+- Current State: Beta 0.6.5
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -15,11 +15,17 @@
 ## ToDo
 ### Unfinished
 
-**~~!!!Create Landing Page!!!~~**
-- ~~Fix implementation of achievements tab~~
-    - ~~Fix Icon loading~~
-    - ~~Fix "Playing..." in green~~
-
+- Fix scrolling in achievements tab after implementation in news tab
+- News feed
+    - ~~Make scrollable with mouse scroll~~
+    - Better UI (fix HTML tags)
+    - ~~Fix unlimited loading of zup s!~~
+    - Optimize searchbar (Jump to and text inside disappears when typing)
+    - Add searchbar
+    - ~~Fix Refresh button~~
+    - ~~Show date/convert timestamp~~
+    - ~~Place Refresh button top right corner~~
+    - ~~Load asynchronously~~
 - Observe game achievements (For games that gradually add more achievements)
     - ~~Button left of Favorite button~~
     - ~~Adds game to Observed games tab~~
@@ -31,26 +37,12 @@
 - Optimize performance (Eliminate glitches while scrolling, etc.) (In separate file)
     - Increase FPS
     - Limit resource usage
-- Favorite games
-    - Heart/Star button right of achievement button
-    - Shown at the top of games list
 - Only show game which count against game completion rate
 - Get every game listed (Mods counted as Games etc.)
 - Open achievements in custom window
-- Separate code for better overview
 - Prevent Cursor from automatically tapping in searchbar
 - Scrolling only works in active tab
 - ~~Search for/Jump to game via name/AppID~~ with highlight
-- News feed
-    - Make scrollable with mouse scroll
-    - Better UI (fix HTML tags)
-    - Fix unlimited loading of zup s!
-    - Optimize searchbar (Jump to and text inside disappears when typing)
-    - ~~Add searchbar and lightmode toggle~~
-    - ~~Fix Refresh button~~
-    - Show date/convert timestamp
-    - ~~Place Refresh button top right corner~~
-    - Load asynchronously
 
 ### Finished
 - ~~Load icons in background~~
@@ -71,3 +63,11 @@
     - ~~Change background color~~
     - ~~Change other things (font, etc.)~~
     - ~~Tab placement rightside~~
+**~~!!!Create Landing Page!!!~~**
+- ~~Fix implementation of achievements tab~~
+    - ~~Fix Icon loading~~
+    - ~~Fix "Playing..." in green~~
+- ~~Favorite games~~ (Can be done with observing)
+    - ~~Heart/Star button right of achievement button~~
+    - ~~Shown at the top of games list~~
+- ~~Separate code for better overview~~
