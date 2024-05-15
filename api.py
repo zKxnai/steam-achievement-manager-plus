@@ -71,6 +71,7 @@ if response.status_code == 200:
 else:
     print("Failed to fetch data.")
 
+# Fetch latest news entry from game
 def get_latest_news(appid):
     url = f"https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid={appid}&count=1&maxlength=750&format=json"
     response = requests.get(url)
@@ -80,23 +81,6 @@ def get_latest_news(appid):
             latest_news = news[0]
             return latest_news
     return None
-
-def get_news_for_all_games(csv_file):
-    games_news = []
-    with open(csv_file, "r", newline="", encoding="utf-8") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            appid = row["appid"]
-            latest_news = get_latest_news(appid)
-            if latest_news:
-                game_news = {
-                    "appid": appid,
-                    "title": latest_news.get("title", ""),
-                    "date": latest_news.get("date", ""),
-                    "contents": latest_news.get("contents", "")
-                }
-                games_news.append(game_news)
-    return games_news
 
 """
 # Get achievements
