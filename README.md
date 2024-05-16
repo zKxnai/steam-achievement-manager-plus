@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.6.5
+- Current State: Beta 0.6.5.1
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -15,7 +15,6 @@
 ## ToDo
 ### Unfinished
 
-- Fix scrolling in achievements tab after implementation in news tab
 - News feed
     - ~~Make scrollable with mouse scroll~~
     - Better UI (fix HTML tags)
@@ -71,3 +70,4 @@
     - ~~Heart/Star button right of achievement button~~
     - ~~Shown at the top of games list~~
 - ~~Separate code for better overview~~
+- ~~Fix scrolling in achievements tab after implementation in news tab~~

@@ -1,4 +1,5 @@
 import tkinter as tk
+import datetime
 import csv
 import requests
 import subprocess
@@ -11,17 +12,58 @@ from api import load_games_from_csv
 # Define ThreadPoolExecutor with 10 threads
 achievements_executor = ThreadPoolExecutor(max_workers=10)
 
+class ScrollableFrame(ttk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+        
+        self.canvas = tk.Canvas(self)
+        self.scrollbar = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = ttk.Frame(self.canvas)
+
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion=self.canvas.bbox("all")
+            )
+        )
+
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.canvas.pack(side="left", fill="both", expand=True)
+        self.scrollbar.pack(side="right", fill="y")
+
+        # Bind mouse wheel events when the mouse enters and leaves the canvas
+        self.canvas.bind("<Enter>", self._bind_mouse_wheel)
+        self.canvas.bind("<Leave>", self._unbind_mouse_wheel)
+
+    def _bind_mouse_wheel(self, event):
+        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)  # For Windows and MacOS
+        self.canvas.bind_all("<Button-4>", self._on_mousewheel)    # For Linux
+        self.canvas.bind_all("<Button-5>", self._on_mousewheel)    # For Linux
+
+    def _unbind_mouse_wheel(self, event):
+        self.canvas.unbind_all("<MouseWheel>")
+        self.canvas.unbind_all("<Button-4>")
+        self.canvas.unbind_all("<Button-5>")
+
+    def _on_mousewheel(self, event):
+        if event.num == 5 or event.delta == -120:
+            self.canvas.yview_scroll(1, "units")
+        elif event.num == 4 or event.delta == 120:
+            self.canvas.yview_scroll(-1, "units")
+
 def mainframe(achievements_tab):
-    #Create main frame for achievements content
+    # Create main frame for achievements content
     global main_frame
     main_frame = ttk.Frame(achievements_tab)
     main_frame.pack(side="top", fill="both")
 
-    #Create game count frame
+    # Create game count frame
     played_games_frame = ttk.Frame(achievements_tab)
     played_games_frame.pack(padx=10, pady=10)
 
-    #Create game count
+    # Create game count
     global played_games_count
     played_games_count = 0
     global played_games_label
@@ -35,7 +77,7 @@ def mainframe(achievements_tab):
     search_var = tk.StringVar()
     placeholder = "Enter AppID or Name..."
 
-    #Placeholder function
+    # Placeholder function
     def clear_placeholder(event=None):
         if search_var.get() == placeholder:
             searchbar.delete(0, tk.END)
@@ -70,9 +112,6 @@ def download_image(url):
             print(f"Failed to download image from {url}: {response.status_code}")
     except Exception as e:
         print(f"Error downloading image from {url}: {e}")
-
-def on_mousewheel(event, achievements_canvas):
-    achievements_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
 
 def on_image_loaded(result, name, appid, row, col, frame, img_list):
     img = result
@@ -146,26 +185,8 @@ def display_games(achievements_tab):
     sorted_games = sorted(games, key=lambda x: x["name"].lower())
 
     # Create scrollable frame
-    achievements_canvas = tk.Canvas(achievements_tab)
-    scrollable_frame = ttk.Frame(achievements_canvas)
-    scrollbar = ttk.Scrollbar(achievements_canvas, orient="vertical", command=achievements_canvas.yview)
-
-    scrollable_frame.bind(
-        "<Configure>",
-        lambda e: achievements_canvas.configure(
-            scrollregion=achievements_canvas.bbox("all")
-        )
-    )
-
-    achievements_canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-    achievements_canvas.configure(yscrollcommand=scrollbar.set)
-
-    # Configure list layout
-    achievements_canvas.pack(side="left", fill="both", expand=True)
-    scrollbar.pack(side="right", fill="y")
-
-    # Enable mouse scroll
-    achievements_canvas.bind_all("<MouseWheel>", lambda event: on_mousewheel(event, achievements_canvas))
+    scrollable_frame = ScrollableFrame(achievements_tab)
+    scrollable_frame.pack(fill="both", expand=True)
 
     # Create game widgets
     img_list = []  # List to store image objects
@@ -177,7 +198,7 @@ def display_games(achievements_tab):
         # Download images asynchronously
         img_future = achievements_executor.submit(download_image, img_url)
         img_future.add_done_callback(
-            lambda f, name=name, appid=appid, row=i, frame=scrollable_frame, img_list=img_list, total=len(sorted_games):
+            lambda f, name=name, appid=appid, row=i, frame=scrollable_frame.scrollable_frame, img_list=img_list, total=len(sorted_games):
             on_image_loaded(f.result(), name, appid, row, 0, frame, img_list) or (update_info_label(total) if len(img_list) == total else None)
         )
 
@@ -188,7 +209,7 @@ def display_games(achievements_tab):
         # Find the index of the first entry that matches the search term
         for i, game in enumerate(sorted_games):
             if search_term in game["name"].lower() or search_term == str(game["appid"]):
-                achievements_canvas.yview_moveto(i / len(sorted_games))
+                scrollable_frame.canvas.yview_moveto(i / len(sorted_games))
                 break
 
     # Bind the function to the search bar

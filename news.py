@@ -29,11 +29,15 @@ class ScrollableFrame(ttk.Frame):
         self.canvas.pack(side="left", fill="both", expand=True)
         self.scrollbar.pack(side="right", fill="y")
 
-        # Bind the mouse wheel to the canvas for scrolling
-        self.bind_mouse_wheel(self.canvas)
+        # Bind mouse wheel events when the mouse enters and leaves the canvas
+        self.canvas.bind("<Enter>", self._bind_mouse_wheel)
+        self.canvas.bind("<Leave>", self._unbind_mouse_wheel)
 
-    def bind_mouse_wheel(self, widget):
-        widget.bind_all("<MouseWheel>", self._on_mousewheel)  # For Windows and MacOS
+    def _bind_mouse_wheel(self, widget):
+        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
+
+    def _unbind_mouse_wheel(self, event):
+        self.canvas.unbind_all("<MouseWheel>")
 
     def _on_mousewheel(self, event):
         if event.num == 5 or event.delta == -120:
