@@ -45,19 +45,59 @@ class ScrollableFrame(ttk.Frame):
         elif event.num == 4 or event.delta == 120:
             self.canvas.yview_scroll(-1, "units")
 
+
 def display_news(news_tab):
+    # Create a frame for the search bar
+    searchbar_frame = ttk.Frame(news_tab)
+    searchbar_frame.pack(side="top", fill="x", padx=10, pady=10)
+
+    # Create search bar
+    search_var = tk.StringVar()
+    placeholder = "Enter AppID or Name..."
+    
+    def clear_placeholder(event=None):
+        if search_var.get() == placeholder:
+            searchbar.delete(0, tk.END)
+
+    def restore_placeholder(event=None):
+        if search_var.get() == "":
+            searchbar.insert(0, placeholder)
+    
+    searchbar = ttk.Entry(searchbar_frame, textvariable=search_var, width=40)
+    searchbar.insert(0, placeholder)
+    searchbar.bind("<FocusIn>", clear_placeholder)
+    searchbar.bind("<FocusOut>", restore_placeholder)
+    searchbar.pack(side=tk.LEFT, padx=10, pady=10)
+
     # Create a scrollable frame for news entries
     scrollable_frame = ScrollableFrame(news_tab)
     scrollable_frame.pack(fill="both", expand=True)
     
     # Load news for each game
     games = load_games_from_csv("owned_games.csv")
+    game_frames = []
     for game in games:
         appid = game["appid"]
         game_title = game["name"]
+        # Create a frame for each game to reference later
+        game_frame = ttk.Frame(scrollable_frame.scrollable_frame)
+        game_frames.append((game_frame, appid, game_title))
         # Load news asynchronously
-        news_future = news_executor.submit(get_news_for_game, appid, game_title, scrollable_frame.scrollable_frame)
-        news_future.add_done_callback(lambda x: print("News loaded for", game_title))
+        news_future = news_executor.submit(get_news_for_game, appid, game_title, game_frame)
+        news_future.add_done_callback(lambda x, game_title=game_title: print("News loaded for", game_title , "\n"))
+    
+    # Define a function to scroll to the entry matching the search term
+    def scroll_to_entry(event=None):
+        search_term = search_var.get().lower()
+
+        # Find the index of the first entry that matches the search term
+        for i, (frame, appid, title) in enumerate(game_frames):
+            if search_term in title.lower() or search_term == str(appid):
+                scrollable_frame.canvas.yview_moveto(i / len(game_frames))
+                break
+
+    # Bind the function to the search bar
+    searchbar.bind("<Return>", scroll_to_entry)
 
 def get_news_for_game(appid, game_title, parent_frame):
     news_data = get_latest_news(appid)

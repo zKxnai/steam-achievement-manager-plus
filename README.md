@@ -16,11 +16,12 @@
 ### Unfinished
 
 - News feed
-    - ~~Make scrollable with mouse scroll~~
-    - Better UI (fix HTML tags)
-    - ~~Fix unlimited loading of zup s!~~
     - Optimize searchbar (Jump to and text inside disappears when typing)
     - Add searchbar
+    - Better UI (fix HTML tags)
+    - **FIX NEWS NOT SHOWING UP**
+    - ~~Make scrollable with mouse scroll~~
+    - ~~Fix unlimited loading of zup s!~~
     - ~~Fix Refresh button~~
     - ~~Show date/convert timestamp~~
     - ~~Place Refresh button top right corner~~
