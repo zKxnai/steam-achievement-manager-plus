@@ -38,14 +38,10 @@ class ScrollableFrame(ttk.Frame):
         self.canvas.bind("<Leave>", self._unbind_mouse_wheel)
 
     def _bind_mouse_wheel(self, event):
-        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)  # For Windows and MacOS
-        self.canvas.bind_all("<Button-4>", self._on_mousewheel)    # For Linux
-        self.canvas.bind_all("<Button-5>", self._on_mousewheel)    # For Linux
+        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
 
     def _unbind_mouse_wheel(self, event):
         self.canvas.unbind_all("<MouseWheel>")
-        self.canvas.unbind_all("<Button-4>")
-        self.canvas.unbind_all("<Button-5>")
 
     def _on_mousewheel(self, event):
         if event.num == 5 or event.delta == -120:

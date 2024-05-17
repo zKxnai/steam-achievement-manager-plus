@@ -33,7 +33,7 @@ class ScrollableFrame(ttk.Frame):
         self.canvas.bind("<Enter>", self._bind_mouse_wheel)
         self.canvas.bind("<Leave>", self._unbind_mouse_wheel)
 
-    def _bind_mouse_wheel(self, widget):
+    def _bind_mouse_wheel(self, event):
         self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
 
     def _unbind_mouse_wheel(self, event):
