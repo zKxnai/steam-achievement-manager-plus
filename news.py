@@ -1,5 +1,6 @@
 import tkinter as tk
 import datetime
+import re
 from tkinter import ttk
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
@@ -127,6 +128,15 @@ def display_news_entry(parent_frame, game_title, news_text, news_date):
     # Parse HTML content and extract only text
     soup = BeautifulSoup(news_text, "html.parser")
     news_text = soup.get_text()
+
+    # Remove unwanted URLs
+    urls_to_remove = [
+        r"{STEAM_CLAN_IMAGE}/.*?\.(?:png|gif|jpg)",
+    ]
+    news_text = re.sub(r'https?://\S+', '', news_text)
+
+    for pattern in urls_to_remove:
+        news_text = re.sub(pattern, "", news_text)
     
     # Add news text
     text_label = ttk.Label(news_frame, text=news_text, wraplength=750, justify="left")

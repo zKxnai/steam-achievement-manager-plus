@@ -8,7 +8,7 @@ from tkinter import ttk
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.6.6")
+main.title("Steam Achievement Manager+ 0.6.6.1")
 main.geometry("843x600")
 
 # Create a Notebook (tabbed layout)

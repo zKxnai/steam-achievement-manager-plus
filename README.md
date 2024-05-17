@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.6.6
+- Current State: Beta 0.6.6.1
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -15,17 +15,6 @@
 ## ToDo
 ### Unfinished
 
-- News feed
-    - Optimize searchbar (Jump to ~~and text inside disappears when typing~~)
-    - ~~Add searchbar~~
-    - Better UI (fix HTML tags)
-    - ~~FIX NEWS NOT SHOWING UP~~
-    - ~~Make scrollable with mouse scroll~~
-    - ~~Fix unlimited loading of zup s!~~
-    - ~~Fix Refresh button~~
-    - ~~Show date/convert timestamp~~
-    - ~~Place Refresh button top right corner~~
-    - ~~Load asynchronously~~
 - Observe game achievements (For games that gradually add more achievements)
     - ~~Button left of Favorite button~~
     - ~~Adds game to Observed games tab~~
@@ -41,8 +30,8 @@
 - Get every game listed (Mods counted as Games etc.)
 - Open achievements in custom window
 - Prevent Cursor from automatically tapping in searchbar
-- Scrolling only works in active tab
 - ~~Search for/Jump to game via name/AppID~~ with highlight
+- Different themes/switches (Toggle on/off automatically)
 
 ### Finished
 - ~~Load icons in background~~
@@ -72,3 +61,15 @@
     - ~~Shown at the top of games list~~
 - ~~Separate code for better overview~~
 - ~~Fix scrolling in achievements tab after implementation in news tab~~
+- ~~News feed~~
+    - ~~Optimize searchbar (Jump to and text inside disappears when typing)~~
+    - ~~Add searchbar~~
+    - ~~Better UI (fix HTML tags)~~
+    - ~~FIX NEWS NOT SHOWING UP~~
+    - ~~Make scrollable with mouse scroll~~
+    - ~~Fix unlimited loading of zup s!~~
+    - ~~Fix Refresh button~~
+    - ~~Show date/convert timestamp~~
+    - ~~Place Refresh button top right corner~~
+    - ~~Load asynchronously~~
+- ~~Scrolling only works in active tab~~
