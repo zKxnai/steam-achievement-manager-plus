@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.6.5.2
+- Current State: Beta 0.6.6
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -16,10 +16,10 @@
 ### Unfinished
 
 - News feed
-    - Optimize searchbar (Jump to and text inside disappears when typing)
-    - Add searchbar
+    - Optimize searchbar (Jump to ~~and text inside disappears when typing~~)
+    - ~~Add searchbar~~
     - Better UI (fix HTML tags)
-    - **FIX NEWS NOT SHOWING UP**
+    - ~~FIX NEWS NOT SHOWING UP~~
     - ~~Make scrollable with mouse scroll~~
     - ~~Fix unlimited loading of zup s!~~
     - ~~Fix Refresh button~~

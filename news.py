@@ -76,16 +76,20 @@ def display_news(news_tab):
     # Load news for each game
     games = load_games_from_csv("owned_games.csv")
     game_frames = []
+
     for game in games:
         appid = game["appid"]
         game_title = game["name"]
         # Create a frame for each game to reference later
         game_frame = ttk.Frame(scrollable_frame.scrollable_frame)
+        game_frame.pack(fill="x", padx=10, pady=5)
         game_frames.append((game_frame, appid, game_title))
         # Load news asynchronously
-        news_future = news_executor.submit(get_news_for_game, appid, game_title, game_frame)
-        news_future.add_done_callback(lambda x, game_title=game_title: print("News loaded for", game_title , "\n"))
-    
+        news_executor.submit(get_news_for_game, appid, game_title, game_frame)
+        
+    for frame, appid, game_title in game_frames:
+        frame.pack(fill="x", padx=10, pady=5)
+
     # Define a function to scroll to the entry matching the search term
     def scroll_to_entry(event=None):
         search_term = search_var.get().lower()
@@ -100,12 +104,12 @@ def display_news(news_tab):
     searchbar.bind("<Return>", scroll_to_entry)
 
 def get_news_for_game(appid, game_title, parent_frame):
-    news_data = get_latest_news(appid)
-    if news_data:
-        news_text = news_data.get("contents", "")
-        news_date = datetime.datetime.fromtimestamp(news_data.get("date", 0), tz=datetime.timezone.utc).strftime("%d.%m.%Y %H:%M")
-        # Display news entry
-        parent_frame.after(0, display_news_entry, parent_frame, game_title, news_text, news_date)
+        news_data = get_latest_news(appid)
+        if news_data:
+            news_text = news_data.get("contents", "")
+            news_date = datetime.datetime.fromtimestamp(news_data.get("date", 0), tz=datetime.timezone.utc).strftime("%d.%m.%Y %H:%M")
+            # Display news entry
+            parent_frame.after(0, display_news_entry, parent_frame, game_title, news_text, news_date)
 
 def display_news_entry(parent_frame, game_title, news_text, news_date):
     # Create a frame for the news entry

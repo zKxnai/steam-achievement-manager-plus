@@ -73,7 +73,7 @@ else:
 
 # Fetch latest news entry from game
 def get_latest_news(appid):
-    url = f"https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid={appid}&count=1&maxlength=750&format=json"
+    url = f"https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid={appid}&count=1&maxlength=500&format=json"
     response = requests.get(url)
     if response.status_code == 200:
         news = response.json().get("appnews", {}).get("newsitems", [])
