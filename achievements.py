@@ -1,53 +1,13 @@
 import tkinter as tk
-import datetime
-import csv
-import requests
 import subprocess
 from tkinter import ttk
-from io import BytesIO
-from PIL import Image, ImageTk
+from PIL import ImageTk
 from concurrent.futures import ThreadPoolExecutor
 from api import load_games_from_csv
+from utils import ScrollableFrame, download_image, resize_image
 
 # Define ThreadPoolExecutor with 10 threads
 achievements_executor = ThreadPoolExecutor(max_workers=10)
-
-class ScrollableFrame(ttk.Frame):
-    def __init__(self, parent, *args, **kwargs):
-        super().__init__(parent, *args, **kwargs)
-        
-        self.canvas = tk.Canvas(self)
-        self.scrollbar = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
-        self.scrollable_frame = ttk.Frame(self.canvas)
-
-        self.scrollable_frame.bind(
-            "<Configure>",
-            lambda e: self.canvas.configure(
-                scrollregion=self.canvas.bbox("all")
-            )
-        )
-
-        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-        self.canvas.configure(yscrollcommand=self.scrollbar.set)
-
-        self.canvas.pack(side="left", fill="both", expand=True)
-        self.scrollbar.pack(side="right", fill="y")
-
-        # Bind mouse wheel events when the mouse enters and leaves the canvas
-        self.canvas.bind("<Enter>", self._bind_mouse_wheel)
-        self.canvas.bind("<Leave>", self._unbind_mouse_wheel)
-
-    def _bind_mouse_wheel(self, event):
-        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
-
-    def _unbind_mouse_wheel(self, event):
-        self.canvas.unbind_all("<MouseWheel>")
-
-    def _on_mousewheel(self, event):
-        if event.num == 5 or event.delta == -120:
-            self.canvas.yview_scroll(1, "units")
-        elif event.num == 4 or event.delta == 120:
-            self.canvas.yview_scroll(-1, "units")
 
 def mainframe(achievements_tab):
     # Create main frame for achievements content
@@ -95,19 +55,6 @@ def mainframe(achievements_tab):
     global info_label
     info_label = ttk.Label(info_frame, text="Loading game icons...")
     info_label.pack(side="right", padx=10)
-
-def resize_image(image, size):
-    return image.resize(size)
-
-def download_image(url):
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            return Image.open(BytesIO(response.content))
-        else:
-            print(f"Failed to download image from {url}: {response.status_code}")
-    except Exception as e:
-        print(f"Error downloading image from {url}: {e}")
 
 def on_image_loaded(result, name, appid, row, col, frame, img_list):
     img = result

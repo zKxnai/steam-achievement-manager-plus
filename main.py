@@ -1,14 +1,13 @@
 import tkinter as tk
-import achievements
-import api
-import appearance
-import news
-import observed
 from tkinter import ttk
+from achievements import mainframe, display_games
+from appearance import set_default_theme, lightmode_switch
+from news import display_news
+from observed import obserevedinfolabel
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.6.6.1")
+main.title("Steam Achievement Manager+ 0.6.7")
 main.geometry("843x600")
 
 # Create a Notebook (tabbed layout)
@@ -34,7 +33,7 @@ icon_image = tk.PhotoImage(file="Resources/SAM+ Logo.png")
 main.iconphoto(True, icon_image)
 
 # Change theme
-appearance.set_default_theme()
+set_default_theme()
 
 # Define a custom style for the green "Playing..." button
 button_style = ttk.Style()
@@ -64,16 +63,16 @@ landing_page_text_appearance = ttk.Label(landing_page_frame, text="- Appearance:
 landing_page_text_appearance.grid(row=5, column=0, sticky="w", padx=10, pady=10)
 
 # Pass to achievements
-achievements.mainframe(achievements_tab)
-achievements.display_games(achievements_tab)
+mainframe(achievements_tab)
+display_games(achievements_tab)
 
 # Pass to news
-news.display_news(news_tab)
+display_news(news_tab)
 
 # Pass to observed
-observed.obserevedinfolabel(observed_games_tab)
+obserevedinfolabel(observed_games_tab)
 
 # Pass to appearance
-appearance.lightmode_switch(appearance_tab)
+lightmode_switch(appearance_tab)
 
 main.mainloop()
