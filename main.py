@@ -7,7 +7,7 @@ from observed import obserevedinfolabel
 
 # Main window
 main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.6.7")
+main.title("Steam Achievement Manager+ 0.6.7.1")
 main.geometry("843x600")
 
 # Create a Notebook (tabbed layout)

@@ -42,10 +42,10 @@ class ScrollableFrame(ttk.Frame):
             self.canvas.yview_scroll(-1, "units")
 
 def clean_news_text(news_text):
-    news_text = re.sub(r"{STEAM_CLAN_IMAGE}.*?(\s|$)", "", news_text)
+    news_text = re.sub(r"{STEAM_CLAN_IMAGE}/\S+\.(png|jpg|gif)", "", news_text, flags=re.IGNORECASE)
     news_text = re.sub(r"https?://\S+(\s|$)", "", news_text)
     return news_text.strip()
-
+    
 def resize_image(image, size):
     return image.resize(size)
 

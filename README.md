@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.6.7
+- Current State: Beta 0.6.7.1
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -14,7 +14,6 @@
 
 ## ToDo
 ### Unfinished
-
 - Observe game achievements (For games that gradually add more achievements)
     - ~~Button left of Favorite button~~
     - ~~Adds game to Observed games tab~~
@@ -26,6 +25,7 @@
 - Optimize performance (Eliminate glitches while scrolling, etc.)
     - Increase FPS
     - Limit resource usage
+    - Profiling implementation(?)
 - Only show game which count against game completion rate
 - Get every game listed (Mods counted as Games etc.)
 - Open achievements in custom window
@@ -72,3 +72,4 @@
     - ~~Place Refresh button top right corner~~
     - ~~Load asynchronously~~
 - ~~Scrolling only works in active tab~~
+- ~~FIX news entry cleaning~~

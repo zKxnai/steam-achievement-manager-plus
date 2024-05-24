@@ -91,8 +91,8 @@ def display_news_entry(parent_frame, game_title, news_text, news_date):
     soup = BeautifulSoup(news_text, "html.parser")
     news_text = soup.get_text()
 
-    clean_news_text(news_text)
-    
+    cleaned_text = clean_news_text(news_text)
+
     # Add news text
-    text_label = ttk.Label(news_frame, text=news_text, wraplength=750, justify="left")
+    text_label = ttk.Label(news_frame, text=cleaned_text, wraplength=750, justify="left")
     text_label.pack(anchor="w", padx=5, pady=5)
