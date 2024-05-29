@@ -1,13 +1,14 @@
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import ttk
 from achievements import mainframe, display_games
-from appearance import set_default_theme, lightmode_switch
+from appearance import set_default_theme, theme_switch
 from news import display_news
 from observed import obserevedinfolabel
 
 # Main window
-main = tk.Tk()
-main.title("Steam Achievement Manager+ 0.6.7.1")
+main = ctk.CTk()
+main.title("Steam Achievement Manager+ 0.6.7.2")
+main.iconbitmap("Resources/SAM+ Logo.ico")
 main.geometry("843x600")
 
 # Create a Notebook (tabbed layout)
@@ -27,10 +28,6 @@ notebook.add(achievements_tab, text='Achievements')
 notebook.add(news_tab, text='News')
 notebook.add(observed_games_tab, text='Observed Games')
 notebook.add(appearance_tab, text='Appearance')
-
-# Change app icon
-icon_image = tk.PhotoImage(file="Resources/SAM+ Logo.png")
-main.iconphoto(True, icon_image)
 
 # Change theme
 set_default_theme()
@@ -73,6 +70,6 @@ display_news(news_tab)
 obserevedinfolabel(observed_games_tab)
 
 # Pass to appearance
-lightmode_switch(appearance_tab)
+theme_switch(appearance_tab)
 
 main.mainloop()
