@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.6.7.2
+- Current State: Beta 0.6.7.3
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -14,27 +14,47 @@
 
 ## ToDo
 ### Unfinished
+- Optimize performance (Eliminate glitches while scrolling, etc.)
+    - Increase FPS
+    - Limit resource usage
+    - Profiling implementation(?)
+
+#### Landing Page:
+
+#### Achievements:
+- Only show game which count against game completion rate
+- Get every game listed (Mods counted as Games etc.)
+- Open achievements in custom window
+
+#### News:
+
+#### Observed Games:
 - Observe game achievements (For games that gradually add more achievements)
-    - ~~Button left of Favorite button~~
-    - ~~Adds game to Observed games tab~~
+    - Button left of Favorite button
+    - Adds game to Observed games tab
     - Load icons
     - Saves observed games
     - Shows count of earned achievements, missing achievements and percentage of completion
     - Placeholder (Loading achievements...) for background loading, update when fetched
     - Progressbar for achievement completion
-- Optimize performance (Eliminate glitches while scrolling, etc.)
-    - Increase FPS
-    - Limit resource usage
-    - Profiling implementation(?)
-- Only show game which count against game completion rate
-- Get every game listed (Mods counted as Games etc.)
-- Open achievements in custom window
+
+#### Appearance:
 - Different themes/switches (Toggle on/off automatically)
 
+
 ### Finished
+- ~~Tide up code~~
+- ~~Add Tab function:~~
+- ~~API Key fix~~
+- ~~Separate code for better overview~~
+- ~~Scrolling only works in active tab~~
+
+#### Landing Page:
+**~~!!!Create Landing Page!!!~~**
+
+#### Achievements:
 - ~~Load icons in background~~
 - ~~Search for/Jump to game via name/AppID~~
-- ~~Tide up code~~
 - ~~Make list scrollable~~
 - ~~Small adjustments: qop4, shapez should appear ad Q and S~~
 - ~~Change grid view to list view? + Change Images to Icons~~
@@ -44,22 +64,13 @@
 - ~~Add button functionality~~
 - ~~Show when game is played~~
 - ~~Show how many games are played~~
-- ~~Add Tab function:~~
-- ~~API Key fix~~
-- ~~Add "Lightmode" tab~~(Impossible due to selected theme)
-    - ~~Change to Lightmode~~
-    - ~~Change background color~~
-    - ~~Change other things (font, etc.)~~
-    - ~~Tab placement rightside~~
-**~~!!!Create Landing Page!!!~~**
 - ~~Fix implementation of achievements tab~~
     - ~~Fix Icon loading~~
     - ~~Fix "Playing..." in green~~
-- ~~Favorite games~~ (Can be done with observing)
-    - ~~Heart/Star button right of achievement button~~
-    - ~~Shown at the top of games list~~
-- ~~Separate code for better overview~~
 - ~~Fix scrolling in achievements tab after implementation in news tab~~
+
+#### News:
+- ~~FIX news entry cleaning~~
 - ~~News feed~~
     - ~~Optimize searchbar (Jump to and text inside disappears when typing)~~
     - ~~Add searchbar~~
@@ -71,6 +82,17 @@
     - ~~Show date/convert timestamp~~
     - ~~Place Refresh button top right corner~~
     - ~~Load asynchronously~~
-- ~~Scrolling only works in active tab~~
-- ~~FIX news entry cleaning~~
+
+#### Observed Games:
+- ~~Favorite games~~ (Can be done with observing)
+    - ~~Heart/Star button right of achievement button~~
+    - ~~Shown at the top of games list~~
+
+#### Appearance:
+- ~~Add "Lightmode" tab~~
+-   ~~Change to Lightmode~~
+-   ~~Change background color~~
+-   ~~Change other things (font, etc.)~~
+-   ~~Tab placement rightside~~
 - ~~Implement customtkinter~~
+- ~~FIX Forest Theme Integration~~

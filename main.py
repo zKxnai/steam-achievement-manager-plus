@@ -7,7 +7,7 @@ from observed import obserevedinfolabel
 
 # Main window
 main = ctk.CTk()
-main.title("Steam Achievement Manager+ 0.6.7.2")
+main.title("Steam Achievement Manager+ 0.6.7.3")
 main.iconbitmap("Resources/SAM+ Logo.ico")
 main.geometry("843x600")
 
@@ -70,6 +70,6 @@ display_news(news_tab)
 obserevedinfolabel(observed_games_tab)
 
 # Pass to appearance
-theme_switch(appearance_tab)
+theme_switch(appearance_tab, main)
 
 main.mainloop()
