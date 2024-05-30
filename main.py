@@ -3,11 +3,11 @@ from tkinter import ttk
 from achievements import mainframe, display_games
 from appearance import set_default_theme, theme_switch
 from news import display_news
-from observed import obserevedinfolabel
+from observed import observedinfolabel
 
 # Main window
 main = ctk.CTk()
-main.title("Steam Achievement Manager+ 0.6.7.4")
+main.title("Steam Achievement Manager+ 0.6.8")
 main.iconbitmap("Resources/SAM+ Logo.ico")
 main.geometry("843x600")
 
@@ -28,6 +28,9 @@ notebook.add(achievements_tab, text='Achievements')
 notebook.add(news_tab, text='News')
 notebook.add(observed_games_tab, text='Observed Games')
 notebook.add(appearance_tab, text='Appearance')
+
+# Configure the appearance_tab's row and columns
+appearance_tab.columnconfigure(0, weight=1)
 
 # Change theme
 set_default_theme()
@@ -63,7 +66,7 @@ display_games(achievements_tab)
 display_news(news_tab)
 
 # Pass to observed
-obserevedinfolabel(observed_games_tab)
+observedinfolabel(observed_games_tab)
 
 # Pass to appearance
 theme_switch(appearance_tab, main)

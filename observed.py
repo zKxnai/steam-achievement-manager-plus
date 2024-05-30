@@ -3,7 +3,7 @@ from tkinter import ttk
 from utils import ScrollableFrame
 
 # Temporarily deprecated
-def obserevedinfolabel(observed_tab):
+def observedinfolabel(observed_tab):
     # Create a scrollable frame for news entries
     scrollable_frame = ScrollableFrame(observed_tab)
     scrollable_frame.pack(fill="both", expand=True)
