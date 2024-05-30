@@ -7,7 +7,7 @@ from observed import observedinfolabel
 
 # Main window
 main = ctk.CTk()
-main.title("Steam Achievement Manager+ 0.6.8")
+main.title("Steam Achievement Manager+ 0.6.8.1")
 main.iconbitmap("Resources/SAM+ Logo.ico")
 main.geometry("843x600")
 

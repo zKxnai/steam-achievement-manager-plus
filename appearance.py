@@ -69,12 +69,32 @@ def toggle_azure_light(main):
     update_current_theme_label("Azure Light")
 
 def update_current_theme_label(theme):
+    theme_display_map = {
+        "Dark": "Sun Valley Dark",
+        "Light": "Sun Valley Light",
+        "Forest Dark": "Forest Dark",
+        "Forest Light": "Forest Light",
+        "Azure Dark": "Azure Dark",
+        "Azure Light": "Azure Light"
+    }
+
+    display_theme = theme_display_map.get(theme, theme)
     if current_theme_label:
-        current_theme_label.config(text=f"Current theme: {theme}")
+        current_theme_label.config(text=f"Current theme: {display_theme}")
 
 def set_default_theme_label(theme):
+    theme_display_map = {
+        "Dark": "Sun Valley Dark",
+        "Light": "Sun Valley Light",
+        "Forest Dark": "Forest Dark",
+        "Forest Light": "Forest Light",
+        "Azure Dark": "Azure Dark",
+        "Azure Light": "Azure Light"
+    }
+
+    display_theme = theme_display_map.get(theme, theme)
     if default_theme_label:
-        default_theme_label.config(text=f"Default theme: {theme}")
+        default_theme_label.config(text=f"Default theme: {display_theme}")
 
 def save_default_theme(theme):
     with open(default_theme_file, 'w') as file:
@@ -110,9 +130,25 @@ def apply_default_theme(main):
         update_current_theme_label(default_theme)
         set_default_theme_label(default_theme)
 
-def save_and_update_default_theme(theme):
-    save_default_theme(theme)
-    set_default_theme_label(theme)
+def save_and_update_default_theme(theme_name):
+    theme_map = {
+        "Sun Valley Dark": "Dark",
+        "Sun Valley Light": "Light",
+        "Forest Dark": "Forest Dark",
+        "Forest Light": "Forest Light",
+        "Azure Dark": "Azure Dark",
+        "Azure Light": "Azure Light"
+    }
+
+    # Get the simplified theme name for saving
+    theme = theme_map.get(theme_name)
+
+    # Save the default theme to the file
+    if theme:
+        save_default_theme(theme)
+        set_default_theme_label(theme_name)
+    else:
+        print("Error: Theme not found in the theme map.")
 
 def theme_switch(appearance_tab, main):
     global current_theme_label, default_theme_label
@@ -189,12 +225,15 @@ def theme_switch(appearance_tab, main):
     azure_darkmode_switch.grid(row=10, column=1, sticky="nw", padx=10, pady=5)
 
     # Create Set Default button
-    set_default_button = ttk.Button(theme_change_frame, text="Set Default", command=lambda: set_default_theme_label(current_theme_label.cget("text").replace("Current theme: ", "")))
+    set_default_button = ttk.Button(theme_change_frame, text="Set Default", command=lambda: save_and_update_default_theme(current_theme_label.cget("text").replace("Current theme: ", "")))
     set_default_button.grid(row=11, column=0, sticky="nw", padx=10, pady=5)
+    
+    # Create Set Default button
+    #set_default_button = ttk.Button(theme_change_frame, text="Set Default", command=lambda: set_default_theme_label(current_theme_label.cget("text").replace("Current theme: ", "")))
+    #set_default_button.grid(row=11, column=0, sticky="nw", padx=10, pady=5)
 
     # Modify the command to update both the default theme label and save the default theme to the file
-    set_default_button.configure(command=lambda: save_and_update_default_theme(current_theme_label.cget("text").replace("Current theme: ", "")))
-
+    #set_default_button.configure(command=lambda: save_and_update_default_theme(current_theme_label.cget("text").replace("Current theme: ", "")))
 
     # Apply the default theme on startup
     apply_default_theme(main)

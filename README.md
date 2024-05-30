@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.6.8
+- Current State: Beta 0.6.8.1
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -13,12 +13,14 @@
 - Show achievement count
 
 ## ToDo
-### Unfinished
+<details>
+<summary>Unfinished</summary>
+
+#### General
 - Optimize performance (Eliminate glitches while scrolling, etc.)
     - Increase FPS
     - Limit resource usage
     - Profiling implementation(?)
-- README with collapsible headers(?)
 
 #### Landing Page:
 
@@ -41,13 +43,17 @@
 
 #### Appearance:
 
+</details>
+<details>
+<summary>Finished</summary>
 
-### Finished
+#### General
 - ~~Tide up code~~
 - ~~Add Tab function:~~
 - ~~API Key fix~~
 - ~~Separate code for better overview~~
 - ~~Scrolling only works in active tab~~
+- ~~README with collapsible headers(?)~~
 
 #### Landing Page:
 **~~!!!Create Landing Page!!!~~**
@@ -102,3 +108,5 @@
 - ~~Default theme button~~
 - ~~Updating default theme label~~
 - ~~Updating current theme label~~
+- ~~Fix Sun Valley Dark/Light in Default theme~~
+</details>
