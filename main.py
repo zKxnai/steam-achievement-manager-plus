@@ -7,7 +7,7 @@ from observed import obserevedinfolabel
 
 # Main window
 main = ctk.CTk()
-main.title("Steam Achievement Manager+ 0.6.7.3")
+main.title("Steam Achievement Manager+ 0.6.7.4")
 main.iconbitmap("Resources/SAM+ Logo.ico")
 main.geometry("843x600")
 
@@ -31,10 +31,6 @@ notebook.add(appearance_tab, text='Appearance')
 
 # Change theme
 set_default_theme()
-
-# Define a custom style for the green "Playing..." button
-button_style = ttk.Style()
-button_style.configure("Green.TButton", foreground="green")
 
 # Creating landing page
 landing_page_frame = ttk.Frame(landing_tab)

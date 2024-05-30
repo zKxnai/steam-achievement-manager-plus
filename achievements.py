@@ -70,12 +70,12 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         
         # Add buttons
         play_button_img = tk.PhotoImage(file="Resources/play_g.png")
-        play_button = ttk.Button(frame, text="Play", image=play_button_img, compound="left", command=lambda appid=appid: open_hidden(appid))
+        play_button = ttk.Button(frame, text="Play", image=play_button_img, compound="left", command=lambda appid=appid: open_hidden(appid), width=10)
         play_button.image = play_button_img
         play_button.grid(row=row, column=2, padx=10, pady=5, sticky="e")
         
         pause_button_img = tk.PhotoImage(file="Resources/pause_g.png")
-        pause_button = ttk.Button(frame, text="Pause", image=pause_button_img, compound="left", command=lambda name=name: close_hidden(name))
+        pause_button = ttk.Button(frame, text="Pause", image=pause_button_img, compound="left", command=lambda name=name: close_hidden(name), width=10)
         pause_button.image = pause_button_img
         pause_button.grid(row=row, column=3, padx=10, pady=5, sticky="e")
         
