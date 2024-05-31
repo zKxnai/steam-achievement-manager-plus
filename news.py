@@ -32,7 +32,7 @@ def display_news(news_tab):
     searchbar.bind("<FocusOut>", restore_placeholder)
     searchbar.pack(side=tk.LEFT, padx=10, pady=10)
 
-    # Create a scrollable frame for news entries
+    # Create a scrollable frame
     scrollable_frame = ScrollableFrame(news_tab)
     scrollable_frame.pack(fill="both", expand=True)
     

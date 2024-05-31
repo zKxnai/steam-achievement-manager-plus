@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.6.8.1
+- Current State: Beta 0.6.8.2
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -42,6 +42,7 @@
     - Progressbar for achievement completion
 
 #### Appearance:
+- Implement ScrollableFrame (When more themes get added)
 
 </details>
 <details>

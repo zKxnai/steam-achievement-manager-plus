@@ -159,15 +159,18 @@ def theme_switch(appearance_tab, main):
     # Create info frame
     info_frame = ttk.Frame(appearance_tab)
     info_frame.grid(row=0, column=1, sticky="ne", padx=10, pady=10)
-    info_frame.columnconfigure(1, weight=1)
 
     # Create label for current theme
-    current_theme_label = ttk.Label(info_frame, text="Current theme: ")
+    current_theme_label = ttk.Label(info_frame, text="Current Theme: ")
     current_theme_label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
 
     # Create label for default theme
-    default_theme_label = ttk.Label(info_frame, text="Default theme: ")
+    default_theme_label = ttk.Label(info_frame, text="Default Theme: ")
     default_theme_label.grid(row=1, column=0, padx=10, pady=10, sticky="e")
+
+    # Create Set Default button
+    set_default_button = ttk.Button(info_frame, text="Set Current Theme as Default", command=lambda: save_and_update_default_theme(current_theme_label.cget("text").replace("Current theme: ", "")))
+    set_default_button.grid(row=2, column=0, padx=10, pady=10, sticky="e")
 
     # Create label for theme mode switch
     sv_toggle_theme_label = ttk.Label(theme_change_frame, text='Set theme to "Sun Valley"')
@@ -223,17 +226,6 @@ def theme_switch(appearance_tab, main):
     azure_darkmode_label.grid(row=10, column=0, sticky="nw", padx=10, pady=10)
     azure_darkmode_switch = ttk.Button(theme_change_frame, text="Darkmode", command=lambda: toggle_azure_dark(main))
     azure_darkmode_switch.grid(row=10, column=1, sticky="nw", padx=10, pady=5)
-
-    # Create Set Default button
-    set_default_button = ttk.Button(theme_change_frame, text="Set Default", command=lambda: save_and_update_default_theme(current_theme_label.cget("text").replace("Current theme: ", "")))
-    set_default_button.grid(row=11, column=0, sticky="nw", padx=10, pady=5)
-    
-    # Create Set Default button
-    #set_default_button = ttk.Button(theme_change_frame, text="Set Default", command=lambda: set_default_theme_label(current_theme_label.cget("text").replace("Current theme: ", "")))
-    #set_default_button.grid(row=11, column=0, sticky="nw", padx=10, pady=5)
-
-    # Modify the command to update both the default theme label and save the default theme to the file
-    #set_default_button.configure(command=lambda: save_and_update_default_theme(current_theme_label.cget("text").replace("Current theme: ", "")))
 
     # Apply the default theme on startup
     apply_default_theme(main)
