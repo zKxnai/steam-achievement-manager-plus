@@ -3,7 +3,6 @@ import subprocess
 from tkinter import ttk
 from PIL import ImageTk
 from concurrent.futures import ThreadPoolExecutor
-from api import load_games_from_csv
 from utils import ScrollableFrame, download_image, resize_image
 from database import get_owned_games
 

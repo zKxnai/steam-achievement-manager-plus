@@ -3,8 +3,9 @@ import datetime
 from tkinter import ttk
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
-from api import get_latest_news, load_games_from_csv
+from api import get_latest_news
 from utils import ScrollableFrame, clean_news_text
+from database import get_owned_games
 
 # Define ThreadPoolExecutor with 10 threads
 news_executor = ThreadPoolExecutor(max_workers=10)
@@ -37,7 +38,9 @@ def display_news(news_tab):
     scrollable_frame.pack(fill="both", expand=True)
     
     # Load news for each game
-    games = load_games_from_csv("owned_games.csv")
+    games = get_owned_games()
+    # Sort the games alphabetically by name
+    games = sorted(games, key=lambda x: x["name"].lower())
     game_frames = []
 
     for game in games:

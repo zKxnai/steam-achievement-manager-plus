@@ -1,8 +1,8 @@
 import tkinter as tk
-from tkinter import ttk
-from PIL import Image, ImageTk
 import re
 import requests
+from tkinter import ttk
+from PIL import Image
 from io import BytesIO
 
 class ScrollableFrame(ttk.Frame):

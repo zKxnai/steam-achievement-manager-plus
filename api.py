@@ -1,17 +1,7 @@
 import os
 import re
-import csv
 import requests
 from database import save_owned_games
-
-# Display games in frame
-def load_games_from_csv(csv_file):
-    games = []
-    with open(csv_file, "r", newline="", encoding="utf-8") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            games.append(row)
-    return games
 
 # Get Steam user ID
 def get_steam_id():
@@ -51,23 +41,6 @@ if response.status_code == 200:
 
     owned_games = data.get("response", {}).get("games", [])
 
-    """
-    with open("owned_games.csv", "w", newline="", encoding="utf-8") as csvfile:
-        fieldnames = ["appid", "name", "img_icon_url"]
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-
-        # Sort games alphabetically by name
-        sorted_owned_games = sorted(owned_games, key=lambda x: x["name"].lower())
-
-        for game in sorted_owned_games:
-            appid = game.get("appid", "")
-            name = game.get("name", "")
-            #img_icon_url = f"http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{game['img_icon_url']}.jpg"
-            img_icon_url = f"http://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/{appid}/{game['img_icon_url']}.jpg"
-
-            writer.writerow({"appid": appid, "name": name, "img_icon_url": img_icon_url})
-    """
     # Save owned games to the database
     games_to_save = []
     for game in owned_games:
@@ -93,7 +66,10 @@ def get_latest_news(appid):
         if news:
             latest_news = news[0]
             return latest_news
-    return None
+        print("News data saved to the database successfully.")
+
+    else:
+        print("Failed to fetch data from Steam API.")
 
 """
 # Get achievements

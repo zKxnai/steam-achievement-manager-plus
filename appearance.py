@@ -1,6 +1,4 @@
 import sv_ttk
-import tkinter as tk
-import os
 import customtkinter as ctk
 from tkinter import ttk
 from database import save_default_theme, load_default_theme
@@ -8,7 +6,6 @@ from database import save_default_theme, load_default_theme
 is_azure_initialized = False
 current_theme_label = None
 default_theme_label = None
-default_theme_file = "default_theme.txt"
 
 def set_button_style():
     # Define a custom style for the green "Playing..." button
@@ -96,23 +93,6 @@ def set_default_theme_label(theme):
     display_theme = theme_display_map.get(theme, theme)
     if default_theme_label:
         default_theme_label.config(text=f"Default Theme: {display_theme}")
-
-"""
-def save_default_theme(theme):
-    with open(default_theme_file, 'w') as file:
-        file.write(theme)
-
-def load_default_theme():
-    if os.path.exists(default_theme_file):
-        with open(default_theme_file, 'r') as file:
-            return file.read().strip()
-    return None
-
-def create_default_theme_file():
-    if not os.path.exists(default_theme_file):
-        with open(default_theme_file, 'w') as file:
-            file.write("Dark")
-"""
 
 def apply_default_theme(main):
     #create_default_theme_file()
