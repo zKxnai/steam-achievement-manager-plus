@@ -3,6 +3,7 @@ import tkinter as tk
 import os
 import customtkinter as ctk
 from tkinter import ttk
+from database import save_default_theme, load_default_theme
 
 is_azure_initialized = False
 current_theme_label = None
@@ -80,7 +81,7 @@ def update_current_theme_label(theme):
 
     display_theme = theme_display_map.get(theme, theme)
     if current_theme_label:
-        current_theme_label.config(text=f"Current theme: {display_theme}")
+        current_theme_label.config(text=f"Current Theme: {display_theme}")
 
 def set_default_theme_label(theme):
     theme_display_map = {
@@ -94,8 +95,9 @@ def set_default_theme_label(theme):
 
     display_theme = theme_display_map.get(theme, theme)
     if default_theme_label:
-        default_theme_label.config(text=f"Default theme: {display_theme}")
+        default_theme_label.config(text=f"Default Theme: {display_theme}")
 
+"""
 def save_default_theme(theme):
     with open(default_theme_file, 'w') as file:
         file.write(theme)
@@ -110,9 +112,10 @@ def create_default_theme_file():
     if not os.path.exists(default_theme_file):
         with open(default_theme_file, 'w') as file:
             file.write("Dark")
+"""
 
 def apply_default_theme(main):
-    create_default_theme_file()
+    #create_default_theme_file()
     default_theme = load_default_theme()
     if default_theme:
         if default_theme == "Dark":
@@ -169,7 +172,7 @@ def theme_switch(appearance_tab, main):
     default_theme_label.grid(row=1, column=0, padx=10, pady=10, sticky="e")
 
     # Create Set Default button
-    set_default_button = ttk.Button(info_frame, text="Set Current Theme as Default", command=lambda: save_and_update_default_theme(current_theme_label.cget("text").replace("Current theme: ", "")))
+    set_default_button = ttk.Button(info_frame, text="Set Current Theme as Default", command=lambda: save_and_update_default_theme(current_theme_label.cget("text").replace("Current Theme: ", "")))
     set_default_button.grid(row=2, column=0, padx=10, pady=10, sticky="e")
 
     # Create label for theme mode switch
