@@ -2,6 +2,7 @@ import os
 import re
 import csv
 import requests
+from database import save_owned_games
 
 # Display games in frame
 def load_games_from_csv(csv_file):
@@ -50,6 +51,7 @@ if response.status_code == 200:
 
     owned_games = data.get("response", {}).get("games", [])
 
+    """
     with open("owned_games.csv", "w", newline="", encoding="utf-8") as csvfile:
         fieldnames = ["appid", "name", "img_icon_url"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -65,11 +67,22 @@ if response.status_code == 200:
             img_icon_url = f"http://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/{appid}/{game['img_icon_url']}.jpg"
 
             writer.writerow({"appid": appid, "name": name, "img_icon_url": img_icon_url})
+    """
+    # Save owned games to the database
+    games_to_save = []
+    for game in owned_games:
+        appid = game.get("appid", "")
+        name = game.get("name", "")
+        img_icon_url = f"http://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/{appid}/{game['img_icon_url']}.jpg"
 
-    print("Owned games data exported to 'owned_games.csv' successfully.")
+        games_to_save.append({"appid": appid, "name": name, "img_icon_url": img_icon_url})
+
+    save_owned_games(games_to_save)
+
+    print("Owned games data saved to the database successfully.")
 
 else:
-    print("Failed to fetch data.")
+    print("Failed to fetch data from Steam API.")
 
 # Fetch latest news entry from game
 def get_latest_news(appid):

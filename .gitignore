@@ -3,6 +3,7 @@ __pycache__
 *.csv
 *.psd
 *.txt
+*.db
 Steam_icon_logo.svg.png
 SAM+ Logo.png
 trophy.png

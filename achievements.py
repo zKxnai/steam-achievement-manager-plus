@@ -5,6 +5,7 @@ from PIL import ImageTk
 from concurrent.futures import ThreadPoolExecutor
 from api import load_games_from_csv
 from utils import ScrollableFrame, download_image, resize_image
+from database import get_owned_games
 
 # Define ThreadPoolExecutor with 10 threads
 achievements_executor = ThreadPoolExecutor(max_workers=10)
@@ -124,7 +125,8 @@ def update_info_label(total_games):
 
 def display_games(achievements_tab):
     # Load games from CSV
-    games = load_games_from_csv("owned_games.csv")
+    #games = load_games_from_csv("owned_games.csv")
+    games = get_owned_games()
     sorted_games = sorted(games, key=lambda x: x["name"].lower())
 
     # Create scrollable frame
