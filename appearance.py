@@ -1,11 +1,16 @@
 import sv_ttk
 import customtkinter as ctk
-from tkinter import ttk
+import tkinter as tk
+from tkinter import ttk, messagebox
 from database import save_default_theme, load_default_theme
 
 is_azure_initialized = False
 current_theme_label = None
 default_theme_label = None
+
+# Function to show a pop-up window with a message
+def show_popup(message):
+    messagebox.showinfo("Information", message)
 
 def set_button_style():
     # Define a custom style for the green "Playing..." button
@@ -95,7 +100,6 @@ def set_default_theme_label(theme):
         default_theme_label.config(text=f"Default Theme: {display_theme}")
 
 def apply_default_theme(main):
-    #create_default_theme_file()
     default_theme = load_default_theme()
     if default_theme:
         if default_theme == "Dark":
@@ -132,6 +136,7 @@ def save_and_update_default_theme(theme_name):
         set_default_theme_label(theme_name)
     else:
         print("Error: Theme not found in the theme map.")
+    show_popup(f"Default Theme successfully set to {theme_name}.")
 
 def theme_switch(appearance_tab, main):
     global current_theme_label, default_theme_label

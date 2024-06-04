@@ -30,7 +30,6 @@
 
 #### Achievements:
 - Only show game which count against game completion rate
-- Get every game listed (Mods counted as Games etc.)
 - Open achievements in custom window
 - Owned games pop confirmation
 
@@ -48,8 +47,7 @@
     - Progressbar for achievement completion
 
 #### Appearance:
-- Implement ScrollableFrame (When more themes get added)
-- Pop-Up window for confirmation of theme change
+- Optional: Implement ScrollableFrame (When more themes get added)
 
 </details>
 <details>
@@ -83,6 +81,7 @@
     - ~~Fix Icon loading~~
     - ~~Fix "Playing..." in green~~
 - ~~Fix scrolling in achievements tab after implementation in news tab~~
+- ~~Get every game listed (Mods counted as Games etc.)~~
 
 #### News:
 - ~~FIX news entry cleaning~~
@@ -118,4 +117,5 @@
 - ~~Updating default theme label~~
 - ~~Updating current theme label~~
 - ~~Fix Sun Valley Dark/Light in Default theme~~
+- ~~Pop-Up window for confirmation of theme change~~
 </details>

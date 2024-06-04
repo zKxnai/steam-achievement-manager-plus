@@ -1,5 +1,6 @@
 import tkinter as tk
 import subprocess
+import customtkinter as ctk
 from tkinter import ttk
 from PIL import ImageTk
 from concurrent.futures import ThreadPoolExecutor
@@ -53,7 +54,7 @@ def mainframe(achievements_tab):
     info_frame = tk.Frame(main_frame)
     info_frame.pack(side="right")
     global info_label
-    info_label = ttk.Label(info_frame, text="Loading game icons...")
+    info_label = ttk.Label(info_frame, text="Loading games...")
     info_label.pack(side="right", padx=10)
 
 def on_image_loaded(result, name, appid, row, col, frame, img_list):
@@ -112,6 +113,21 @@ def open_hidden(appid):
 def open_visible(appid):
     subprocess.Popen(f"start /MIN cmd /c Resources\\SAM.Game.exe {appid}", shell=True)
 
+"""
+# Function to open the custom achievements window
+def open_achievements_window(appid, game_name):
+    # Create a new window
+    achievements_window = ctk.CTkToplevel()
+    achievements_window.title(f"Achievements for {game_name}")
+    achievements_window.iconbitmap("Resources/SAM+ Logo.ico")
+    achievements_window.geometry("600x400")
+
+# Function to open achievements window (replace with open_visible)
+def open_visible(appid):
+    game_name = next((game["name"] for game in get_owned_games() if game["appid"] == appid), "Unknown Game")
+    open_achievements_window(appid, game_name)
+"""
+    
 # Function to close the hidden window opened by open_hidden
 def close_hidden(name):
     global played_games_count
@@ -124,7 +140,6 @@ def update_info_label(total_games):
 
 def display_games(achievements_tab):
     # Load games from CSV
-    #games = load_games_from_csv("owned_games.csv")
     games = get_owned_games()
     sorted_games = sorted(games, key=lambda x: x["name"].lower())
 

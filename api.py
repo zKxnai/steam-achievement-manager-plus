@@ -66,10 +66,7 @@ def get_latest_news(appid):
         if news:
             latest_news = news[0]
             return latest_news
-        print("News data saved to the database successfully.")
-
-    else:
-        print("Failed to fetch data from Steam API.")
+    return None
 
 """
 # Get achievements
