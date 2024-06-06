@@ -1,6 +1,5 @@
 import sv_ttk
 import customtkinter as ctk
-import tkinter as tk
 from tkinter import ttk, messagebox
 from database import save_default_theme, load_default_theme
 
@@ -38,14 +37,14 @@ def toggle_sv_light():
     update_current_theme_label("Sun Valley Light")
 
 def toggle_forest_dark(main):
-    main.tk.call("source", "Resources/Forest-ttk-theme-1.0/forest-dark.tcl")
+    main.tk.call("source", "Resources/Themes/Forest-ttk-theme-1.0/forest-dark.tcl")
     ttk.Style(main).theme_use("forest-dark")
     ctk.set_appearance_mode("dark")
     set_button_style()
     update_current_theme_label("Forest Dark")
 
 def toggle_forest_light(main):
-    main.tk.call("source", "Resources/Forest-ttk-theme-1.0/forest-light.tcl")
+    main.tk.call("source", "Resources/Themes/Forest-ttk-theme-1.0/forest-light.tcl")
     ttk.Style(main).theme_use("forest-light")
     ctk.set_appearance_mode("light")
     set_button_style()
@@ -54,7 +53,7 @@ def toggle_forest_light(main):
 def initialize_azure_theme(main):
     global is_azure_initialized
     if not is_azure_initialized:
-        main.tk.call("source", "Resources/Azure-ttk-theme-2.1.0/azure.tcl")
+        main.tk.call("source", "Resources/Themes/Azure-ttk-theme-2.1.0/azure.tcl")
         is_azure_initialized = True
 
 def toggle_azure_dark(main):

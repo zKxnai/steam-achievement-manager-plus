@@ -1,33 +1,42 @@
 import customtkinter as ctk
 from tkinter import ttk
+from PIL import Image, ImageTk
 from achievements import mainframe, display_games
 from appearance import set_default_theme, theme_switch
 from news import display_news
 from observed import observedinfolabel
+from utils import app_version
 
 # Main window
 main = ctk.CTk()
-main.title("Steam Achievement Manager+ 0.6.8.4")
-main.iconbitmap("Resources/SAM+ Logo.ico")
+main.title(f"Steam Achievement Manager+ {app_version}")
+main.iconbitmap("Resources/Icons/SAM+ Logo.ico")
 main.geometry("843x600")
 
 # Create a Notebook (tabbed layout)
 notebook = ttk.Notebook(main)
 notebook.pack(fill="both", expand=True)
 
+# Loads icons for tabs
+home_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/home_g.png").resize((16,16)))
+achievements_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/achievements_g.png").resize((16,16)))
+news_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/news_g.png").resize((16,16)))
+observed_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/visible_g.png").resize((16,16)))
+appearance_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/settings_g.png").resize((16,16)))
+
 # Create frames for each tab
-landing_tab = ttk.Frame(notebook)
+home = ttk.Frame(notebook)
 achievements_tab = ttk.Frame(notebook)
 news_tab = ttk.Frame(notebook)
 observed_games_tab = ttk.Frame(notebook)
 appearance_tab = ttk.Frame(notebook)
 
 # Add tabs to the notebook
-notebook.add(landing_tab, text="Landing Page")
-notebook.add(achievements_tab, text='Achievements')
-notebook.add(news_tab, text='News')
-notebook.add(observed_games_tab, text='Observed Games')
-notebook.add(appearance_tab, text='Appearance')
+notebook.add(home, text="Home", image=home_icon, compound="left")
+notebook.add(achievements_tab, text='Achievements', image=achievements_icon, compound="left")
+notebook.add(news_tab, text='News', image=news_icon, compound="left")
+notebook.add(observed_games_tab, text='Observed Games', image=observed_icon, compound="left")
+notebook.add(appearance_tab, text='Appearance', image=appearance_icon, compound="left")
 
 # Configure the appearance_tab's row and columns
 appearance_tab.columnconfigure(0, weight=1)
@@ -36,7 +45,7 @@ appearance_tab.columnconfigure(0, weight=1)
 set_default_theme()
 
 # Creating landing page
-landing_page_frame = ttk.Frame(landing_tab)
+landing_page_frame = ttk.Frame(home)
 landing_page_frame.grid(row=0, column=0, sticky="w", padx=10, pady=10)
 
 landing_page_label = ttk.Label(landing_page_frame, text="Welcome to SAM+!")

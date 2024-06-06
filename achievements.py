@@ -1,10 +1,13 @@
 import tkinter as tk
 import subprocess
 import customtkinter as ctk
+import time
+import win32gui
+import win32con
 from tkinter import ttk
 from PIL import ImageTk
 from concurrent.futures import ThreadPoolExecutor
-from utils import ScrollableFrame, download_image, resize_image
+from utils import ScrollableFrame, download_image, resize_image, app_version
 from database import get_owned_games
 
 # Define ThreadPoolExecutor with 10 threads
@@ -70,18 +73,18 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         name_label.grid(row=row, column=1, padx=10, pady=5, sticky="w")
         
         # Add buttons
-        play_button_img = tk.PhotoImage(file="Resources/play_g.png")
+        play_button_img = tk.PhotoImage(file="Resources/Icons/play_g.png")
         play_button = ttk.Button(frame, text="Play", image=play_button_img, compound="left", command=lambda appid=appid: open_hidden(appid), width=10)
         play_button.image = play_button_img
         play_button.grid(row=row, column=2, padx=10, pady=5, sticky="e")
         
-        pause_button_img = tk.PhotoImage(file="Resources/pause_g.png")
+        pause_button_img = tk.PhotoImage(file="Resources/Icons/pause_g.png")
         pause_button = ttk.Button(frame, text="Pause", image=pause_button_img, compound="left", command=lambda name=name: close_hidden(name), width=10)
         pause_button.image = pause_button_img
         pause_button.grid(row=row, column=3, padx=10, pady=5, sticky="e")
         
-        achievement_button_img = tk.PhotoImage(file="Resources/trophy_g.png")
-        achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda appid=appid: open_visible(appid))
+        achievement_button_img = tk.PhotoImage(file="Resources/Icons/achievements_g.png")
+        achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda appid=appid, name=name: open_achievements_window(appid, name))
         achievement_button.image = achievement_button_img
         achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
 
@@ -107,26 +110,59 @@ def open_hidden(appid):
     global played_games_count
     played_games_count += 1
     played_games_label.config(text=f"Played Games: {played_games_count}")
-    subprocess.Popen(f"start /MIN cmd /c start /MIN /B Resources\\SAM.Game.exe {appid}", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
-
-# Function to open the executable in a visible window
-def open_visible(appid):
-    subprocess.Popen(f"start /MIN cmd /c Resources\\SAM.Game.exe {appid}", shell=True)
+    subprocess.Popen(f"start /MIN cmd /c start /MIN /B Resources\\API\\SAM.Game.exe {appid}", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
 
 """
-# Function to open the custom achievements window
+# Function to open the executable in a visible window
+def open_visible(appid):
+    subprocess.Popen(f"start /MIN cmd /c Resources\\API\\SAM.Game.exe {appid}", shell=True)
+"""
+
+def embed_window(external_hwnd, parent_hwnd):
+    # Change the parent of the external window to the Tkinter window
+    win32gui.SetParent(external_hwnd, parent_hwnd)
+
+    # Set the style of the external window to be a child window
+    win32gui.SetWindowLong(external_hwnd, win32con.GWL_STYLE, win32con.WS_VISIBLE | win32con.WS_CHILD)
+
+    # Resize the external window to fit the Tkinter frame
+    win32gui.SetWindowPos(external_hwnd, None, 0, 0, 800, 600, win32con.SWP_NOZORDER | win32con.SWP_NOACTIVATE)
+
+def find_window(title_contains):
+    def enum_windows_callback(hwnd, results):
+        if win32gui.IsWindowVisible(hwnd) and title_contains.lower() in win32gui.GetWindowText(hwnd).lower():
+            results.append(hwnd)
+
+    hwnds = []
+    win32gui.EnumWindows(enum_windows_callback, hwnds)
+    if hwnds:
+        return hwnds[0]
+    return None
+
 def open_achievements_window(appid, game_name):
     # Create a new window
     achievements_window = ctk.CTkToplevel()
-    achievements_window.title(f"Achievements for {game_name}")
-    achievements_window.iconbitmap("Resources/SAM+ Logo.ico")
-    achievements_window.geometry("600x400")
+    achievements_window.title(f"Steam Achievement Manager+ {app_version} | Achievements for {game_name}")
+    achievements_window.iconbitmap("Resources/Icons/SAM+ Logo.ico")
+    achievements_window.geometry("800x600")
 
-# Function to open achievements window (replace with open_visible)
-def open_visible(appid):
-    game_name = next((game["name"] for game in get_owned_games() if game["appid"] == appid), "Unknown Game")
-    open_achievements_window(appid, game_name)
-"""
+    # Create a frame to embed the external window
+    frame = ttk.Frame(achievements_window)
+    frame.pack(fill=tk.BOTH, expand=True)
+
+    # Run the SAM.Game executable
+    process = subprocess.Popen(["Resources/API/SAM.Game.exe", str(appid)])
+
+    # Allow some time for the external window to appear
+    time.sleep(0.5)
+
+    # Find the external window by matching part of its title
+    external_hwnd = find_window(f"Steam Achievement Manager 7.0 | {game_name}")
+    if external_hwnd:
+        # Embed the external window in the Tkinter frame
+        embed_window(external_hwnd, frame.winfo_id())
+    else:
+        print("Failed to find the external window.")
     
 # Function to close the hidden window opened by open_hidden
 def close_hidden(name):
