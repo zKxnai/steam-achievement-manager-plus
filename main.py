@@ -6,6 +6,7 @@ from appearance import set_default_theme, theme_switch
 from news import display_news
 from observed import observedinfolabel
 from utils import app_version
+from api_key import apikey
 
 # Main window
 main = ctk.CTk()
@@ -23,6 +24,7 @@ achievements_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/achievements_
 news_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/news_g.png").resize((16,16)))
 observed_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/visible_g.png").resize((16,16)))
 appearance_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/settings_g.png").resize((16,16)))
+steam_api_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/keyword_g.png").resize((16,16)))
 
 # Create frames for each tab
 home = ttk.Frame(notebook)
@@ -30,6 +32,7 @@ achievements_tab = ttk.Frame(notebook)
 news_tab = ttk.Frame(notebook)
 observed_games_tab = ttk.Frame(notebook)
 appearance_tab = ttk.Frame(notebook)
+api_key_tab = ttk.Frame(notebook)
 
 # Add tabs to the notebook
 notebook.add(home, text="Home", image=home_icon, compound="left")
@@ -37,6 +40,7 @@ notebook.add(achievements_tab, text='Achievements', image=achievements_icon, com
 notebook.add(news_tab, text='News', image=news_icon, compound="left")
 notebook.add(observed_games_tab, text='Observed Games', image=observed_icon, compound="left")
 notebook.add(appearance_tab, text='Appearance', image=appearance_icon, compound="left")
+notebook.add(api_key_tab, text='Steam API Key', image=steam_api_icon, compound="left")
 
 # Configure the appearance_tab's row and columns
 appearance_tab.columnconfigure(0, weight=1)
@@ -79,5 +83,8 @@ observedinfolabel(observed_games_tab)
 
 # Pass to appearance
 theme_switch(appearance_tab, main)
+
+# Pass to api_key
+apikey(api_key_tab)
 
 main.mainloop()

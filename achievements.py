@@ -143,8 +143,14 @@ def open_achievements_window(appid, game_name):
     # Create a new window
     achievements_window = ctk.CTkToplevel()
     achievements_window.title(f"Steam Achievement Manager+ {app_version} | Achievements for {game_name}")
-    achievements_window.iconbitmap("Resources/Icons/SAM+ Logo.ico")
+    achievements_window.after(250, lambda: achievements_window.iconbitmap("Resources/Icons/SAM+ Logo.ico"))
     achievements_window.geometry("800x600")
+
+    # Bring the window to the front and focus on it after a short delay
+    achievements_window.after(100, lambda: achievements_window.lift())
+    achievements_window.after(100, lambda: achievements_window.focus_force())
+    achievements_window.after(100, lambda: achievements_window.attributes('-topmost', True))
+    achievements_window.after(500, lambda: achievements_window.attributes('-topmost', False))
 
     # Create a frame to embed the external window
     frame = ttk.Frame(achievements_window)
@@ -154,7 +160,7 @@ def open_achievements_window(appid, game_name):
     process = subprocess.Popen(["Resources/API/SAM.Game.exe", str(appid)])
 
     # Allow some time for the external window to appear
-    time.sleep(0.5)
+    time.sleep(0.6)
 
     # Find the external window by matching part of its title
     external_hwnd = find_window(f"Steam Achievement Manager 7.0 | {game_name}")
