@@ -8,7 +8,7 @@ from tkinter import ttk
 from PIL import ImageTk
 from concurrent.futures import ThreadPoolExecutor
 from utils import ScrollableFrame, download_image, resize_image, app_version
-from database import get_owned_games
+from database import get_owned_games, load_default_theme
 
 # Define ThreadPoolExecutor with 10 threads
 achievements_executor = ThreadPoolExecutor(max_workers=10)
@@ -112,12 +112,6 @@ def open_hidden(appid):
     played_games_label.config(text=f"Played Games: {played_games_count}")
     subprocess.Popen(f"start /MIN cmd /c start /MIN /B Resources\\API\\SAM.Game.exe {appid}", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
 
-"""
-# Function to open the executable in a visible window
-def open_visible(appid):
-    subprocess.Popen(f"start /MIN cmd /c Resources\\API\\SAM.Game.exe {appid}", shell=True)
-"""
-
 def embed_window(external_hwnd, parent_hwnd):
     # Change the parent of the external window to the Tkinter window
     win32gui.SetParent(external_hwnd, parent_hwnd)
@@ -156,8 +150,19 @@ def open_achievements_window(appid, game_name):
     frame = ttk.Frame(achievements_window)
     frame.pack(fill=tk.BOTH, expand=True)
 
-    # Run the SAM.Game executable
-    process = subprocess.Popen(["Resources/API/SAM.Game.exe", str(appid)])
+    # Define the set of dark mode themes
+    dark_mode_themes = {
+        "Dark",
+        "Forest Dark",
+        "Azure Dark"
+    }
+    current_theme = load_default_theme()
+    print(f"Current theme: {current_theme}")
+    # Check if the current theme is a dark mode theme
+    if current_theme in dark_mode_themes:
+        subprocess.Popen(["Resources/API/Darkmode/SAM.Game.exe", str(appid)])
+    else:
+        subprocess.Popen(["Resources/API/Lightmode/SAM.Game.exe", str(appid)])
 
     # Allow some time for the external window to appear
     time.sleep(0.6)

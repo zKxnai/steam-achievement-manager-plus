@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.6.9.1
+- Current State: Beta 0.7
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -33,7 +33,10 @@
 - Only show game which count against game completion rate
 - Open achievements in custom window
     - ~~Focus window when opening~~
-    - Redo window, forward commands to old UI
+    - ~~Edit SAM.Game.exe~~
+    - ~~SAM+ Darkmode -> SAM.Game.exe Darkmode/ SAM+ Lightmode -> SAM.Game.exe Lightmode~~
+    - Fix first Startup "Cant find window error"
+    - Fix Buttons Functions Achievement Window
 - Optional: Owned games loading pop up confirmation
 
 #### News:

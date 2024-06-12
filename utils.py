@@ -5,7 +5,7 @@ from tkinter import ttk
 from PIL import Image
 from io import BytesIO
 
-app_version = "0.6.9.1"
+app_version = "0.7"
 
 class ScrollableFrame(ttk.Frame):
     def __init__(self, parent, *args, **kwargs):

@@ -6,7 +6,7 @@ from appearance import set_default_theme, theme_switch
 from news import display_news
 from observed import observedinfolabel
 from utils import app_version
-from api_key import apikey
+from key import apikey
 
 # Main window
 main = ctk.CTk()
