@@ -84,7 +84,7 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         pause_button.grid(row=row, column=3, padx=10, pady=5, sticky="e")
         
         achievement_button_img = tk.PhotoImage(file="Resources/Icons/achievements_g.png")
-        achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda appid=appid, name=name: open_achievements_window(appid, name))
+        achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda appid=appid: open_achievements_window(appid))
         achievement_button.image = achievement_button_img
         achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
 
@@ -112,44 +112,7 @@ def open_hidden(appid):
     played_games_label.config(text=f"Played Games: {played_games_count}")
     subprocess.Popen(f"start /MIN cmd /c start /MIN /B Resources\\API\\SAM.Game.exe {appid}", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
 
-def embed_window(external_hwnd, parent_hwnd):
-    # Change the parent of the external window to the Tkinter window
-    win32gui.SetParent(external_hwnd, parent_hwnd)
-
-    # Set the style of the external window to be a child window
-    win32gui.SetWindowLong(external_hwnd, win32con.GWL_STYLE, win32con.WS_VISIBLE | win32con.WS_CHILD)
-
-    # Resize the external window to fit the Tkinter frame
-    win32gui.SetWindowPos(external_hwnd, None, 0, 0, 800, 600, win32con.SWP_NOZORDER | win32con.SWP_NOACTIVATE)
-
-def find_window(title_contains):
-    def enum_windows_callback(hwnd, results):
-        if win32gui.IsWindowVisible(hwnd) and title_contains.lower() in win32gui.GetWindowText(hwnd).lower():
-            results.append(hwnd)
-
-    hwnds = []
-    win32gui.EnumWindows(enum_windows_callback, hwnds)
-    if hwnds:
-        return hwnds[0]
-    return None
-
-def open_achievements_window(appid, game_name):
-    # Create a new window
-    achievements_window = ctk.CTkToplevel()
-    achievements_window.title(f"Steam Achievement Manager+ {app_version} | Achievements for {game_name}")
-    achievements_window.after(250, lambda: achievements_window.iconbitmap("Resources/Icons/SAM+ Logo.ico"))
-    achievements_window.geometry("800x600")
-
-    # Bring the window to the front and focus on it after a short delay
-    achievements_window.after(100, lambda: achievements_window.lift())
-    achievements_window.after(100, lambda: achievements_window.focus_force())
-    achievements_window.after(100, lambda: achievements_window.attributes('-topmost', True))
-    achievements_window.after(500, lambda: achievements_window.attributes('-topmost', False))
-
-    # Create a frame to embed the external window
-    frame = ttk.Frame(achievements_window)
-    frame.pack(fill=tk.BOTH, expand=True)
-
+def open_achievements_window(appid):
     # Define the set of dark mode themes
     dark_mode_themes = {
         "Dark",
@@ -157,23 +120,11 @@ def open_achievements_window(appid, game_name):
         "Azure Dark"
     }
     current_theme = load_default_theme()
-    print(f"Current theme: {current_theme}")
     # Check if the current theme is a dark mode theme
     if current_theme in dark_mode_themes:
-        subprocess.Popen(["Resources/API/Darkmode/SAM.Game.exe", str(appid)])
+        subprocess.Popen(["Resources/API/Darkmode/bin/SAM.Game.exe", str(appid)])
     else:
-        subprocess.Popen(["Resources/API/Lightmode/SAM.Game.exe", str(appid)])
-
-    # Allow some time for the external window to appear
-    time.sleep(0.6)
-
-    # Find the external window by matching part of its title
-    external_hwnd = find_window(f"Steam Achievement Manager 7.0 | {game_name}")
-    if external_hwnd:
-        # Embed the external window in the Tkinter frame
-        embed_window(external_hwnd, frame.winfo_id())
-    else:
-        print("Failed to find the external window.")
+        subprocess.Popen(["Resources/API/Lightmode/bin/SAM.Game.exe", str(appid)])
     
 # Function to close the hidden window opened by open_hidden
 def close_hidden(name):
