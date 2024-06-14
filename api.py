@@ -1,7 +1,9 @@
 import os
 import re
 import requests
-from database import save_owned_games
+import threading
+from database import save_owned_games, load_api_key
+from tkinter import messagebox
 
 # Get Steam user ID
 def get_steam_id():
@@ -23,12 +25,15 @@ def get_steam_id():
         print(f"Error reading Steam configuration file: {e}")
         return None
 
-# Function to get API key from environment variable
 def get_api_key():
-    api_key = os.environ.get('STEAM_API_KEY')
+    api_key = load_api_key()
     if not api_key:
-        raise ValueError("API key not found. Set the STEAM_API_KEY environment variable.")
+        # Show the warning message in a separate thread
+        threading.Thread(target=show_warning_message).start()
     return api_key
+
+def show_warning_message():
+    messagebox.showwarning("Warning", "No API key found in the database. Please enter an API key.")
 
 steam_id = get_steam_id()
 API_key= get_api_key()

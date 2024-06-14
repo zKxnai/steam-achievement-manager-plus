@@ -6,7 +6,7 @@ from appearance import set_default_theme, theme_switch
 from news import display_news
 from observed import observedinfolabel
 from utils import app_version
-from key import apikey
+from key import apikey_frame
 
 # Main window
 main = ctk.CTk()
@@ -84,7 +84,7 @@ observedinfolabel(observed_games_tab)
 # Pass to appearance
 theme_switch(appearance_tab, main)
 
-# Pass to api_key
-apikey(api_key_tab)
+# Pass to key
+apikey_frame(api_key_tab)
 
 main.mainloop()

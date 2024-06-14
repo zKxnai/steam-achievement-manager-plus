@@ -20,6 +20,12 @@ def create_tables():
         img_icon_url TEXT NOT NULL
     )
     """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS api_keys (
+        id INTEGER PRIMARY KEY,
+        api_key TEXT NOT NULL
+    )
+    """)
     conn.commit()
     conn.close()
 
@@ -92,3 +98,45 @@ def get_owned_games():
     conn.close()
 
     return [{"appid": appid, "name": name, "img_icon_url": img_icon_url} for (appid, name, img_icon_url) in games]
+
+def save_api_key(api_key):
+    """Save the API key to the database."""
+    create_tables()
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    # Clear existing API keys
+    cursor.execute("DELETE FROM api_keys")
+
+    # Insert new API key
+    cursor.execute("""
+    INSERT INTO api_keys (api_key)
+    VALUES (?)
+    """, (api_key,))
+
+    conn.commit()
+    conn.close()
+
+def load_api_key():
+    """Retrieve the API key from the database."""
+    create_tables()
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT api_key FROM api_keys ORDER BY id DESC LIMIT 1")
+    api_key_row = cursor.fetchone()
+
+    conn.close()
+
+    return api_key_row[0] if api_key_row else None
+
+def delete_api_key():
+    """Delete the API key from the database."""
+    create_tables()
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM api_keys")
+
+    conn.commit()
+    conn.close()
