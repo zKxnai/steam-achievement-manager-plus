@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 from achievements import mainframe, display_games
 from appearance import set_default_theme, theme_switch
 from news import display_news
-from observed import observedinfolabel
+from observed import observedframe
 from utils import app_version
 from key import apikey_frame
 
@@ -12,7 +12,7 @@ from key import apikey_frame
 main = ctk.CTk()
 main.title(f"Steam Achievement Manager+ {app_version}")
 main.iconbitmap("Resources/Icons/SAM+ Logo.ico")
-main.geometry("843x600")
+main.geometry("935x600")
 
 # Create a Notebook (tabbed layout)
 notebook = ttk.Notebook(main)
@@ -79,7 +79,7 @@ display_games(achievements_tab)
 display_news(news_tab)
 
 # Pass to observed
-observedinfolabel(observed_games_tab)
+observedframe(observed_games_tab)
 
 # Pass to appearance
 theme_switch(appearance_tab, main)
