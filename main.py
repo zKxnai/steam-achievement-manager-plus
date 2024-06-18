@@ -8,7 +8,7 @@ from observed import observedframe
 from utils import app_version
 from key import apikey_frame
 from api import get_owned_games, API_key, steam_id
-
+  
 # Main window
 main = ctk.CTk()
 main.title(f"Steam Achievement Manager+ {app_version}")
@@ -60,20 +60,26 @@ landing_page_label = ttk.Label(landing_page_frame, text="Welcome to SAM+!")
 landing_page_label.configure(font=("Helvetica", 15, "bold underline"))
 landing_page_label.grid(row=0, column=0, sticky="w", padx=10, pady=10)
 
+custom_pady = 8
+custom_padx = 10
+
 landing_page_text = ttk.Label(landing_page_frame, text="Choose one of the tabs above to continue.")
-landing_page_text.grid(row=1, column=0, sticky="w", padx=10, pady=10)
+landing_page_text.grid(row=1, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
 
 landing_page_text_achievements = ttk.Label(landing_page_frame, text="- Achievements: Enables you to farm playtime or edit your achievements for your desired game.")
-landing_page_text_achievements.grid(row=2, column=0, sticky="w", padx=10, pady=10)
+landing_page_text_achievements.grid(row=2, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
 
 landing_page_text_news = ttk.Label(landing_page_frame, text="- News: Shows you the latest news released for every owned game.")
-landing_page_text_news.grid(row=3, column=0, sticky="w", padx=10, pady=10)
+landing_page_text_news.grid(row=3, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
 
 landing_page_text_observed = ttk.Label(landing_page_frame, text="- Observed Games: Lets you view your observed games.")
-landing_page_text_observed.grid(row=4, column=0, sticky="w", padx=10, pady=10)
+landing_page_text_observed.grid(row=4, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
 
 landing_page_text_appearance = ttk.Label(landing_page_frame, text="- Appearance: Change the appearance of SAM+.")
-landing_page_text_appearance.grid(row=5, column=0, sticky="w", padx=10, pady=10)
+landing_page_text_appearance.grid(row=5, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
+
+landing_page_text_key = ttk.Label(landing_page_frame, text="- Steam API Key: Insert or change the used Steam API Key.")
+landing_page_text_key.grid(row=6, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
 
 # Pass to achievements
 mainframe(achievements_tab)
@@ -90,5 +96,12 @@ theme_switch(appearance_tab, main)
 
 # Pass to key
 apikey_frame(api_key_tab)
+
+# Create info bar
+info_bar = ttk.Frame(main)
+info_bar.pack(fill="x", side="bottom")
+
+info_bar_label = ttk.Label(info_bar, text="SAM+ successfully started.")
+info_bar_label.pack(padx=10, pady=10, expand=True)
 
 main.mainloop()

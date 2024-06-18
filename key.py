@@ -37,22 +37,22 @@ def apikey_frame(api_key_tab):
     api_key_header.configure(font=("Helvetica", 15, "bold underline"))
     api_key_header.grid(row=0, column=0, sticky="nw", padx=10, pady=10)
 
-    api_key_step1 = ttk.Label(api_key_frame, text="1. Go to https://steamcommunity.com/dev/apikey and create an API-Key. Enter anything as domainname. It doesn't matter.")
+    api_key_step1 = ttk.Label(api_key_frame, text="1. Go to https://steamcommunity.com/dev/apikey and create an API Key. Enter anything as domainname. It doesn't matter.")
     api_key_step1.grid(row=1, column=0, sticky="w", padx=10, pady=10)
 
-    api_key_step2 = ttk.Label(api_key_frame, text="2. Copy your API-Key and enter it below.")
+    api_key_step2 = ttk.Label(api_key_frame, text="2. Copy your API Key and enter it below.")
     api_key_step2.grid(row=2, column=0, sticky="w", padx=10, pady=10)
 
     api_key_input = ttk.Entry(api_key_frame)
     api_key_input.grid(row=3, column=0, sticky="w", padx=10, pady=10)
 
-    api_key_input_button = ttk.Button(api_key_frame, text="Use this API-Key", command=lambda: save_key_and_update_label(api_key_input, api_key_label_semi_hidden))
+    api_key_input_button = ttk.Button(api_key_frame, text="Use this API Key", command=lambda: save_key_and_update_label(api_key_input, api_key_label_semi_hidden))
     api_key_input_button.grid(row=3, column=0, sticky="w", padx=200, pady=10)
 
     api_key_label_semi_hidden = ttk.Label(api_key_frame, text="Your API Key:")
     api_key_label_semi_hidden.grid(row=4, column=0, sticky="w", padx=10, pady=10)
 
-    api_key_delete_button = ttk.Button(api_key_frame, text="Delete current API-Key", command=delete_api_key_from_db)
+    api_key_delete_button = ttk.Button(api_key_frame, text="Delete current API Key", command=delete_api_key_from_db)
     api_key_delete_button.grid(row=4, column=0, sticky="w", padx=300, pady=10)
 
     api_key_step2 = ttk.Label(api_key_frame, text="3. Restart SAM+. Enjoy Unlocking.")
