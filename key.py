@@ -37,7 +37,7 @@ def apikey_frame(api_key_tab):
     api_key_header.configure(font=("Helvetica", 15, "bold underline"))
     api_key_header.grid(row=0, column=0, sticky="nw", padx=10, pady=10)
 
-    api_key_step1 = ttk.Label(api_key_frame, text="1. Got to https://steamcommunity.com/dev/apikey and create an API Key. Enter anything as domainname. It doesn't matter.")
+    api_key_step1 = ttk.Label(api_key_frame, text="1. Go to https://steamcommunity.com/dev/apikey and create an API-Key. Enter anything as domainname. It doesn't matter.")
     api_key_step1.grid(row=1, column=0, sticky="w", padx=10, pady=10)
 
     api_key_step2 = ttk.Label(api_key_frame, text="2. Copy your API-Key and enter it below.")

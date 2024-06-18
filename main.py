@@ -7,6 +7,7 @@ from news import display_news
 from observed import observedframe
 from utils import app_version
 from key import apikey_frame
+from api import get_owned_games, API_key, steam_id
 
 # Main window
 main = ctk.CTk()
@@ -47,6 +48,9 @@ appearance_tab.columnconfigure(0, weight=1)
 
 # Change theme
 set_default_theme()
+
+# Get owned games
+get_owned_games(API_key, steam_id)
 
 # Creating landing page
 landing_page_frame = ttk.Frame(home)

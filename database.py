@@ -26,14 +26,6 @@ def create_tables():
         api_key TEXT NOT NULL
     )
     """)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS observed_games (
-        appid INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        achievements_total INTEGER NOT NULL,
-        achievements_achieved INTEGER NOT NULL
-    )
-    """)
     conn.commit()
     conn.close()
 
@@ -148,42 +140,3 @@ def delete_api_key():
 
     conn.commit()
     conn.close()
-
-def save_observed_game(game):
-    """Save an observed game to the database."""
-    create_tables()
-    conn = sqlite3.connect(DB_FILE)
-    cursor = conn.cursor()
-
-    cursor.execute("""
-    INSERT OR REPLACE INTO observed_games (appid, name, achievements_total, achievements_achieved)
-    VALUES (?, ?, ?, ?)
-    """, (game["appid"], game["name"], game["achievements_total"], game["achievements_achieved"]))
-
-    conn.commit()
-    conn.close()
-
-def delete_observed_game(appid):
-    """Delete an observed game from the database."""
-    create_tables()
-    conn = sqlite3.connect(DB_FILE)
-    cursor = conn.cursor()
-
-    cursor.execute("DELETE FROM observed_games WHERE appid = ?", (appid,))
-
-    conn.commit()
-    conn.close()
-
-def get_observed_games():
-    """Retrieve observed games from the database."""
-    create_tables()
-    conn = sqlite3.connect(DB_FILE)
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT appid, name, achievements_total, achievements_achieved FROM observed_games")
-    games = cursor.fetchall()
-
-    conn.close()
-
-    return [{"appid": appid, "name": name, "achievements_total": achievements_total, "achievements_achieved": achievements_achieved}
-            for (appid, name, achievements_total, achievements_achieved) in games]

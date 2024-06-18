@@ -5,7 +5,6 @@ from PIL import ImageTk
 from concurrent.futures import ThreadPoolExecutor
 from utils import ScrollableFrame, download_image, resize_image
 from database import get_owned_games, load_default_theme
-from observed import add_game_to_observed
 
 # Define ThreadPoolExecutor with 10 threads
 achievements_executor = ThreadPoolExecutor(max_workers=10)

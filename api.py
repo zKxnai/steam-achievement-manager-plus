@@ -39,28 +39,29 @@ steam_id = get_steam_id()
 API_key= get_api_key()
 
 # Get owned games
-url_owned_games = f"http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={API_key}&steamid={steam_id}&format=json&include_appinfo&include_appinfo=true&include_played_free_games=true"
-response = requests.get(url_owned_games)
-if response.status_code == 200:
-    data = response.json()
+def get_owned_games(API_key, steam_id):
+    url_owned_games = f"http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={API_key}&steamid={steam_id}&format=json&include_appinfo&include_appinfo=true&include_played_free_games=true"
+    response = requests.get(url_owned_games)
+    if response.status_code == 200:
+        data = response.json()
 
-    owned_games = data.get("response", {}).get("games", [])
+        owned_games = data.get("response", {}).get("games", [])
 
-    # Save owned games to the database
-    games_to_save = []
-    for game in owned_games:
-        appid = game.get("appid", "")
-        name = game.get("name", "")
-        img_icon_url = f"http://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/{appid}/{game['img_icon_url']}.jpg"
+        # Save owned games to the database
+        games_to_save = []
+        for game in owned_games:
+            appid = game.get("appid", "")
+            name = game.get("name", "")
+            img_icon_url = f"http://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/{appid}/{game['img_icon_url']}.jpg"
 
-        games_to_save.append({"appid": appid, "name": name, "img_icon_url": img_icon_url})
+            games_to_save.append({"appid": appid, "name": name, "img_icon_url": img_icon_url})
 
-    save_owned_games(games_to_save)
+        save_owned_games(games_to_save)
 
-    print("Owned games data saved to the database successfully.")
+        print("Owned games data saved to the database successfully.")
 
-else:
-    print("Failed to fetch data from Steam API.")
+    else:
+        print("Failed to fetch data from Steam API.")
 
 # Fetch latest news entry from game
 def get_latest_news(appid):
@@ -73,7 +74,15 @@ def get_latest_news(appid):
             return latest_news
     return None
 
-"""
-# Get achievements
-url = f"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={appid}&key={API_key}&steamid={steam_id}"
-"""
+# Get achievement stats
+def get_achievement_stats(appid, API_key, steam_id):
+    url_achievements = f"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={appid}&key={API_key}&steamid={steam_id}"
+    try:
+        response = requests.get(url_achievements)
+        if response.status_code == 200:
+            return response.json()["playerstats"]["achievements"]
+        else:
+            print(f"Error fetching achievement stats: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Request Error: {e}")
+    return None

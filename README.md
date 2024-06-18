@@ -41,6 +41,7 @@
     - Shows count of earned achievements, missing achievements and percentage of completion
     - Placeholder (Loading achievements...) for background loading, update when fetched
     - Progressbar for achievement completion
+    - Save observed games in database
 
 #### Appearance:
 - Optional: Implement ScrollableFrame (When more themes get added)
