@@ -7,12 +7,16 @@ from news import display_news
 from utils import app_version
 from key import apikey_frame
 from api import get_owned_games, API_key, steam_id
+from concurrent.futures import ThreadPoolExecutor
+
+# Define ThreadPoolExecutor with 10 threads
+achievements_stats_executor = ThreadPoolExecutor(max_workers=10)
   
 # Main window
 main = ctk.CTk()
 main.title(f"Steam Achievement Manager+ {app_version}")
 main.iconbitmap("Resources/Icons/SAM+ Logo.ico")
-main.geometry("935x600")
+main.geometry("850x600")
 
 # Create a Notebook (tabbed layout)
 notebook = ttk.Notebook(main)
@@ -46,7 +50,7 @@ appearance_tab.columnconfigure(0, weight=1)
 set_default_theme()
 
 # Get owned games
-get_owned_games(API_key, steam_id)
+achievements_stats_executor.submit(get_owned_games, API_key, steam_id)
 
 # Creating landing page
 landing_page_frame = ttk.Frame(home)
@@ -68,14 +72,11 @@ landing_page_text_achievements.grid(row=2, column=0, sticky="w", padx=custom_pad
 landing_page_text_news = ttk.Label(landing_page_frame, text="- News: Shows you the latest news released for every owned game.")
 landing_page_text_news.grid(row=3, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
 
-landing_page_text_observed = ttk.Label(landing_page_frame, text="- Observed Games: Lets you view your observed games.")
-landing_page_text_observed.grid(row=4, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
-
 landing_page_text_appearance = ttk.Label(landing_page_frame, text="- Appearance: Change the appearance of SAM+.")
-landing_page_text_appearance.grid(row=5, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
+landing_page_text_appearance.grid(row=4, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
 
 landing_page_text_key = ttk.Label(landing_page_frame, text="- Steam API Key: Insert or change the used Steam API Key.")
-landing_page_text_key.grid(row=6, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
+landing_page_text_key.grid(row=5, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
 
 # Pass to achievements
 mainframe(achievements_tab)

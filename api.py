@@ -2,8 +2,9 @@ import os
 import re
 import requests
 import threading
-from database import save_owned_games, load_api_key
+from database import save_owned_games, load_api_key, save_achievements
 from tkinter import messagebox
+from concurrent.futures import ThreadPoolExecutor
 
 # Get Steam user ID
 def get_steam_id():
@@ -60,6 +61,12 @@ def get_owned_games(API_key, steam_id):
 
         print("Owned games data saved to the database successfully.")
 
+        # Fetch achievements for each game using ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = [executor.submit(fetch_and_save_achievements, API_key, steam_id, game['appid']) for game in owned_games]
+            for future in futures:
+                future.result()  # Wait for all futures to complete
+
     else:
         print("Failed to fetch data from Steam API.")
 
@@ -74,15 +81,25 @@ def get_latest_news(appid):
             return latest_news
     return None
 
-# Get achievement stats
-def get_achievement_stats(appid, API_key, steam_id):
+# Fetch and save achievements
+def fetch_and_save_achievements(API_key, steam_id, appid):
     url_achievements = f"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={appid}&key={API_key}&steamid={steam_id}"
-    try:
-        response = requests.get(url_achievements)
-        if response.status_code == 200:
-            return response.json()["playerstats"]["achievements"]
-        else:
-            print(f"Error fetching achievement stats: {response.status_code}")
-    except requests.RequestException as e:
-        print(f"Request Error: {e}")
-    return None
+    response = requests.get(url_achievements)
+    if response.status_code == 200:
+        data = response.json()
+
+        achievements = data.get("playerstats", {}).get("achievements", [])
+
+        # Save achievements to the database
+        achievements_to_save = []
+        for achievement in achievements:
+            apiname = achievement.get("apiname", "")
+            achieved = achievement.get("achieved", 0)
+
+            achievements_to_save.append({"appid": appid, "apiname": apiname, "achieved": achieved})
+
+        save_achievements(achievements_to_save)
+
+        print(f"Achievements for appid {appid} saved to the database successfully.")
+    else:
+        print(f"Failed to fetch achievements for appid {appid}.")

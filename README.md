@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.8.3
+- Current State: Beta 0.8.4
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -27,10 +27,8 @@
 #### Landing Page:
 
 #### Achievements:
-    - Pin Icon to pin specific games at the top
-    - Progressbar
-    - Achievementcount
-    - Save pinned games in database
+- Pin Icon to pin specific games at the top
+- Save pinned games in database
 
 #### News:
 
@@ -84,6 +82,8 @@
     - ~~SAM+ Darkmode -> SAM.Game.exe Darkmode/ SAM+ Lightmode -> SAM.Game.exe Lightmode~~
     - ~~Fix first Startup "Cant find window error" -> Change Title Bar SAM.Game.exe~~
     - ~~Fix Buttons Functions Achievement Window -> Change Title Bar SAM.Game.exe~~
+- ~~Progressbar~~
+- ~~Achievementcount~~
 
 #### News:
 - ~~FIX news entry cleaning~~

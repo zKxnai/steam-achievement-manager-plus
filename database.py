@@ -26,6 +26,15 @@ def create_tables():
         api_key TEXT NOT NULL
     )
     """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS achievements (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        appid INTEGER NOT NULL,
+        apiname TEXT NOT NULL,
+        achieved INTEGER NOT NULL,
+        FOREIGN KEY (appid) REFERENCES owned_games(appid)
+    )
+    """)
     conn.commit()
     conn.close()
 
@@ -140,3 +149,36 @@ def delete_api_key():
 
     conn.commit()
     conn.close()
+
+def save_achievements(achievements):
+    """Save achievements to the database."""
+    create_tables()
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    # Clear existing data for the appid
+    appid = achievements[0]["appid"] if achievements else None
+    if appid:
+        cursor.execute("DELETE FROM achievements WHERE appid = ?", (appid,))
+
+    # Insert new data
+    for achievement in achievements:
+        cursor.execute("""
+        INSERT INTO achievements (appid, apiname, achieved)
+        VALUES (?, ?, ?)
+        """, (achievement["appid"], achievement["apiname"], achievement["achieved"]))
+
+    conn.commit()
+    conn.close()
+
+# Fetch achievement stats from the database
+def get_achievement_stats(appid):
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*), SUM(achieved) FROM achievements WHERE appid = ?", (appid,))
+    total_achievements, unlocked_achievements = cursor.fetchone()
+
+    conn.close()
+
+    return total_achievements, unlocked_achievements
