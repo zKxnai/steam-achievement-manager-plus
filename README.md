@@ -27,18 +27,14 @@
 #### Landing Page:
 
 #### Achievements:
+    - Pin Icon to pin specific games at the top
+    - Progressbar
+    - Achievementcount
+    - Save pinned games in database
 
 #### News:
 
-#### Observed Games:
-- Observe game achievements (For games that gradually add more achievements)
-    - ~~Button right of Achievements button~~
-    - Adds game to Observed games tab
-    - Load icons
-    - Shows count of earned achievements, missing achievements and percentage of completion
-    - Placeholder (Loading achievements...) for background loading, update when fetched
-    - Progressbar for achievement completion
-    - Save observed games in database
+#### Observed Games: (Integrated into Achievements)
 
 #### Appearance:
 - Optional: Implement ScrollableFrame (When more themes get added)
@@ -103,10 +99,18 @@
     - ~~Place Refresh button top right corner~~
     - ~~Load asynchronously~~
 
-#### Observed Games:
+#### Observed Games: (Integrated into Achievements)
 - ~~Favorite games~~ (Can be done with observing)
     - ~~Heart/Star button right of achievement button~~
     - ~~Shown at the top of games list~~
+- ~~Observe game achievements (For games that gradually add more achievements)~~
+    - ~~Button right of Achievements button~~
+    - ~~Adds game to Observed games tab~~
+    - ~~Load icons~~
+    - ~~Shows count of earned achievements, missing achievements and percentage of completion~~
+    - ~~Placeholder (Loading achievements...) for background loading, update when fetched~~
+    - ~~Progressbar for achievement completion~~
+    - ~~Save observed games in database~~
 
 #### Appearance:
 - ~~Add "Lightmode" tab~~

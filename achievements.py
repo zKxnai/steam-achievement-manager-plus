@@ -83,11 +83,6 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda appid=appid: open_achievements_window(appid))
         achievement_button.image = achievement_button_img
         achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
-            
-        observe_button_img = tk.PhotoImage(file="Resources/Icons/visible_g.png")
-        observe_button = ttk.Button(frame, text="Observe", image=observe_button_img, compound="left")
-        observe_button.image = observe_button_img
-        observe_button.grid(row=row, column=5, padx=10, pady=10, sticky="e")
 
         # Update button states when clicked
         play_button.config(command=lambda appid=appid, button=play_button: play_button_clicked(appid, button))

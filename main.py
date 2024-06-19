@@ -4,7 +4,6 @@ from PIL import Image, ImageTk
 from achievements import mainframe, display_games
 from appearance import set_default_theme, theme_switch
 from news import display_news
-from observed import observedframe
 from utils import app_version
 from key import apikey_frame
 from api import get_owned_games, API_key, steam_id
@@ -23,7 +22,6 @@ notebook.pack(fill="both", expand=True)
 home_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/home_g.png").resize((16,16)))
 achievements_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/achievements_g.png").resize((16,16)))
 news_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/news_g.png").resize((16,16)))
-observed_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/visible_g.png").resize((16,16)))
 appearance_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/settings_g.png").resize((16,16)))
 steam_api_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/keyword_g.png").resize((16,16)))
 
@@ -31,7 +29,6 @@ steam_api_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/keyword_g.png").
 home = ttk.Frame(notebook)
 achievements_tab = ttk.Frame(notebook)
 news_tab = ttk.Frame(notebook)
-observed_games_tab = ttk.Frame(notebook)
 appearance_tab = ttk.Frame(notebook)
 api_key_tab = ttk.Frame(notebook)
 
@@ -39,7 +36,6 @@ api_key_tab = ttk.Frame(notebook)
 notebook.add(home, text="Home", image=home_icon, compound="left")
 notebook.add(achievements_tab, text='Achievements', image=achievements_icon, compound="left")
 notebook.add(news_tab, text='News', image=news_icon, compound="left")
-notebook.add(observed_games_tab, text='Observed Games', image=observed_icon, compound="left")
 notebook.add(appearance_tab, text='Appearance', image=appearance_icon, compound="left")
 notebook.add(api_key_tab, text='Steam API Key', image=steam_api_icon, compound="left")
 
@@ -87,9 +83,6 @@ display_games(achievements_tab)
 
 # Pass to news
 display_news(news_tab)
-
-# Pass to observed
-observedframe(observed_games_tab)
 
 # Pass to appearance
 theme_switch(appearance_tab, main)
