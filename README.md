@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.8.4
+- Current State: Beta 0.8.5
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -29,6 +29,9 @@
 #### Achievements:
 - Pin Icon to pin specific games at the top
 - Save pinned games in database
+- Sorting function for percentage/alphabetical
+- 100% in Green
+- Play button clicked fix
 
 #### News:
 

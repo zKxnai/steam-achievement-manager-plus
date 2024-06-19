@@ -181,4 +181,15 @@ def get_achievement_stats(appid):
 
     conn.close()
 
-    return total_achievements, unlocked_achievements
+    return unlocked_achievements, total_achievements
+
+def game_has_achievements(appid):
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM achievements WHERE appid = ? AND apiname != 0", (appid,))
+    count = cursor.fetchone()[0]
+
+    conn.close()
+
+    return count > 0

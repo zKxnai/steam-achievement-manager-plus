@@ -4,7 +4,7 @@ from tkinter import ttk
 from PIL import ImageTk
 from concurrent.futures import ThreadPoolExecutor
 from utils import ScrollableFrame, download_image, resize_image
-from database import get_owned_games, load_default_theme, get_achievement_stats
+from database import get_owned_games, load_default_theme, get_achievement_stats, game_has_achievements
 
 # Define ThreadPoolExecutor with 10 threads
 achievements_executor = ThreadPoolExecutor(max_workers=10)
@@ -73,22 +73,30 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         name_label = tk.Label(achievements_info_frame, text=name)
         name_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 
-        # Fetch achievement stats
-        total_achievements, unlocked_achievements = get_achievement_stats(appid)
+        # Check if achievements exist for the game
+        if game_has_achievements(appid):
+            # Fetch and display achievements information
+            unlocked_achievements, total_achievements = get_achievement_stats(appid)
+            
+            # Add progress bar below the name
+            achievement_progress = (unlocked_achievements / total_achievements) * 100 if total_achievements else 0
+            progress = ttk.Progressbar(achievements_info_frame, length=100, mode='determinate')
+            progress.grid(row=1, column=0, sticky="w")
+            progress['value'] = achievement_progress
 
-        # Add progress bar below the name
-        achievement_progress = (unlocked_achievements / total_achievements) * 100 if total_achievements else 0
-        progress = ttk.Progressbar(achievements_info_frame, length=100, mode='determinate')
-        progress.grid(row=1, column=0, sticky="w")
-        progress['value'] = achievement_progress
+            achievement_progress_label = ttk.Label(achievements_info_frame, text=f"{achievement_progress:.2f}%")
+            achievement_progress_label.configure(font=("Helvetica", 9, "normal"))
+            achievement_progress_label.grid(row=1, column=0, sticky="w", padx=(105, 0)) # Adjust padx as needed
 
-        achievement_progress_label = ttk.Label(achievements_info_frame, text=f"{achievement_progress:.2f}%")
-        achievement_progress_label.configure(font=("Helvetica", 9, "normal"))
-        achievement_progress_label.grid(row=1, column=0, sticky="w", padx=(105, 0)) # Adjust padx as needed
+            achievements_count = ttk.Label(achievements_info_frame, text=f"{unlocked_achievements}/{total_achievements}")
+            achievements_count.configure(font=("Helvetica", 9, "normal"))
+            achievements_count.grid(row=1, column=0, sticky="w", padx=(170, 0)) # Adjust padx as needed
 
-        achievements_count = ttk.Label(achievements_info_frame, text=f"{unlocked_achievements}/{total_achievements}")
-        achievements_count.configure(font=("Helvetica", 9, "normal"))
-        achievements_count.grid(row=1, column=0, sticky="w", padx=(170, 0)) # Adjust padx as needed
+        else:
+            # Display message when no achievements available
+            no_achievements_label = ttk.Label(achievements_info_frame, text="No achievements available")
+            no_achievements_label.configure(font=("Helvetica", 9, "normal"))
+            no_achievements_label.grid(row=1, column=0, sticky="w", padx=10, pady=5)
 
         # Configure columns to distribute evenly
         achievements_info_frame.grid_columnconfigure(0, weight=1)  # Adjust weight as needed
