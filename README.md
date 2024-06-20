@@ -2,7 +2,7 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.8.5
+- Current State: Beta 0.8.6
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
@@ -29,9 +29,16 @@
 #### Achievements:
 - Pin Icon to pin specific games at the top
 - Save pinned games in database
-- Sorting function for percentage/alphabetical
-- 100% in Green
-- Play button clicked fix
+- Sorting function:
+    - Most achievements
+    - Least achievements -> ignore "No achievements available"
+    - Alphabetical A-Z
+    - Alphabetical Z-A
+    - Completed (Alphabetical A-Z)
+    - Uncompleted (Alphabetical A-Z)
+    - Every Type without displaying Games iwthout achievements
+    - Highest Completionrate
+    - Lowest Completionrate
 
 #### News:
 
@@ -87,6 +94,8 @@
     - ~~Fix Buttons Functions Achievement Window -> Change Title Bar SAM.Game.exe~~
 - ~~Progressbar~~
 - ~~Achievementcount~~
+- ~~Play button clicked fix~~
+- ~~100% in Green~~
 
 #### News:
 - ~~FIX news entry cleaning~~
