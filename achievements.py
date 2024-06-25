@@ -1,7 +1,7 @@
 import tkinter as tk
 import subprocess
 from tkinter import ttk
-from PIL import ImageTk
+from PIL import ImageTk, Image
 from concurrent.futures import ThreadPoolExecutor
 from utils import ScrollableFrame, download_image, resize_image, app_version, resource_path
 from database import get_owned_games, load_default_theme, get_achievement_stats, game_has_achievements
@@ -58,6 +58,11 @@ def mainframe(achievements_tab):
 
 def on_image_loaded(result, name, appid, row, col, frame, img_list):
     img = result
+
+    # Load the pin icon once to use it for all game entries
+    pin_icon_img = Image.open(resource_path("Resources/Icons/pin_g.png")).resize((14, 14), Image.LANCZOS)
+    pin_icon = ImageTk.PhotoImage(pin_icon_img)
+
     if img:
         img = resize_image(img, (50, 50))
         img_tk = ImageTk.PhotoImage(img)
@@ -70,8 +75,17 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         achievements_info_frame = tk.Frame(frame)
         achievements_info_frame.grid(row=row, column=1, padx=10, pady=5, sticky="w")
 
-        name_label = tk.Label(achievements_info_frame, text=name)
+        # Create a sub-frame for the name and pin icon
+        name_pin_frame = tk.Frame(achievements_info_frame)
+        name_pin_frame.grid(row=0, column=0, sticky="w")
+
+        name_label = tk.Label(name_pin_frame, text=name)
         name_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
+
+        # Add the pin icon next to the game name
+        pin_label = tk.Label(name_pin_frame, image=pin_icon)
+        pin_label.image = pin_icon  # Keep a reference to the image
+        pin_label.grid(row=0, column=1, sticky="w")
 
         # Check if achievements exist for the game
         if game_has_achievements(appid):
