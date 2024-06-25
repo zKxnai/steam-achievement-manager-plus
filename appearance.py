@@ -2,6 +2,7 @@ import sv_ttk
 import customtkinter as ctk
 from tkinter import ttk, messagebox
 from database import save_default_theme, load_default_theme
+from utils import resource_path
 
 is_azure_initialized = False
 current_theme_label = None
@@ -31,20 +32,20 @@ def toggle_sv_dark():
     update_current_theme_label("Sun Valley Dark")
 
 def toggle_sv_light():
-    ctk.set_appearance_mode("light")
     sv_ttk.set_theme("light")
+    ctk.set_appearance_mode("light")
     set_button_style()
     update_current_theme_label("Sun Valley Light")
 
 def toggle_forest_dark(main):
-    main.tk.call("source", "Resources/Themes/Forest-ttk-theme-1.0/forest-dark.tcl")
+    main.tk.call("source", resource_path("Resources/Themes/Forest-ttk-theme-1.0/forest-dark.tcl"))
     ttk.Style(main).theme_use("forest-dark")
     ctk.set_appearance_mode("dark")
     set_button_style()
     update_current_theme_label("Forest Dark")
 
 def toggle_forest_light(main):
-    main.tk.call("source", "Resources/Themes/Forest-ttk-theme-1.0/forest-light.tcl")
+    main.tk.call("source", resource_path("Resources/Themes/Forest-ttk-theme-1.0/forest-light.tcl"))
     ttk.Style(main).theme_use("forest-light")
     ctk.set_appearance_mode("light")
     set_button_style()
@@ -53,7 +54,7 @@ def toggle_forest_light(main):
 def initialize_azure_theme(main):
     global is_azure_initialized
     if not is_azure_initialized:
-        main.tk.call("source", "Resources/Themes/Azure-ttk-theme-2.1.0/azure.tcl")
+        main.tk.call("source", resource_path("Resources/Themes/Azure-ttk-theme-2.1.0/azure.tcl"))
         is_azure_initialized = True
 
 def toggle_azure_dark(main):
@@ -184,13 +185,13 @@ def theme_switch(appearance_tab, main):
     forest_toggle_theme_label.grid(row=4, column=0, sticky="nw", padx=10, pady=10)
 
     # Create forest lightmode switch in the appearance tab
-    forest_lightmode_label = ttk.Label(theme_change_frame, text="Toogle Lightmode:")
+    forest_lightmode_label = ttk.Label(theme_change_frame, text="Toogle Lightmode: (Can only called once per session)")
     forest_lightmode_label.grid(row=5, column=0, sticky="nw", padx=10, pady=10)
     forest_lightmode_switch = ttk.Button(theme_change_frame, text="Lightmode", command=lambda: toggle_forest_light(main))
     forest_lightmode_switch.grid(row=5, column=1, sticky="nw", padx=10, pady=5)
 
     # Create forest darkmode switch in the appearance tab
-    forest_darkmode_label = ttk.Label(theme_change_frame, text="Toogle Darkmode:")
+    forest_darkmode_label = ttk.Label(theme_change_frame, text="Toogle Darkmode: (Can only called once per session)")
     forest_darkmode_label.grid(row=6, column=0, sticky="nw", padx=10, pady=10)
     forest_darkmode_switch = ttk.Button(theme_change_frame, text="Darkmode", command=lambda: toggle_forest_dark(main))
     forest_darkmode_switch.grid(row=6, column=1, sticky="nw", padx=10, pady=5)

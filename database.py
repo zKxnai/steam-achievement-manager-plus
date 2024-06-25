@@ -183,6 +183,7 @@ def get_achievement_stats(appid):
 
     return unlocked_achievements, total_achievements
 
+# Find games which have achievements/which have no achievements
 def game_has_achievements(appid):
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()

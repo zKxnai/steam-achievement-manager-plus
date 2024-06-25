@@ -1,11 +1,13 @@
 import tkinter as tk
 import re
 import requests
+import sys
+import os
 from tkinter import ttk
 from PIL import Image
 from io import BytesIO
 
-app_version = "0.8.6"
+app_version = "0.9"
 
 class ScrollableFrame(ttk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -60,3 +62,12 @@ def download_image(url):
             print(f"Failed to download image from {url}: {response.status_code}")
     except Exception as e:
         print(f"Error downloading image from {url}: {e}")
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)

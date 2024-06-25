@@ -3,7 +3,7 @@ import subprocess
 from tkinter import ttk
 from PIL import ImageTk
 from concurrent.futures import ThreadPoolExecutor
-from utils import ScrollableFrame, download_image, resize_image, app_version
+from utils import ScrollableFrame, download_image, resize_image, app_version, resource_path
 from database import get_owned_games, load_default_theme, get_achievement_stats, game_has_achievements
 
 # Define ThreadPoolExecutor with 10 threads
@@ -121,17 +121,17 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         achievements_info_frame.grid_columnconfigure(2, weight=1)  # Adjust weight as needed
         
         # Add buttons
-        play_button_img = tk.PhotoImage(file="Resources/Icons/play_g.png")
+        play_button_img = tk.PhotoImage(file=resource_path("Resources/Icons/play_g.png"))
         play_button = ttk.Button(frame, text="Play", image=play_button_img, compound="left", command=lambda appid=appid: open_hidden(appid), width=10)
         play_button.image = play_button_img
         play_button.grid(row=row, column=2, padx=10, pady=5, sticky="e")
         
-        pause_button_img = tk.PhotoImage(file="Resources/Icons/pause_g.png")
+        pause_button_img = tk.PhotoImage(file=resource_path("Resources/Icons/pause_g.png"))
         pause_button = ttk.Button(frame, text="Pause", image=pause_button_img, compound="left", command=lambda name=name: close_hidden(name), width=10)
         pause_button.image = pause_button_img
         pause_button.grid(row=row, column=3, padx=10, pady=5, sticky="e")
         
-        achievement_button_img = tk.PhotoImage(file="Resources/Icons/achievements_g.png")
+        achievement_button_img = tk.PhotoImage(file=resource_path("Resources/Icons/achievements_g.png"))
         achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda appid=appid: open_achievements_window(appid))
         achievement_button.image = achievement_button_img
         achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
@@ -155,10 +155,17 @@ def pause_button_clicked(name, button):
 
 # Function to open the executable in a hidden window
 def open_hidden(appid):
-    global played_games_count
+    global played_games_count, game_process
     played_games_count += 1
     played_games_label.config(text=f"Played Games: {played_games_count}")
-    subprocess.Popen(f"start /MIN cmd /c start /MIN /B Resources\\API\\Darkmode\\bin\\SAM.Game.exe {appid}", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
+    exe_path = resource_path("Resources/API/Darkmode/bin/SAM.Game.exe")
+    cmdline = f'"{exe_path}" {appid}'
+
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    startupinfo.wShowWindow = subprocess.SW_HIDE
+
+    game_process = subprocess.Popen(cmdline, startupinfo=startupinfo)
 
 def open_achievements_window(appid):
     # Define the set of dark mode themes
@@ -170,16 +177,23 @@ def open_achievements_window(appid):
     current_theme = load_default_theme()
     # Check if the current theme is a dark mode theme
     if current_theme in dark_mode_themes:
-        subprocess.Popen(["Resources/API/Darkmode/bin/SAM.Game.exe", str(appid)])
+        subprocess.Popen([resource_path("Resources/API/Darkmode/bin/SAM.Game.exe"), str(appid)])
     else:
-        subprocess.Popen(["Resources/API/Lightmode/bin/SAM.Game.exe", str(appid)])
+        subprocess.Popen([resource_path("Resources/API/Lightmode/bin/SAM.Game.exe"), str(appid)])
     
 # Function to close the hidden window opened by open_hidden
 def close_hidden(name):
-    global played_games_count
+    global played_games_count, game_process
     played_games_count -= 1
     played_games_label.config(text=f"Played Games: {played_games_count}")
-    subprocess.Popen(f"start /MIN cmd /c taskkill /F /FI \"WindowTitle eq Steam Achievement Manager+ {app_version} | {name}\"", shell=True, creationflags=subprocess.CREATE_NO_WINDOW)
+
+    if game_process:
+        try:
+            game_process.terminate()  # Terminate the game process
+            game_process = None  # Reset game_process variable
+
+        except Exception as e:
+            print(f"Error terminating game process: {e}")
 
 def update_info_label(total_games):
     info_label.config(text=f"Total games: {total_games}")

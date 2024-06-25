@@ -4,18 +4,28 @@ from PIL import Image, ImageTk
 from achievements import mainframe, display_games
 from appearance import set_default_theme, theme_switch
 from news import display_news
-from utils import app_version
+from utils import app_version, resource_path
 from key import apikey_frame
 from api import get_owned_games, API_key, steam_id
 from concurrent.futures import ThreadPoolExecutor
 
+
+
 # Define ThreadPoolExecutor with 10 threads
 achievements_stats_executor = ThreadPoolExecutor(max_workers=10)
   
+# Absolute icon paths
+icon_path = resource_path("Resources/Icons/SAM+ Logo.ico")
+home_icon_path = resource_path("Resources/Icons/home_g.png")
+achievements_icon_path = resource_path("Resources/Icons/achievements_g.png")
+news_icon_path = resource_path("Resources/Icons/news_g.png")
+appearance_icon_path = resource_path("Resources/Icons/settings_g.png")
+steam_api_icon_path = resource_path("Resources/Icons/keyword_g.png")
+
 # Main window
 main = ctk.CTk()
 main.title(f"Steam Achievement Manager+ {app_version}")
-main.iconbitmap("Resources/Icons/SAM+ Logo.ico")
+main.iconbitmap(icon_path)
 main.geometry("850x600")
 
 # Create a Notebook (tabbed layout)
@@ -23,11 +33,11 @@ notebook = ttk.Notebook(main)
 notebook.pack(fill="both", expand=True)
 
 # Loads icons for tabs
-home_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/home_g.png").resize((16,16)))
-achievements_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/achievements_g.png").resize((16,16)))
-news_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/news_g.png").resize((16,16)))
-appearance_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/settings_g.png").resize((16,16)))
-steam_api_icon = ImageTk.PhotoImage(Image.open("Resources/Icons/keyword_g.png").resize((16,16)))
+home_icon = ImageTk.PhotoImage(Image.open(home_icon_path).resize((16,16)))
+achievements_icon = ImageTk.PhotoImage(Image.open(achievements_icon_path).resize((16,16)))
+news_icon = ImageTk.PhotoImage(Image.open(news_icon_path).resize((16,16)))
+appearance_icon = ImageTk.PhotoImage(Image.open(appearance_icon_path).resize((16,16)))
+steam_api_icon = ImageTk.PhotoImage(Image.open(steam_api_icon_path).resize((16,16)))
 
 # Create frames for each tab
 home = ttk.Frame(notebook)

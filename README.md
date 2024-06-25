@@ -2,15 +2,16 @@
 - New version of SAM
 - Rewritten in Python
 - Source Code in C#: https://github.com/gibbed/SteamAchievementManager
-- Current State: Beta 0.8.6
+- Current State: Pre-Release 0.9
 
 ## (New) Key features
 - View and edit Steam achievement for every owned game
 - Gain playtime without starting the game
 - Updated UI and look
 - News feed
-- Tabs (Achievements, News, Observed Games)
-- Show achievement count
+- Tabs (Achievements, News, Appearance)
+- Show achievement count and percentage
+- Darkmode supported
 
 ## ToDo
 <details>
@@ -39,12 +40,12 @@
     - Every Type without displaying Games iwthout achievements
     - Highest Completionrate
     - Lowest Completionrate
+- Fix delay of achievement loading (restart for current state)
 
 #### News:
 
-#### Observed Games: (Integrated into Achievements)
-
 #### Appearance:
+- Fix Forest theme can only called once per session
 - Optional: Implement ScrollableFrame (When more themes get added)
 
 </details>
@@ -96,6 +97,18 @@
 - ~~Achievementcount~~
 - ~~Play button clicked fix~~
 - ~~100% in Green~~
+- ~~Observed Game implementation:~~
+    - ~~Favorite games~~ (Can be done with observing)
+        - ~~Heart/Star button right of achievement button~~
+        - ~~Shown at the top of games list~~
+    - ~~Observe game achievements (For games that gradually add more achievements)~~
+        - ~~Button right of Achievements button~~
+        - ~~Adds game to Observed games tab~~
+        - ~~Load icons~~
+        - ~~Shows count of earned achievements, missing achievements and percentage of completion~~
+        - ~~Placeholder (Loading achievements...) for background loading, update when fetched~~
+        - ~~Progressbar for achievement completion~~
+        - ~~Save observed games in database~~
 
 #### News:
 - ~~FIX news entry cleaning~~
@@ -110,19 +123,6 @@
     - ~~Show date/convert timestamp~~
     - ~~Place Refresh button top right corner~~
     - ~~Load asynchronously~~
-
-#### Observed Games: (Integrated into Achievements)
-- ~~Favorite games~~ (Can be done with observing)
-    - ~~Heart/Star button right of achievement button~~
-    - ~~Shown at the top of games list~~
-- ~~Observe game achievements (For games that gradually add more achievements)~~
-    - ~~Button right of Achievements button~~
-    - ~~Adds game to Observed games tab~~
-    - ~~Load icons~~
-    - ~~Shows count of earned achievements, missing achievements and percentage of completion~~
-    - ~~Placeholder (Loading achievements...) for background loading, update when fetched~~
-    - ~~Progressbar for achievement completion~~
-    - ~~Save observed games in database~~
 
 #### Appearance:
 - ~~Add "Lightmode" tab~~
