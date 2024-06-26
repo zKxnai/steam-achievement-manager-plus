@@ -8,8 +8,7 @@ from utils import app_version, resource_path
 from key import apikey_frame
 from api import get_owned_games, API_key, steam_id
 from concurrent.futures import ThreadPoolExecutor
-
-
+from info import create_info_bar
 
 # Define ThreadPoolExecutor with 10 threads
 achievements_stats_executor = ThreadPoolExecutor(max_workers=10)
@@ -59,6 +58,9 @@ appearance_tab.columnconfigure(0, weight=1)
 # Change theme
 set_default_theme()
 
+# Create the info bar and get its label
+info_frame, info_bar_label = create_info_bar(main)
+
 # Get owned games
 achievements_stats_executor.submit(get_owned_games, API_key, steam_id)
 
@@ -96,16 +98,9 @@ display_games(achievements_tab)
 display_news(news_tab)
 
 # Pass to appearance
-theme_switch(appearance_tab, main)
+theme_switch(appearance_tab, main, info_bar_label)
 
 # Pass to key
 apikey_frame(api_key_tab)
-
-# Create info bar
-info_bar = ttk.Frame(main)
-info_bar.pack(fill="x", side="bottom")
-
-info_bar_label = ttk.Label(info_bar, text="SAM+ successfully started.")
-info_bar_label.pack(padx=10, pady=10, expand=True)
 
 main.mainloop()
