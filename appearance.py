@@ -37,20 +37,6 @@ def toggle_sv_light():
     set_button_style()
     update_current_theme_label("Sun Valley Light")
 
-def toggle_forest_dark(main):
-    main.tk.call("source", resource_path("Resources/Themes/Forest-ttk-theme-1.0/forest-dark.tcl"))
-    ttk.Style(main).theme_use("forest-dark")
-    ctk.set_appearance_mode("dark")
-    set_button_style()
-    update_current_theme_label("Forest Dark")
-
-def toggle_forest_light(main):
-    main.tk.call("source", resource_path("Resources/Themes/Forest-ttk-theme-1.0/forest-light.tcl"))
-    ttk.Style(main).theme_use("forest-light")
-    ctk.set_appearance_mode("light")
-    set_button_style()
-    update_current_theme_label("Forest Light")
-
 def initialize_azure_theme(main):
     global is_azure_initialized
     if not is_azure_initialized:
@@ -75,8 +61,6 @@ def update_current_theme_label(theme):
     theme_display_map = {
         "Dark": "Sun Valley Dark",
         "Light": "Sun Valley Light",
-        "Forest Dark": "Forest Dark",
-        "Forest Light": "Forest Light",
         "Azure Dark": "Azure Dark",
         "Azure Light": "Azure Light"
     }
@@ -89,8 +73,6 @@ def set_default_theme_label(theme):
     theme_display_map = {
         "Dark": "Sun Valley Dark",
         "Light": "Sun Valley Light",
-        "Forest Dark": "Forest Dark",
-        "Forest Light": "Forest Light",
         "Azure Dark": "Azure Dark",
         "Azure Light": "Azure Light"
     }
@@ -106,10 +88,6 @@ def apply_default_theme(main):
             toggle_sv_dark()
         elif default_theme == "Light":
             toggle_sv_light()
-        elif default_theme == "Forest Dark":
-            toggle_forest_dark(main)
-        elif default_theme == "Forest Light":
-            toggle_forest_light(main)
         elif default_theme == "Azure Dark":
             toggle_azure_dark(main)
         elif default_theme == "Azure Light":
@@ -121,8 +99,6 @@ def save_and_update_default_theme(theme_name):
     theme_map = {
         "Sun Valley Dark": "Dark",
         "Sun Valley Light": "Light",
-        "Forest Dark": "Forest Dark",
-        "Forest Light": "Forest Light",
         "Azure Dark": "Azure Dark",
         "Azure Light": "Azure Light"
     }
@@ -178,42 +154,23 @@ def theme_switch(appearance_tab, main):
     sv_darkmode_switch.grid(row=2, column=1, sticky="nw", padx=10, pady=5)
 
     # Create label for additional theme switches
-    forest_placeholder_label = ttk.Label(theme_change_frame, text="")
-    forest_placeholder_label.grid(row=3, column=0, sticky="nw", padx=10, pady=10)
-    forest_toggle_theme_label = ttk.Label(theme_change_frame, text='Set theme to "Forest"')
-    forest_toggle_theme_label.configure(font=("Helvetica", 13, "bold underline"))
-    forest_toggle_theme_label.grid(row=4, column=0, sticky="nw", padx=10, pady=10)
-
-    # Create forest lightmode switch in the appearance tab
-    forest_lightmode_label = ttk.Label(theme_change_frame, text="Toogle Lightmode: (Can only called once per session)")
-    forest_lightmode_label.grid(row=5, column=0, sticky="nw", padx=10, pady=10)
-    forest_lightmode_switch = ttk.Button(theme_change_frame, text="Lightmode", command=lambda: toggle_forest_light(main))
-    forest_lightmode_switch.grid(row=5, column=1, sticky="nw", padx=10, pady=5)
-
-    # Create forest darkmode switch in the appearance tab
-    forest_darkmode_label = ttk.Label(theme_change_frame, text="Toogle Darkmode: (Can only called once per session)")
-    forest_darkmode_label.grid(row=6, column=0, sticky="nw", padx=10, pady=10)
-    forest_darkmode_switch = ttk.Button(theme_change_frame, text="Darkmode", command=lambda: toggle_forest_dark(main))
-    forest_darkmode_switch.grid(row=6, column=1, sticky="nw", padx=10, pady=5)
-
-    # Create label for additional theme switches
     azure_placeholder_label = ttk.Label(theme_change_frame, text="")
-    azure_placeholder_label.grid(row=7, column=0, sticky="nw", padx=10, pady=10)
+    azure_placeholder_label.grid(row=3, column=0, sticky="nw", padx=10, pady=10)
     azure_toggle_theme_label = ttk.Label(theme_change_frame, text='Set theme to "Azure"')
     azure_toggle_theme_label.configure(font=("Helvetica", 13, "bold underline"))
-    azure_toggle_theme_label.grid(row=8, column=0, sticky="nw", padx=10, pady=10)
+    azure_toggle_theme_label.grid(row=4, column=0, sticky="nw", padx=10, pady=10)
 
     # Create azure lightmode switch in the appearance tab
     azure_lightmode_label = ttk.Label(theme_change_frame, text="Toogle Lightmode:")
-    azure_lightmode_label.grid(row=9, column=0, sticky="nw", padx=10, pady=10)
+    azure_lightmode_label.grid(row=5, column=0, sticky="nw", padx=10, pady=10)
     azure_lightmode_switch = ttk.Button(theme_change_frame, text="Lightmode", command=lambda: toggle_azure_light(main))
-    azure_lightmode_switch.grid(row=9, column=1, sticky="nw", padx=10, pady=5)
+    azure_lightmode_switch.grid(row=5, column=1, sticky="nw", padx=10, pady=5)
 
     # Create azure darkmode switch in the appearance tab
     azure_darkmode_label = ttk.Label(theme_change_frame, text="Toogle Darkmode:")
-    azure_darkmode_label.grid(row=10, column=0, sticky="nw", padx=10, pady=10)
+    azure_darkmode_label.grid(row=6, column=0, sticky="nw", padx=10, pady=10)
     azure_darkmode_switch = ttk.Button(theme_change_frame, text="Darkmode", command=lambda: toggle_azure_dark(main))
-    azure_darkmode_switch.grid(row=10, column=1, sticky="nw", padx=10, pady=5)
+    azure_darkmode_switch.grid(row=6, column=1, sticky="nw", padx=10, pady=5)
 
     # Apply the default theme on startup
     apply_default_theme(main)
