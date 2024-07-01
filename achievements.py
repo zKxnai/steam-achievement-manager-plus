@@ -49,6 +49,15 @@ def mainframe(achievements_tab):
     searchbar.bind("<FocusOut>", restore_placeholder)
     searchbar.pack(side=tk.LEFT, padx=10, pady=10)
 
+    # Create dropdown for sorting options
+    global sort_var
+    sort_var = tk.StringVar()
+    sort_options = ["Alphabetical A-Z", "Alphabetical Z-A", "Most Achievements", "Least Achievements", "Completed (A-Z)", "Uncompleted (A-Z)"]
+    sort_dropdown = ttk.Combobox(searchbar_frame, textvariable=sort_var, values=sort_options, state="readonly")
+    sort_dropdown.set(sort_options[0])  # Set default value
+    sort_dropdown.pack(side=tk.LEFT, padx=10, pady=10)
+    sort_dropdown.bind("<<ComboboxSelected>>", lambda event: display_games(achievements_tab, sort_var.get()))
+
     # Create widget for info
     info_frame = tk.Frame(main_frame)
     info_frame.pack(side="right")
@@ -212,14 +221,40 @@ def close_hidden(name):
 def update_info_label(total_games):
     info_label.config(text=f"Total games: {total_games}")
 
-def display_games(achievements_tab):
+# Initialize the scrollable_frame as None initially
+scrollable_frame = None
+
+def display_games(achievements_tab, sort_option="Alphabetical A-Z"):
+    global scrollable_frame  # Ensure we are referencing the global variable
+
     # Load games from CSV
     games = get_owned_games()
-    sorted_games = sorted(games, key=lambda x: x["name"].lower())
 
-    # Create scrollable frame
-    scrollable_frame = ScrollableFrame(achievements_tab)
-    scrollable_frame.pack(fill="both", expand=True)
+    # Apply sorting based on the selected option
+    if sort_option == "Alphabetical (A-Z)":
+        sorted_games = sorted(games, key=lambda x: x["name"].lower())
+    elif sort_option == "Alphabetical (Z-A)":
+        sorted_games = sorted(games, key=lambda x: x["name"].lower(), reverse=True)
+    elif sort_option == "Most Achievements":
+        sorted_games = sorted(games, key=lambda x: get_achievement_stats(x["appid"])[1], reverse=True)
+    elif sort_option == "Least Achievements":
+        games = [g for g in games if game_has_achievements(g["appid"]) and get_achievement_stats(g["appid"])[1] > 0]
+        sorted_games = sorted(games, key=lambda x: get_achievement_stats(x["appid"])[1])
+    elif sort_option == "Completed (A-Z)":
+        games = [g for g in games if game_has_achievements(g["appid"]) and get_achievement_stats(g["appid"])[0] == get_achievement_stats(g["appid"])[1]]
+        sorted_games = sorted(games, key=lambda x: x["name"].lower())
+    elif sort_option == "Uncompleted (A-Z)":
+        games = [g for g in games if game_has_achievements(g["appid"]) and get_achievement_stats(g["appid"])[0] < get_achievement_stats(g["appid"])[1]]
+        sorted_games = sorted(games, key=lambda x: x["name"].lower())
+
+    # Create scrollable frame if it doesn't exist
+    if not scrollable_frame:
+        scrollable_frame = ScrollableFrame(achievements_tab)
+        scrollable_frame.pack(fill="both", expand=True)
+
+    # Clear existing widgets in the scrollable frame
+    for widget in scrollable_frame.scrollable_frame.winfo_children():
+        widget.destroy()
 
     # Create game widgets
     img_list = []  # List to store image objects
