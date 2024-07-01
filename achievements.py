@@ -52,7 +52,7 @@ def mainframe(achievements_tab):
     # Create dropdown for sorting options
     global sort_var
     sort_var = tk.StringVar()
-    sort_options = ["Alphabetical A-Z", "Alphabetical Z-A", "Most Achievements", "Least Achievements", "Completed (A-Z)", "Uncompleted (A-Z)"]
+    sort_options = ["Alphabetical (A-Z)", "Alphabetical (Z-A)", "Most Achievements", "Least Achievements", "Completed (A-Z)", "Uncompleted (A-Z)"]
     sort_dropdown = ttk.Combobox(searchbar_frame, textvariable=sort_var, values=sort_options, state="readonly")
     sort_dropdown.set(sort_options[0])  # Set default value
     sort_dropdown.pack(side=tk.LEFT, padx=10, pady=10)
@@ -224,11 +224,14 @@ def update_info_label(total_games):
 # Initialize the scrollable_frame as None initially
 scrollable_frame = None
 
-def display_games(achievements_tab, sort_option="Alphabetical A-Z"):
+def display_games(achievements_tab, sort_option="Alphabetical (A-Z)"):
     global scrollable_frame  # Ensure we are referencing the global variable
 
     # Load games from CSV
     games = get_owned_games()
+
+    # Initialize sorted_games with an empty list
+    sorted_games = []
 
     # Apply sorting based on the selected option
     if sort_option == "Alphabetical (A-Z)":
