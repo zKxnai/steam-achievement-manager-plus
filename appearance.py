@@ -1,6 +1,6 @@
 import sv_ttk
 import customtkinter as ctk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 from database import save_default_theme, load_default_theme
 from utils import resource_path
 from info import update_info_bar

@@ -91,8 +91,8 @@ landing_page_text_key = ttk.Label(landing_page_frame, text="- Steam API Key: Ins
 landing_page_text_key.grid(row=5, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
 
 # Pass to achievements
-mainframe(achievements_tab)
-display_games(achievements_tab, sort_option="Alphabetical (A-Z)")
+mainframe(achievements_tab, info_bar_label)
+display_games(achievements_tab, info_bar_label, sort_option="Alphabetical (A-Z)")
 
 # Pass to news
 display_news(news_tab)

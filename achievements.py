@@ -5,11 +5,12 @@ from PIL import ImageTk, Image
 from concurrent.futures import ThreadPoolExecutor
 from utils import ScrollableFrame, download_image, resize_image, app_version, resource_path
 from database import get_owned_games, load_default_theme, get_achievement_stats, game_has_achievements
+from info import update_info_bar
 
 # Define ThreadPoolExecutor with 10 threads
 achievements_executor = ThreadPoolExecutor(max_workers=10)
 
-def mainframe(achievements_tab):
+def mainframe(achievements_tab, info_bar_label):
     # Create main frame for achievements content
     global main_frame
     main_frame = ttk.Frame(achievements_tab)
@@ -56,7 +57,7 @@ def mainframe(achievements_tab):
     sort_dropdown = ttk.Combobox(searchbar_frame, textvariable=sort_var, values=sort_options, state="readonly")
     sort_dropdown.set(sort_options[0])  # Set default value
     sort_dropdown.pack(side=tk.LEFT, padx=10, pady=10)
-    sort_dropdown.bind("<<ComboboxSelected>>", lambda event: display_games(achievements_tab, sort_var.get()))
+    sort_dropdown.bind("<<ComboboxSelected>>", lambda event: display_games(achievements_tab, info_bar_label, sort_var.get()))
 
     # Create widget for info
     info_frame = tk.Frame(main_frame)
@@ -224,7 +225,7 @@ def update_info_label(total_games):
 # Initialize the scrollable_frame as None initially
 scrollable_frame = None
 
-def display_games(achievements_tab, sort_option="Alphabetical (A-Z)"):
+def display_games(achievements_tab, info_bar_label, sort_option="Alphabetical (A-Z)"):
     global scrollable_frame  # Ensure we are referencing the global variable
 
     # Load games from CSV
@@ -236,19 +237,25 @@ def display_games(achievements_tab, sort_option="Alphabetical (A-Z)"):
     # Apply sorting based on the selected option
     if sort_option == "Alphabetical (A-Z)":
         sorted_games = sorted(games, key=lambda x: x["name"].lower())
+        update_info_bar(info_bar_label, "Games sorted Alphabetically (A-Z).")
     elif sort_option == "Alphabetical (Z-A)":
         sorted_games = sorted(games, key=lambda x: x["name"].lower(), reverse=True)
+        update_info_bar(info_bar_label, "Games sorted Alphabetically (Z-A).")
     elif sort_option == "Most Achievements":
         sorted_games = sorted(games, key=lambda x: get_achievement_stats(x["appid"])[1], reverse=True)
+        update_info_bar(info_bar_label, "Games sorted by Most Achievements.")
     elif sort_option == "Least Achievements":
         games = [g for g in games if game_has_achievements(g["appid"]) and get_achievement_stats(g["appid"])[1] > 0]
         sorted_games = sorted(games, key=lambda x: get_achievement_stats(x["appid"])[1])
+        update_info_bar(info_bar_label, "Games sorted by Least Achievements.")
     elif sort_option == "Completed (A-Z)":
         games = [g for g in games if game_has_achievements(g["appid"]) and get_achievement_stats(g["appid"])[0] == get_achievement_stats(g["appid"])[1]]
         sorted_games = sorted(games, key=lambda x: x["name"].lower())
+        update_info_bar(info_bar_label, "Games sorted by Completion (A-Z).")
     elif sort_option == "Uncompleted (A-Z)":
         games = [g for g in games if game_has_achievements(g["appid"]) and get_achievement_stats(g["appid"])[0] < get_achievement_stats(g["appid"])[1]]
         sorted_games = sorted(games, key=lambda x: x["name"].lower())
+        update_info_bar(info_bar_label, "Games sorted by Uncompletion (A-Z).")
 
     # Create scrollable frame if it doesn't exist
     if not scrollable_frame:
