@@ -36,6 +36,7 @@ def toggle_sv_light(info_bar_label):
     update_current_theme_label("Sun Valley Light")
     update_info_bar(info_bar_label, "Sun Valley Light theme applied successfully.")
 
+"""
 def initialize_azure_theme(main):
     global is_azure_initialized
     if not is_azure_initialized:
@@ -57,6 +58,7 @@ def toggle_azure_light(main, info_bar_label):
     set_button_style()
     update_current_theme_label("Azure Light")
     update_info_bar(info_bar_label, "Azure Light theme applied successfully.")
+"""
 
 def update_current_theme_label(theme):
     theme_display_map = {
@@ -89,10 +91,12 @@ def apply_default_theme(main, info_bar_label):
             toggle_sv_dark(info_bar_label)
         elif default_theme == "Light":
             toggle_sv_light(info_bar_label)
+        """
         elif default_theme == "Azure Dark":
             toggle_azure_dark(main, info_bar_label)
         elif default_theme == "Azure Light":
             toggle_azure_light(main, info_bar_label)
+        """
         update_current_theme_label(default_theme)
         set_default_theme_label(default_theme)
 
@@ -154,6 +158,7 @@ def theme_switch(appearance_tab, main, info_bar_label):
     sv_darkmode_switch = ttk.Button(theme_change_frame, text="Darkmode", command=lambda: toggle_sv_dark(info_bar_label))
     sv_darkmode_switch.grid(row=2, column=1, sticky="nw", padx=10, pady=5)
 
+    """
     # Create label for additional theme switches
     azure_placeholder_label = ttk.Label(theme_change_frame, text="")
     azure_placeholder_label.grid(row=3, column=0, sticky="nw", padx=10, pady=10)
@@ -172,6 +177,7 @@ def theme_switch(appearance_tab, main, info_bar_label):
     azure_darkmode_label.grid(row=6, column=0, sticky="nw", padx=10, pady=10)
     azure_darkmode_switch = ttk.Button(theme_change_frame, text="Darkmode", command=lambda: toggle_azure_dark(main, info_bar_label))
     azure_darkmode_switch.grid(row=6, column=1, sticky="nw", padx=10, pady=5)
+    """
 
     # Apply the default theme on startup
     apply_default_theme(main, info_bar_label)

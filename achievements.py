@@ -3,12 +3,15 @@ import subprocess
 from tkinter import ttk
 from PIL import ImageTk, Image
 from concurrent.futures import ThreadPoolExecutor
-from utils import ScrollableFrame, download_image, resize_image, app_version, resource_path
-from database import get_owned_games, load_default_theme, get_achievement_stats, game_has_achievements
+from utils import ScrollableFrame, download_image, resize_image, resource_path
+from database import get_owned_games, load_default_theme, get_achievement_stats, game_has_achievements, save_pinned_game, remove_pinned_game, get_pinned_games
 from info import update_info_bar
 
 # Define ThreadPoolExecutor with 10 threads
 achievements_executor = ThreadPoolExecutor(max_workers=10)
+
+# Global list to store pinned game appids
+pinned_games = set()
 
 def mainframe(achievements_tab, info_bar_label):
     # Create main frame for achievements content
@@ -66,7 +69,8 @@ def mainframe(achievements_tab, info_bar_label):
     info_label = ttk.Label(info_frame, text="Loading games...")
     info_label.pack(side="right", padx=10)
 
-def on_image_loaded(result, name, appid, row, col, frame, img_list):
+def on_image_loaded(result, name, appid, row, col, frame, img_list, achievements_tab, info_bar_label):
+    global pinned_games
     img = result
 
     # Load the pin icon once to use it for all game entries
@@ -77,6 +81,11 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         img = resize_image(img, (50, 50))
         img_tk = ImageTk.PhotoImage(img)
         img_list.append(img_tk)
+
+        # Check if the frame still exists before creating the widgets
+        if not frame.winfo_exists():
+            return
+        
         icon_label = tk.Label(frame, image=img_tk)
         icon_label.image = img_tk  # Keep a reference to the image
         icon_label.grid(row=row, column=0, padx=10, pady=5, sticky="w")
@@ -89,13 +98,18 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
         name_pin_frame = tk.Frame(achievements_info_frame)
         name_pin_frame.grid(row=0, column=0, sticky="w")
 
-        name_label = tk.Label(name_pin_frame, text=name)
+        display_name = name + " (Pinned)" if appid in pinned_games else name
+
+        name_label = tk.Label(name_pin_frame, text=display_name)
         name_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 
         # Add the pin icon next to the game name
-        pin_label = tk.Label(name_pin_frame, image=pin_icon)
+        pin_label = tk.Label(name_pin_frame, image=pin_icon, cursor="hand2")
         pin_label.image = pin_icon  # Keep a reference to the image
         pin_label.grid(row=0, column=1, sticky="w")
+
+        # Make the pin icon clickable
+        pin_label.bind("<Button-1>", lambda event, appid=appid: pin_game(appid, achievements_tab, info_bar_label))
 
         # Check if achievements exist for the game
         if game_has_achievements(appid):
@@ -167,6 +181,25 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list):
     else:
         print(f"Skipping game '{name}' due to missing or invalid image.")
 
+def pin_game(appid, achievements_tab, info_bar_label):
+    global pinned_games
+
+    # Retrieve all owned games from the database
+    games = get_owned_games()
+
+    if appid in pinned_games:
+        remove_pinned_game(appid)
+        pinned_games.remove(appid)
+        display_games(achievements_tab, info_bar_label, sort_var.get()) # Refresh the game display to update labels
+        game_name = next((game["name"] for game in games if game["appid"] == appid), str(appid))
+        info_bar_label.config(text=f"{game_name} successfully unpinned.")
+    else:
+        save_pinned_game(appid)
+        pinned_games.add(appid)
+        display_games(achievements_tab, info_bar_label, sort_var.get()) # Refresh the game display to update labels
+        game_name = next((game["name"] for game in games if game["appid"] == appid), str(appid))
+        info_bar_label.config(text=f"{game_name} successfully pinned.")
+  
 def play_button_clicked(appid, button):
     # Change the button text to "Playing..." and color to green
     button.config(text="Playing...", style="Green.TButton")
@@ -227,6 +260,10 @@ scrollable_frame = None
 
 def display_games(achievements_tab, info_bar_label, sort_option="Alphabetical (A-Z)"):
     global scrollable_frame  # Ensure we are referencing the global variable
+    global pinned_games
+
+    # Load pinned games
+    pinned_games = get_pinned_games()
 
     # Load games from CSV
     games = get_owned_games()
@@ -257,6 +294,10 @@ def display_games(achievements_tab, info_bar_label, sort_option="Alphabetical (A
         sorted_games = sorted(games, key=lambda x: x["name"].lower())
         update_info_bar(info_bar_label, "Games sorted by Uncompletion (A-Z).")
 
+    # Prioritize pinned games
+    sorted_games = [game for game in sorted_games if game["appid"] in pinned_games] + \
+                   [game for game in sorted_games if game["appid"] not in pinned_games]
+
     # Create scrollable frame if it doesn't exist
     if not scrollable_frame:
         scrollable_frame = ScrollableFrame(achievements_tab)
@@ -277,7 +318,7 @@ def display_games(achievements_tab, info_bar_label, sort_option="Alphabetical (A
         img_future = achievements_executor.submit(download_image, img_url)
         img_future.add_done_callback(
             lambda f, name=name, appid=appid, row=i, frame=scrollable_frame.scrollable_frame, img_list=img_list, total=len(sorted_games):
-            on_image_loaded(f.result(), name, appid, row, 0, frame, img_list) or (update_info_label(total) if len(img_list) == total else None)
+            on_image_loaded(f.result(), name, appid, row, 0, frame, img_list, achievements_tab, info_bar_label) or (update_info_label(total) if len(img_list) == total else None)
         )
 
     # Define a function to scroll to the entry matching the search term

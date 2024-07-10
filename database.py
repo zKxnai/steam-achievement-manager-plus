@@ -35,6 +35,12 @@ def create_tables():
         FOREIGN KEY (appid) REFERENCES owned_games(appid)
     )
     """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS pinned_games ( 
+        appid INTEGER PRIMARY KEY,
+        FOREIGN KEY (appid) REFERENCES owned_games(appid)
+    )
+    """)
     conn.commit()
     conn.close()
 
@@ -194,3 +200,40 @@ def game_has_achievements(appid):
     conn.close()
 
     return count > 0
+
+def save_pinned_game(appid):
+    """Save a pinned game to the database."""
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    # Insert or replace the pinned game
+    cursor.execute("""
+    INSERT OR REPLACE INTO pinned_games (appid)
+    VALUES (?)
+    """, (appid,))
+
+    conn.commit()
+    conn.close()
+
+def remove_pinned_game(appid):
+    """Remove a pinned game from the database."""
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    # Delete the pinned game
+    cursor.execute("DELETE FROM pinned_games WHERE appid=?", (appid,))
+
+    conn.commit()
+    conn.close()
+
+def get_pinned_games():
+    """Retrieve pinned games from the database."""
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT appid FROM pinned_games")
+    pinned_games = {appid for (appid,) in cursor.fetchall()}  # Use curly braces {} to create a set
+
+    conn.close()
+
+    return pinned_games
