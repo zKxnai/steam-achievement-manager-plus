@@ -1,4 +1,6 @@
 import customtkinter as ctk
+import threading
+import time
 from tkinter import ttk
 from PIL import Image, ImageTk
 from achievements import mainframe, display_games
@@ -7,11 +9,8 @@ from news import display_news
 from utils import app_version, resource_path
 from key import apikey_frame
 from api import get_owned_games, API_key, steam_id
-from concurrent.futures import ThreadPoolExecutor
 from info import create_info_bar
-
-# Define ThreadPoolExecutor with 10 threads
-achievements_stats_executor = ThreadPoolExecutor(max_workers=10)
+from progress_window import ProgressWindow
   
 # Absolute icon paths
 icon_path = resource_path("Resources/Icons/SAM+ Logo.ico")
@@ -61,8 +60,42 @@ set_default_theme()
 # Create the info bar and get its label
 info_frame, info_bar_label = create_info_bar(main)
 
-# Get owned games
-achievements_stats_executor.submit(get_owned_games, API_key, steam_id)
+# Show progress window
+progress_window = ProgressWindow(main)
+
+def fetch_data():
+    progress_window.update_progress("Fetching news...")
+    # Pass to news
+    display_news(news_tab)
+    time.sleep(2)
+
+    progress_window.update_progress("Fetching owned games data...")
+    # Get owned games
+    get_owned_games(API_key, steam_id)
+
+    progress_window.update_progress("Displaying achievements...")
+    # Pass to achievements
+    mainframe(achievements_tab, info_bar_label)
+    display_games(achievements_tab, info_bar_label, sort_option="Alphabetical (A-Z)")
+    time.sleep(2)
+
+    progress_window.update_progress("Setting up appearance...")
+    time.sleep(1)
+    # Pass to appearance
+    theme_switch(appearance_tab, main, info_bar_label)
+    
+
+    progress_window.update_progress("Setting up API key...")
+    time.sleep(1)
+    # Pass to key
+    apikey_frame(api_key_tab)
+    
+
+    # Close progress window
+    progress_window.close()
+
+    # After loading, show the main window
+    main.deiconify()
 
 # Creating landing page
 landing_page_frame = ttk.Frame(home)
@@ -90,17 +123,14 @@ landing_page_text_appearance.grid(row=4, column=0, sticky="w", padx=custom_padx,
 landing_page_text_key = ttk.Label(landing_page_frame, text="- Steam API Key: Insert or change the used Steam API Key.")
 landing_page_text_key.grid(row=5, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
 
-# Pass to achievements
-mainframe(achievements_tab, info_bar_label)
-display_games(achievements_tab, info_bar_label, sort_option="Alphabetical (A-Z)")
+# Hide the main window initially
+main.withdraw()
 
-# Pass to news
-display_news(news_tab)
-
-# Pass to appearance
-theme_switch(appearance_tab, main, info_bar_label)
-
-# Pass to key
-apikey_frame(api_key_tab)
+# Start the background thread and main loop
+thread = threading.Thread(target=fetch_data)
+thread.start()
 
 main.mainloop()
+
+# Wait for the thread to complete before exiting the script
+thread.join()
