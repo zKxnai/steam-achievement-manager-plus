@@ -2,7 +2,6 @@ import sv_ttk
 import customtkinter as ctk
 from tkinter import ttk
 from database import save_default_theme, load_default_theme
-from utils import resource_path
 from info import update_info_bar
 
 is_azure_initialized = False
@@ -157,6 +156,10 @@ def theme_switch(appearance_tab, main, info_bar_label):
     sv_darkmode_label.grid(row=2, column=0, sticky="nw", padx=10, pady=10)
     sv_darkmode_switch = ttk.Button(theme_change_frame, text="Darkmode", command=lambda: toggle_sv_dark(info_bar_label))
     sv_darkmode_switch.grid(row=2, column=1, sticky="nw", padx=10, pady=5)
+
+    # Info text regarding theme switch
+    theme_info_text = ttk.Label(theme_change_frame, text="\n\n\nDisclaimer: When changing the theme, please set it as Default to fully apply it.")
+    theme_info_text.grid(row=3, column=0, sticky="nw", padx=10, pady=10)
 
     """
     # Create label for additional theme switches

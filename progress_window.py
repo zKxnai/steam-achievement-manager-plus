@@ -8,7 +8,13 @@ class ProgressWindow:
         self.root = root
         self.progress_window = ctk.CTkToplevel(root)
         self.progress_window.title("Loading SAM+...")
-        self.progress_window.geometry("300x100")
+        window_height = 100
+        window_width = 300
+        screen_height = self.progress_window.winfo_screenheight()
+        screen_width = self.progress_window.winfo_screenwidth()
+        x = (screen_width - window_width) // 2
+        y = (screen_height - window_height) // 2
+        self.progress_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
         self.progress_window.resizable(False, False)
         self.progress_window.after(250, lambda: self.progress_window.iconbitmap(icon_path))
 

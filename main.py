@@ -24,7 +24,16 @@ steam_api_icon_path = resource_path("Resources/Icons/keyword_g.png")
 main = ctk.CTk()
 main.title(f"Steam Achievement Manager+ {app_version}")
 main.iconbitmap(icon_path)
-main.geometry("850x600")
+
+# Place window in the center of the screen
+window_height = 650
+window_width = 875
+screen_height = main.winfo_screenheight()
+screen_width = main.winfo_screenwidth()
+x = (screen_width - window_width) // 2
+y = (screen_height - window_height) // 2
+
+main.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
 # Create a Notebook (tabbed layout)
 notebook = ttk.Notebook(main)
@@ -64,6 +73,11 @@ info_frame, info_bar_label = create_info_bar(main)
 progress_window = ProgressWindow(main)
 
 def fetch_data():
+    progress_window.update_progress("Setting up API key...")
+    time.sleep(1)
+    # Pass to key
+    apikey_frame(api_key_tab)
+    
     progress_window.update_progress("Fetching news...")
     # Pass to news
     display_news(news_tab)
@@ -84,13 +98,6 @@ def fetch_data():
     # Pass to appearance
     theme_switch(appearance_tab, main, info_bar_label)
     
-
-    progress_window.update_progress("Setting up API key...")
-    time.sleep(1)
-    # Pass to key
-    apikey_frame(api_key_tab)
-    
-
     # Close progress window
     progress_window.close()
 

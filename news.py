@@ -13,7 +13,7 @@ news_executor = ThreadPoolExecutor(max_workers=10)
 def display_news(news_tab):
     # Create a frame for the search bar
     searchbar_frame = ttk.Frame(news_tab)
-    searchbar_frame.pack(side="top", fill="x", padx=10, pady=10)
+    searchbar_frame.pack(side="top", fill="x")
 
     # Create search bar
     search_var = tk.StringVar()

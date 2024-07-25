@@ -27,8 +27,22 @@ def mainframe(achievements_tab, info_bar_label):
     global played_games_count
     played_games_count = 0
     global played_games_label
-    played_games_label = ttk.Label(played_games_frame, text=f"Played Games: {played_games_count}")
-    played_games_label.pack(side="bottom")
+    played_games_label = ttk.Label(played_games_frame, text=f"Running Games: {played_games_count}")
+    played_games_label.pack(side="left", padx=10)
+
+    # Create pinned games count
+    global pinned_games_count
+    pinned_games_count = 0
+    global pinned_games_label
+    pinned_games_label = ttk.Label(played_games_frame, text=f"Pinned Games: {pinned_games_count}")
+    pinned_games_label.pack(side="left", padx=10)
+
+    # Create 100% games count
+    global hundred_percent_games_count
+    hundred_percent_games_count = "0/0"
+    global hundred_percent_games_label
+    hundred_percent_games_label = ttk.Label(played_games_frame, text=f"100% Games: {hundred_percent_games_count}")
+    hundred_percent_games_label.pack(side="left", padx=10)
 
     # Create frame for search bar
     searchbar_frame = ttk.Frame(main_frame)
@@ -53,6 +67,9 @@ def mainframe(achievements_tab, info_bar_label):
     searchbar.bind("<FocusOut>", restore_placeholder)
     searchbar.pack(side=tk.LEFT, padx=10, pady=10)
 
+    # Explicitly set focus to the parent frame or another widget
+    main_frame.focus_set()
+
     # Create dropdown for sorting options
     global sort_var
     sort_var = tk.StringVar()
@@ -73,9 +90,13 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list, achievements
     global pinned_games
     img = result
 
-    # Load the pin icon once to use it for all game entries
+    # Load the (un)pin icon once to use it for all game entries
+    global pin_icon
+    global unpin_icon
     pin_icon_img = Image.open(resource_path("Resources/Icons/pin_g.png")).resize((14, 14), Image.LANCZOS)
     pin_icon = ImageTk.PhotoImage(pin_icon_img)
+    unpin_icon_img = Image.open(resource_path("Resources/Icons/unpin_g.png")).resize((14, 14), Image.LANCZOS)
+    unpin_icon = ImageTk.PhotoImage(unpin_icon_img)
 
     if img:
         img = resize_image(img, (50, 50))
@@ -85,7 +106,7 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list, achievements
         # Check if the frame still exists before creating the widgets
         if not frame.winfo_exists():
             return
-        
+
         icon_label = tk.Label(frame, image=img_tk)
         icon_label.image = img_tk  # Keep a reference to the image
         icon_label.grid(row=row, column=0, padx=10, pady=5, sticky="w")
@@ -104,12 +125,13 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list, achievements
         name_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 
         # Add the pin icon next to the game name
-        pin_label = tk.Label(name_pin_frame, image=pin_icon, cursor="hand2")
-        pin_label.image = pin_icon  # Keep a reference to the image
+        current_icon = unpin_icon if appid in pinned_games else pin_icon
+        pin_label = tk.Label(name_pin_frame, image=current_icon, cursor="hand2")
+        pin_label.image = current_icon  # Keep a reference to the image
         pin_label.grid(row=0, column=1, sticky="w")
 
         # Make the pin icon clickable
-        pin_label.bind("<Button-1>", lambda event, appid=appid: pin_game(appid, achievements_tab, info_bar_label))
+        pin_label.bind("<Button-1>", lambda event, appid=appid: pin_game(appid, pin_label, achievements_tab, info_bar_label))
 
         # Check if achievements exist for the game
         if game_has_achievements(appid):
@@ -154,25 +176,29 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list, achievements
             no_achievements_label.grid(row=1, column=0, sticky="w", padx=10, pady=5)
 
         # Configure columns to distribute evenly
-        achievements_info_frame.grid_columnconfigure(0, weight=1)  # Adjust weight as needed
-        achievements_info_frame.grid_columnconfigure(1, weight=1)  # Adjust weight as needed
-        achievements_info_frame.grid_columnconfigure(2, weight=1)  # Adjust weight as needed
+        achievements_info_frame.grid_columnconfigure(0, weight=1)
+        achievements_info_frame.grid_columnconfigure(1, weight=1)
+        achievements_info_frame.grid_columnconfigure(2, weight=1)
+
+         # Add a padding frame between the game details and buttons
+        padding_frame = tk.Frame(frame)
+        padding_frame.grid(row=row, column=2, padx=20, pady=5, sticky="ew")
         
         # Add buttons
         play_button_img = tk.PhotoImage(file=resource_path("Resources/Icons/play_g.png"))
-        play_button = ttk.Button(frame, text="Play", image=play_button_img, compound="left", command=lambda appid=appid: open_hidden(appid), width=10)
+        play_button = ttk.Button(padding_frame, text="Play", image=play_button_img, compound="left", command=lambda appid=appid: open_hidden(appid), width=10)
         play_button.image = play_button_img
-        play_button.grid(row=row, column=2, padx=10, pady=5, sticky="e")
+        play_button.grid(row=row, column=2, padx=10, pady=5, sticky="ew")
         
         pause_button_img = tk.PhotoImage(file=resource_path("Resources/Icons/pause_g.png"))
-        pause_button = ttk.Button(frame, text="Pause", image=pause_button_img, compound="left", command=lambda name=name: close_hidden(name), width=10)
+        pause_button = ttk.Button(padding_frame, text="Pause", image=pause_button_img, compound="left", command=lambda name=name: close_hidden(name), width=10)
         pause_button.image = pause_button_img
-        pause_button.grid(row=row, column=3, padx=10, pady=5, sticky="e")
+        pause_button.grid(row=row, column=3, padx=10, pady=5, sticky="ew")
         
         achievement_button_img = tk.PhotoImage(file=resource_path("Resources/Icons/achievements_g.png"))
-        achievement_button = ttk.Button(frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda appid=appid: open_achievements_window(appid))
+        achievement_button = ttk.Button(padding_frame, text="Achievements", image=achievement_button_img, compound="left", command=lambda appid=appid: open_achievements_window(appid))
         achievement_button.image = achievement_button_img
-        achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="e")
+        achievement_button.grid(row=row, column=4, padx=10, pady=5, sticky="ew")
 
         # Update button states when clicked
         play_button.config(command=lambda appid=appid, button=play_button: play_button_clicked(appid, button))
@@ -181,7 +207,20 @@ def on_image_loaded(result, name, appid, row, col, frame, img_list, achievements
     else:
         print(f"Skipping game '{name}' due to missing or invalid image.")
 
-def pin_game(appid, achievements_tab, info_bar_label):
+def update_game_counters():
+    global pinned_games_count, hundred_percent_games_count
+    pinned_games_count = len(get_pinned_games())
+    pinned_games_label.config(text=f"Pinned Games: {pinned_games_count}")
+
+    # Update the 100% Games counter
+    games = get_owned_games()
+    total_100_percent = sum(1 for game in games if game_has_achievements(game["appid"]) and
+                        get_achievement_stats(game["appid"])[0] == get_achievement_stats(game["appid"])[1])
+    total_games_with_achievements = sum(1 for game in games if game_has_achievements(game["appid"]))
+    hundred_percent_games_count = f"{total_100_percent}/{total_games_with_achievements}"
+    hundred_percent_games_label.config(text=f"100% Games: {hundred_percent_games_count}")
+
+def pin_game(appid, pin_label, achievements_tab, info_bar_label):
     global pinned_games
 
     # Retrieve all owned games from the database
@@ -190,15 +229,20 @@ def pin_game(appid, achievements_tab, info_bar_label):
     if appid in pinned_games:
         remove_pinned_game(appid)
         pinned_games.remove(appid)
-        display_games(achievements_tab, info_bar_label, sort_var.get()) # Refresh the game display to update labels
+        pin_label.config(image=pin_icon)
+        pin_label.image = pin_icon
         game_name = next((game["name"] for game in games if game["appid"] == appid), str(appid))
         info_bar_label.config(text=f"{game_name} successfully unpinned.")
     else:
         save_pinned_game(appid)
         pinned_games.add(appid)
-        display_games(achievements_tab, info_bar_label, sort_var.get()) # Refresh the game display to update labels
+        pin_label.config(image=unpin_icon)
+        pin_label.image = unpin_icon
         game_name = next((game["name"] for game in games if game["appid"] == appid), str(appid))
         info_bar_label.config(text=f"{game_name} successfully pinned.")
+
+    display_games(achievements_tab, info_bar_label, sort_var.get())
+    update_game_counters()
   
 def play_button_clicked(appid, button):
     # Change the button text to "Playing..." and color to green
@@ -214,7 +258,7 @@ def pause_button_clicked(name, button):
 def open_hidden(appid):
     global played_games_count, game_process
     played_games_count += 1
-    played_games_label.config(text=f"Played Games: {played_games_count}")
+    played_games_label.config(text=f"Running Games: {played_games_count}")
     exe_path = resource_path("Resources/API/Darkmode/bin/SAM.Game.exe")
     cmdline = f'"{exe_path}" {appid}'
 
@@ -228,7 +272,6 @@ def open_achievements_window(appid):
     # Define the set of dark mode themes
     dark_mode_themes = {
         "Dark",
-        "Forest Dark",
         "Azure Dark"
     }
     current_theme = load_default_theme()
@@ -242,7 +285,7 @@ def open_achievements_window(appid):
 def close_hidden(name):
     global played_games_count, game_process
     played_games_count -= 1
-    played_games_label.config(text=f"Played Games: {played_games_count}")
+    played_games_label.config(text=f"Running Games: {played_games_count}")
 
     if game_process:
         try:
@@ -333,3 +376,5 @@ def display_games(achievements_tab, info_bar_label, sort_option="Alphabetical (A
 
     # Bind the function to the search bar
     searchbar.bind("<Return>", scroll_to_entry)
+
+    update_game_counters()
