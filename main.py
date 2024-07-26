@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import threading
 import time
+import requests
 from tkinter import ttk
 from PIL import Image, ImageTk
 from achievements import mainframe, display_games
@@ -83,11 +84,11 @@ def fetch_data():
     display_news(news_tab)
     time.sleep(2)
 
-    progress_window.update_progress("Fetching owned games data...")
+    progress_window.update_progress("Fetching owned games...")
     # Get owned games
     get_owned_games(API_key, steam_id)
 
-    progress_window.update_progress("Displaying achievements...")
+    progress_window.update_progress("Displaying games...")
     # Pass to achievements
     mainframe(achievements_tab, info_bar_label)
     display_games(achievements_tab, info_bar_label, sort_option="Alphabetical (A-Z)")
@@ -103,6 +104,33 @@ def fetch_data():
 
     # After loading, show the main window
     main.deiconify()
+
+    check_for_update(info_bar_label)
+
+
+def get_latest_github_version():
+    url = f"https://api.github.com/repos/zKxnai/steam-achievement-manager-plus/releases/latest"
+    response = requests.get(url)
+    if response.status_code == 200:
+        release_info = response.json()
+        return release_info["tag_name"]
+    return None
+
+def is_update_available(app_version, latest_version):
+    current_version_parts = list(map(int, app_version.split('.')))
+    latest_version_parts = list(map(int, latest_version.split('.')))
+    
+    return latest_version_parts > current_version_parts
+
+def check_for_update(info_bar_label):
+    latest_version = get_latest_github_version()
+    if latest_version:
+        if is_update_available(app_version, latest_version):
+            info_bar_label.config(text=f"A new version {latest_version} is available! Please update.", foreground="yellow")
+        else:
+            info_bar_label.config(text="You are using the latest version.", foreground="green")
+    else:
+        info_bar_label.config(text="Could not check for updates. Please try again later.", foreground="red")
 
 # Creating landing page
 landing_page_frame = ttk.Frame(home)

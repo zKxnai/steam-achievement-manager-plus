@@ -67,9 +67,6 @@ def mainframe(achievements_tab, info_bar_label):
     searchbar.bind("<FocusOut>", restore_placeholder)
     searchbar.pack(side=tk.LEFT, padx=10, pady=10)
 
-    # Explicitly set focus to the parent frame or another widget
-    main_frame.focus_set()
-
     # Create dropdown for sorting options
     global sort_var
     sort_var = tk.StringVar()
@@ -271,8 +268,7 @@ def open_hidden(appid):
 def open_achievements_window(appid):
     # Define the set of dark mode themes
     dark_mode_themes = {
-        "Dark",
-        "Azure Dark"
+        "Dark"
     }
     current_theme = load_default_theme()
     # Check if the current theme is a dark mode theme
