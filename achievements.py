@@ -228,17 +228,18 @@ def pin_game(appid, pin_label, achievements_tab, info_bar_label):
         pinned_games.remove(appid)
         pin_label.config(image=pin_icon)
         pin_label.image = pin_icon
+        display_games(achievements_tab, info_bar_label, sort_var.get())
         game_name = next((game["name"] for game in games if game["appid"] == appid), str(appid))
-        info_bar_label.config(text=f"{game_name} successfully unpinned.")
+        info_bar_label.config(text=f"{game_name} successfully unpinned.", foreground="white")
     else:
         save_pinned_game(appid)
         pinned_games.add(appid)
         pin_label.config(image=unpin_icon)
         pin_label.image = unpin_icon
+        display_games(achievements_tab, info_bar_label, sort_var.get())
         game_name = next((game["name"] for game in games if game["appid"] == appid), str(appid))
-        info_bar_label.config(text=f"{game_name} successfully pinned.")
+        info_bar_label.config(text=f"{game_name} successfully pinned.", foreground="white")
 
-    display_games(achievements_tab, info_bar_label, sort_var.get())
     update_game_counters()
   
 def play_button_clicked(appid, button):
@@ -313,24 +314,30 @@ def display_games(achievements_tab, info_bar_label, sort_option="Alphabetical (A
     # Apply sorting based on the selected option
     if sort_option == "Alphabetical (A-Z)":
         sorted_games = sorted(games, key=lambda x: x["name"].lower())
+        info_bar_label.config(foreground="white")
         update_info_bar(info_bar_label, "Games sorted Alphabetically (A-Z).")
     elif sort_option == "Alphabetical (Z-A)":
         sorted_games = sorted(games, key=lambda x: x["name"].lower(), reverse=True)
+        info_bar_label.config(foreground="white")
         update_info_bar(info_bar_label, "Games sorted Alphabetically (Z-A).")
     elif sort_option == "Most Achievements":
         sorted_games = sorted(games, key=lambda x: get_achievement_stats(x["appid"])[1], reverse=True)
+        info_bar_label.config(foreground="white")
         update_info_bar(info_bar_label, "Games sorted by Most Achievements.")
     elif sort_option == "Least Achievements":
         games = [g for g in games if game_has_achievements(g["appid"]) and get_achievement_stats(g["appid"])[1] > 0]
         sorted_games = sorted(games, key=lambda x: get_achievement_stats(x["appid"])[1])
+        info_bar_label.config(foreground="white")
         update_info_bar(info_bar_label, "Games sorted by Least Achievements.")
     elif sort_option == "Completed (A-Z)":
         games = [g for g in games if game_has_achievements(g["appid"]) and get_achievement_stats(g["appid"])[0] == get_achievement_stats(g["appid"])[1]]
         sorted_games = sorted(games, key=lambda x: x["name"].lower())
+        info_bar_label.config(foreground="white")
         update_info_bar(info_bar_label, "Games sorted by Completion (A-Z).")
     elif sort_option == "Uncompleted (A-Z)":
         games = [g for g in games if game_has_achievements(g["appid"]) and get_achievement_stats(g["appid"])[0] < get_achievement_stats(g["appid"])[1]]
         sorted_games = sorted(games, key=lambda x: x["name"].lower())
+        info_bar_label.config(foreground="white")
         update_info_bar(info_bar_label, "Games sorted by Uncompletion (A-Z).")
 
     # Prioritize pinned games

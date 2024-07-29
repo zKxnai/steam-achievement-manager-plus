@@ -222,7 +222,7 @@ namespace SAM.Game
             this._MainTabControl.Location = new System.Drawing.Point(8, 33);
             this._MainTabControl.Name = "_MainTabControl";
             this._MainTabControl.SelectedIndex = 0;
-            this._MainTabControl.Size = new System.Drawing.Size(616, 334);
+            this._MainTabControl.Size = new System.Drawing.Size(776, 442);
             this._MainTabControl.TabIndex = 5;
             // 
             // _AchievementsTabPage > Inner Frame for Achievement Selection
@@ -382,14 +382,14 @@ namespace SAM.Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(632, 392);
+            this.ClientSize = new System.Drawing.Size(800, 500);
             this.Controls.Add(this._MainToolStrip);
             this.Controls.Add(this._MainTabControl);
             this.Controls.Add(this._MainStatusStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(640, 50);
             this.Name = "Manager";
-            this.Text = "Steam Achievement Manager+ 1.0.1";
+            this.Text = "Steam Achievement Manager+ 1.0.2";
             this._MainToolStrip.ResumeLayout(false);
             this._MainToolStrip.PerformLayout();
             this._MainStatusStrip.ResumeLayout(false);

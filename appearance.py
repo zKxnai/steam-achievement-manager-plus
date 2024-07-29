@@ -7,6 +7,7 @@ from info import update_info_bar
 is_azure_initialized = False
 current_theme_label = None
 default_theme_label = None
+default_foreground = "white"
 
 def set_button_style():
     # Define a custom style for the green "Playing..." button
@@ -26,6 +27,7 @@ def toggle_sv_dark(info_bar_label):
     ctk.set_appearance_mode("dark")
     set_button_style()
     update_current_theme_label("Sun Valley Dark")
+    info_bar_label.config(foreground=default_foreground)
     update_info_bar(info_bar_label, "Sun Valley Dark theme applied successfully.")
 
 def toggle_sv_light(info_bar_label):
@@ -33,6 +35,7 @@ def toggle_sv_light(info_bar_label):
     ctk.set_appearance_mode("light")
     set_button_style()
     update_current_theme_label("Sun Valley Light")
+    info_bar_label.config(foreground=default_foreground)
     update_info_bar(info_bar_label, "Sun Valley Light theme applied successfully.")
 
 def update_current_theme_label(theme):
@@ -78,8 +81,10 @@ def save_and_update_default_theme(theme_name, info_bar_label):
     if theme:
         save_default_theme(theme)
         set_default_theme_label(theme_name)
+        info_bar_label.config(foreground=default_foreground)
         update_info_bar(info_bar_label, f"Default Theme successfully set to {theme_name}.")
     else:
+        info_bar_label.config(foreground=default_foreground)
         update_info_bar(info_bar_label, "Theme not found.")
 
 def theme_switch(appearance_tab, main, info_bar_label):
@@ -122,8 +127,10 @@ def theme_switch(appearance_tab, main, info_bar_label):
     sv_darkmode_switch.grid(row=2, column=1, sticky="nw", padx=10, pady=5)
 
     # Info text regarding theme switch
-    theme_info_text = ttk.Label(theme_change_frame, text="\n\n\nDisclaimer: When changing the theme, please set it as Default to fully apply it.")
-    theme_info_text.grid(row=3, column=0, sticky="nw", padx=10, pady=10)
+    disclaimer_frame = ttk.Frame(appearance_tab)
+    disclaimer_frame.grid(row=1, column=0, sticky="nw", padx=10, pady=10)
+    theme_info_text = ttk.Label(disclaimer_frame, text="\n\n\nDisclaimer: When changing the theme, please set it as Default to fully apply it.")
+    theme_info_text.grid(row=0, column=0, sticky="nw", padx=10, pady=10)
 
     # Apply the default theme on startup
     apply_default_theme(main, info_bar_label)
