@@ -2,12 +2,13 @@ import customtkinter as ctk
 import threading
 import time
 import requests
+import webbrowser
 from tkinter import ttk
 from PIL import Image, ImageTk
 from achievements import mainframe, display_games
 from appearance import set_default_theme, theme_switch
 from news import display_news
-from utils import app_version, resource_path
+from utils import app_version, resource_path, ToolTip
 from key import apikey_frame
 from api import get_owned_games, API_key, steam_id
 from info import create_info_bar
@@ -20,6 +21,7 @@ achievements_icon_path = resource_path("Resources/Icons/achievements_g.png")
 news_icon_path = resource_path("Resources/Icons/news_g.png")
 appearance_icon_path = resource_path("Resources/Icons/settings_g.png")
 steam_api_icon_path = resource_path("Resources/Icons/keyword_g.png")
+github_icon_path = resource_path("Resources/Icons/github-mark_g.png")
 
 # Main window
 main = ctk.CTk()
@@ -46,6 +48,7 @@ achievements_icon = ImageTk.PhotoImage(Image.open(achievements_icon_path).resize
 news_icon = ImageTk.PhotoImage(Image.open(news_icon_path).resize((16,16)))
 appearance_icon = ImageTk.PhotoImage(Image.open(appearance_icon_path).resize((16,16)))
 steam_api_icon = ImageTk.PhotoImage(Image.open(steam_api_icon_path).resize((16,16)))
+github_icon = ImageTk.PhotoImage(Image.open(github_icon_path).resize((20,20)))
 
 # Create frames for each tab
 home = ttk.Frame(notebook)
@@ -126,11 +129,20 @@ def check_for_update(info_bar_label):
     latest_version = get_latest_github_version()
     if latest_version:
         if is_update_available(app_version, latest_version):
-            info_bar_label.config(text=f"A new version {latest_version} is available! Please update.", foreground="yellow")
+            info_bar_label.config(text=f"Version {latest_version} is available! Please update.", foreground="yellow")
         else:
             info_bar_label.config(text="You are using the latest version.", foreground="green")
     else:
         info_bar_label.config(text="Could not check for updates. Please try again later.", foreground="red")
+
+def open_repo():
+    url = "https://github.com/zKxnai/steam-achievement-manager-plus/releases"
+    webbrowser.open_new_tab(url)
+
+def add_tooltip(widget, text):
+    tooltip = ToolTip(widget, text)
+    widget.bind("<Enter>", lambda e: tooltip.show_tip())
+    widget.bind("<Leave>", lambda e: tooltip.hide_tip())
 
 # Creating landing page
 landing_page_frame = ttk.Frame(home)
@@ -157,6 +169,12 @@ landing_page_text_appearance.grid(row=4, column=0, sticky="w", padx=custom_padx,
 
 landing_page_text_key = ttk.Label(landing_page_frame, text="- Steam API Key: Insert or change the used Steam API Key.")
 landing_page_text_key.grid(row=5, column=0, sticky="w", padx=custom_padx, pady=custom_pady)
+
+# Create github icon to forward to repo
+github_icon_label = ttk.Label(landing_page_frame, image=github_icon, cursor="hand2")
+github_icon_label.grid(row=6, column=0, sticky="sw", padx=custom_padx, pady=custom_pady)
+github_icon_label.bind("<Button-1>", lambda event: open_repo())
+add_tooltip(github_icon_label, "Visit my GitHub repository")
 
 # Hide the main window initially
 main.withdraw()
